@@ -1,0 +1,12 @@
+.container {
+    scroll-snap-type: y mandatory;
+    // scroll-padding: 50px;
+}
+
+.infoSection {
+    scroll-snap-align: start;
+}
+
+.statementsSection {
+    scroll-snap-align: start;
+}

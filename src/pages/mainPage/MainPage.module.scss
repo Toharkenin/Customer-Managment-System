@@ -1,0 +1,67 @@
+.tableContainer {
+    margin: 30px;
+    padding: 20px;
+    max-width: 100vw;
+    // background-color: #f9f9f9;
+    border-radius: 10px;
+    // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    z-index: 1000; 
+    padding-top: 50px; 
+    padding-bottom: 20px; 
+}
+
+.headerSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.newClientButton {
+    background-color: rgb(57, 57, 255);
+    color: #fff;
+    // padding: 12px 32px;
+    height: 3rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.clientTable {
+    border-collapse: collapse;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.clientTable th,
+.clientTable td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.clientTable th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.clientTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.clientTable tr:hover {
+    background-color: #f1f1f1;
+}

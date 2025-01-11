@@ -1,0 +1,51 @@
+.container {
+    height: 100vh;
+    padding: 5rem 5rem 0 5rem;
+    // background-color: azure;
+}
+
+.header {
+    font-weight: 500;
+}
+
+.text {
+    word-wrap: break-word;
+    word-break: break-word;
+    line-height: 2;
+    font-size: 1.2rem;
+    color: #000;
+    font-weight: 200;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
+.button {
+    
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    padding: 0 16px;
+    background-color: #fff;
+    border-radius: 0.25rem;
+    border: 1px solid #0070d2;
+    color: #0070d2;
+    font-size: 15px;
+    line-height: 30px;
+    font-weight: 400;
+    text-align: center;
+
+}
+
+.button:hover {
+    background-color: #005fb2;  
+    border-color: #005fb2;
+    color: #fff;
+} 
+.button:active {
+    border: 1rem solid #005fb2;
+    background-color: #005fb2; 
+
+}
+.button.clicked {
+    border: 1rem solid #000;
+}
