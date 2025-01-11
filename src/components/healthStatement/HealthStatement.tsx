@@ -14,7 +14,6 @@ interface Question {
 
 function HealthStatement({ onBack }: Props) {
 
-    const [answers, setAnswers] = useState<Record<number, { checkbox?: string; details?: string }>>({});
     const sigPadRef = useRef<SignatureCanvas>(null);
 
     const questions: Question[] = [
@@ -52,15 +51,27 @@ function HealthStatement({ onBack }: Props) {
         { id: 31, text: 'כאב כרוני' },
     ];
 
-    const handleAnswerChange = (id: number, type: string, value?: string) => {
-        setAnswers((prev) => ({
-            ...prev,
-            [id]: {
-                ...(prev[id] || {}),
-                [type]: value || type,
-            },
-        }));
+    const initialQuestions = questions.slice(0, 6);
+    const remainingQuestions = questions.slice(6);
+
+    const [answers, setAnswers] = useState(
+        initialQuestions.concat(remainingQuestions).map((question) => ({
+            id: question.id,
+            checkbox: "",
+            answer: "",
+        }))
+    );
+
+    const handleAnswerChange = (id: number, field: "checkbox" | "details", value: string) => {
+        setAnswers((prev) =>
+            prev.map((answer) =>
+                answer.id === id
+                    ? { ...answer, [field]: value }
+                    : answer
+            )
+        );
     };
+
 
     const QuestionComponent = ({ question }: { question: Question }) => {
         return (
@@ -71,7 +82,7 @@ function HealthStatement({ onBack }: Props) {
                         <input
                             type="radio"
                             name={`question-${question.id}`}
-                            checked={answers[question.id]?.checkbox === 'yes'}
+                            checked={answers.find((a) => a.id === question.id)?.checkbox === 'yes'}
                             onChange={() => handleAnswerChange(question.id, 'checkbox', 'yes')}
                         />
                         כן
@@ -81,23 +92,21 @@ function HealthStatement({ onBack }: Props) {
                         <input
                             type="radio"
                             name={`question-${question.id}`}
-                            checked={answers[question.id]?.checkbox === 'no'}
+                            checked={answers.find((a) => a.id === question.id)?.checkbox === 'no'}
                             onChange={() => handleAnswerChange(question.id, 'checkbox', 'no')}
                         />
                         לא
                     </label>
                 </div>
                 <br />
-                {answers[question.id]?.checkbox === 'yes' && (
+                {answers.find((a) => a.id === question.id)?.checkbox === 'yes' && (
                     <div className={styles.details}>
                         <input
                             className={styles.detailsInput}
                             type="text"
                             name={`question-${question.id}`}
                             placeholder='פירוט'
-                            onChange={(e) =>
-                                handleAnswerChange(question.id, 'details', e.target.value)
-                            }
+                            onChange={(e) => handleAnswerChange(question.id, 'details', e.target.value)}
                         />
                     </div>
                 )}
@@ -105,8 +114,7 @@ function HealthStatement({ onBack }: Props) {
         );
     };
 
-    const initialQuestions = questions.slice(0, 6);
-    const remainingQuestions = questions.slice(6);
+
 
     const handleClearSign = () => {
         if (sigPadRef.current) {
@@ -114,7 +122,22 @@ function HealthStatement({ onBack }: Props) {
         }
     };
 
-    // TODO: Add data to firebase
+
+    const handleSendForm = () => {
+        try {
+            const allAnswers = answers.map((a) => ({
+                questionId: a.id,
+                checkbox: a.checkbox,
+                answer: a.answer,
+            }));
+            // TODO: Add data to firebase, get customer
+            console.log("all answers", allAnswers);
+        } catch (e) {
+
+        }
+    };
+
+
 
     return (
         <div className={styles.container}>
@@ -170,7 +193,7 @@ function HealthStatement({ onBack }: Props) {
             </div>
 
             <NavLink to="/">
-                <button className={styles.sendButton}>שליחה</button>
+                <button className={styles.sendButton} onClick={handleSendForm}>שליחה</button>
             </NavLink>
         </div>
     )

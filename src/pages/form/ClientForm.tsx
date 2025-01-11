@@ -13,7 +13,7 @@ function ClientForm() {
     const fourthConsentFormRef = useRef<HTMLDivElement>(null);
     const healthStatmentRef = useRef<HTMLDivElement>(null);
 
-    const [showStatements, setShowStatement] = useState<boolean>(false);
+    const [showStatements, setShowStatement] = useState<boolean>(true);
     const [showHealthStatements, setShowHealthStatements] = useState<boolean>(false);
 
     const [statmentActivity, setShowStatementActivity] = useState([
