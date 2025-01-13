@@ -2,9 +2,12 @@ import { useState, useRef } from 'react';
 import SignatureCanvas from 'react-signature-canvas'
 import styles from './HealthStatement.module.scss';
 import { NavLink } from 'react-router';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../../firebase';
 
 interface Props {
-    onBack: () => void;
+    // onBack: () => void;
+    customerEmail: string;
 };
 
 interface Question {
@@ -12,7 +15,7 @@ interface Question {
     text: string;
 };
 
-function HealthStatement({ onBack }: Props) {
+function HealthStatement({ customerEmail }: Props) {
 
     const sigPadRef = useRef<SignatureCanvas>(null);
 
@@ -54,6 +57,7 @@ function HealthStatement({ onBack }: Props) {
     const initialQuestions = questions.slice(0, 6);
     const remainingQuestions = questions.slice(6);
 
+    const [date, setDate] = useState<string>();
     const [answers, setAnswers] = useState(
         initialQuestions.concat(remainingQuestions).map((question) => ({
             id: question.id,
@@ -84,6 +88,7 @@ function HealthStatement({ onBack }: Props) {
                             name={`question-${question.id}`}
                             checked={answers.find((a) => a.id === question.id)?.checkbox === 'yes'}
                             onChange={() => handleAnswerChange(question.id, 'checkbox', 'yes')}
+                            required={true}
                         />
                         כן
                     </label>
@@ -94,6 +99,7 @@ function HealthStatement({ onBack }: Props) {
                             name={`question-${question.id}`}
                             checked={answers.find((a) => a.id === question.id)?.checkbox === 'no'}
                             onChange={() => handleAnswerChange(question.id, 'checkbox', 'no')}
+                            required={true}
                         />
                         לא
                     </label>
@@ -107,6 +113,7 @@ function HealthStatement({ onBack }: Props) {
                             name={`question-${question.id}`}
                             placeholder='פירוט'
                             onChange={(e) => handleAnswerChange(question.id, 'details', e.target.value)}
+                            required={true}
                         />
                     </div>
                 )}
@@ -123,17 +130,29 @@ function HealthStatement({ onBack }: Props) {
     };
 
 
-    const handleSendForm = () => {
-        try {
-            const allAnswers = answers.map((a) => ({
-                questionId: a.id,
-                checkbox: a.checkbox,
-                answer: a.answer,
-            }));
-            // TODO: Add data to firebase, get customer
-            console.log("all answers", allAnswers);
-        } catch (e) {
+    const handleSendForm = async () => {
 
+        const allAnswers = answers.map((a) => ({
+            questionId: a.id,
+            checkbox: a.checkbox,
+            answer: a.answer,
+        }));
+
+        if (sigPadRef.current) {
+            const signatureData = sigPadRef.current.toDataURL("image/png");
+
+            try {
+                const customerRef = doc(db, 'customers', customerEmail);
+                await updateDoc(customerRef, {
+                    HealthStatement: allAnswers,
+                    signature: signatureData,
+                    startDate: date,
+                });
+                console.log("Array successfully added!");
+                console.log("all answers", allAnswers);
+            } catch (error) {
+                console.error("Error adding array:", error);
+            }
         }
     };
 
@@ -172,14 +191,17 @@ function HealthStatement({ onBack }: Props) {
                     <input
                         type="checkbox"
                         name="authorazation"
-                        // checked={ }
-                        // onChange={}
                         required />
                     <h5>אני מצהיר\ה בזה כי הפרטים שמסרתי לעיל הם נכונים</h5>
                 </div>
             </div>
             <div className="styles.date">
-                <input type='date' className={styles.dateInputContainer} />
+                <input
+                    type='date'
+                    className={styles.dateInputContainer}
+                    onChange={(e) => setDate(e.target.value)}
+                    required={true}
+                />
 
             </div>
             <div className={styles.signatureContainer}>
@@ -189,11 +211,13 @@ function HealthStatement({ onBack }: Props) {
                         ref={sigPadRef}
                     />
                 </div>
-                <button onClick={handleClearSign} className={styles.clearButton}>מחיקה</button>
+                <button
+                    onClick={handleClearSign}
+                    className={styles.clearButton}>מחיקה</button>
             </div>
 
             <NavLink to="/">
-                <button className={styles.sendButton} onClick={handleSendForm}>שליחה</button>
+                <button type='submit' className={styles.sendButton} onClick={handleSendForm}>שליחה</button>
             </NavLink>
         </div>
     )

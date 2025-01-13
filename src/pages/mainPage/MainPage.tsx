@@ -1,18 +1,50 @@
 import { NavLink } from 'react-router';
 import styles from './MainPage.module.scss';
+import { useEffect, useState } from 'react';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { db } from '../../../firebase';
+
+
+interface Customer {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    healthStatement: string;
+    clientStatement: string;
+    startDate: string;
+    clientCard: string;
+}
+
 function MainPage() {
 
-    const clients = [
-        {
-            firstName: 'יוסי',
-            lastName: 'כהן',
-            phone: '050-1234567',
-            email: 'yossi@example.com',
-            healthStatement: 'עבר',
-            clientStatement: 'מסכים',
-            startDate: '01/01/2023',
-            clientCard: '12345',
-        },]
+
+    const usersCollectionRef = collection(db, 'customers');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [allCustomers, setAllCustomers] = useState<Customer[]>([]);
+
+    useEffect(() => {
+        const unsubscribe = onSnapshot(usersCollectionRef, (querySnapshot) => {
+            const customers = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                firstName: doc.data().firstName,
+                lastName: doc.data().lastName,
+                phone: doc.data().phoneNumber,
+                email: doc.data().email,
+                healthStatement: 'עבר',
+                clientStatement: 'מסכים',
+                startDate: doc.data().startDate,
+                clientCard: '12345',
+            }));
+
+            setAllCustomers(customers);
+            setLoading(false);
+        });
+
+        // Cleanup the listener on component unmount
+        return () => unsubscribe();
+    }, []);
+
 
     return (
         <div className={styles.tableContainer}>
@@ -36,18 +68,24 @@ function MainPage() {
                     </tr>
                 </thead>
                 <tbody>
-                    {clients.map((client, index) => (
-                        <tr key={index}>
-                            <td>{client.firstName}</td>
-                            <td>{client.lastName}</td>
-                            <td>{client.phone}</td>
-                            <td>{client.email}</td>
-                            <td>{client.healthStatement}</td>
-                            <td>{client.clientStatement}</td>
-                            <td>{client.startDate}</td>
-                            <td>{client.clientCard}</td>
+                    {allCustomers.length === 0 ? (
+                        <tr>
+                            <td >No customers found</td>
                         </tr>
-                    ))}
+                    ) : (
+                        allCustomers.map((customer) => (
+                            <tr key={customer.id}>
+                                <td>{customer.firstName}</td>
+                                <td>{customer.lastName}</td>
+                                <td>{customer.phone}</td>
+                                <td>{customer.email}</td>
+                                <td>{customer.healthStatement}</td>
+                                <td>{customer.clientStatement}</td>
+                                {/* <td>{Format(new Date(client.startDate), 'dd/MM/yyyy')}</td> */}
+                                <td>{customer.clientCard}</td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
         </div>

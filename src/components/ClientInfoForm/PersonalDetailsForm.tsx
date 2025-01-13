@@ -5,9 +5,10 @@ import { db } from '../../../firebase';
 
 interface Props {
   onNext: () => void;
+  customerEmail: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function PersonalDetailsForm({ onNext }: Props) {
+function PersonalDetailsForm({ onNext, customerEmail }: Props) {
 
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -107,7 +108,10 @@ function PersonalDetailsForm({ onNext }: Props) {
             type="email"
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              customerEmail(e.target.value)
+            }}
             className={styles.input}
             placeholder="אימייל"
             required

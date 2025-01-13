@@ -13,8 +13,9 @@ function ClientForm() {
     const fourthConsentFormRef = useRef<HTMLDivElement>(null);
     const healthStatmentRef = useRef<HTMLDivElement>(null);
 
-    const [showStatements, setShowStatement] = useState<boolean>(true);
+    const [showStatements, setShowStatement] = useState<boolean>(false);
     const [showHealthStatements, setShowHealthStatements] = useState<boolean>(false);
+    const [customerEmail, setCustomerEmail] = useState<string>("");
 
     const [statmentActivity, setShowStatementActivity] = useState([
         { id: 1, active: false },
@@ -59,7 +60,8 @@ function ClientForm() {
         <div className={styles.container}>
             <div ref={personalDetailsRef} className={styles.infoSection}>
                 <PersonalDetailsForm
-                    onNext={() => { setShowStatement(true) }} />
+                    onNext={() => { setShowStatement(true) }}
+                    customerEmail={setCustomerEmail} />
             </div>
             {showStatements &&
                 <>
@@ -118,7 +120,10 @@ function ClientForm() {
             {
                 showHealthStatements &&
                 <div style={{ marginTop: 100 }} ref={healthStatmentRef}>
-                    <HealthStatement onBack={() => scrollToSection(firstconsentFormRef)} />
+                    <HealthStatement
+                        // onBack={() => scrollToSection(firstconsentFormRef)}
+                        customerEmail={customerEmail}
+                    />
                 </div>
             }
         </div>
