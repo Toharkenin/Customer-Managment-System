@@ -1,10 +1,12 @@
 import { NavLink } from 'react-router';
 import styles from './MainPage.module.scss';
 import { useEffect, useState } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import Edit02Icon from '../../assets/edit-02-stroke-rounded';
 import Delete01Icon from '../../assets/delete-01-stroke-rounded';
+import Search01Icon from '../../assets/search-01-stroke-rounded';
+import DeleteAlert from '../../components/deleteAlert/DeleteAlert';
 
 
 interface Customer {
@@ -16,23 +18,26 @@ interface Customer {
     healthStatement: boolean;
     clientStatement: boolean;
     startDate: string;
-    clientCard: string;
+    clientCard: boolean;
 }
 
 function MainPage() {
 
     const usersCollectionRef = collection(db, 'customers');
-    const [loading, setLoading] = useState<boolean>(false);
+    // const [loading, setLoading] = useState<boolean>(false);
     const [allCustomers, setAllCustomers] = useState<Customer[]>([]);
     const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
     const [search, setSearch] = useState<string>('');
     const [filterBy, setFilterBy] = useState<string>('firstName');
+    const [deleteAlert, setDeleteAlert] = useState<boolean>(false)
+    const [currentCustomerId, setCurrentCustomerId] = useState<string>('');
 
     useEffect(() => {
         const unsubscribe = onSnapshot(usersCollectionRef, (querySnapshot) => {
             const customers: Customer[] = [];
             let healthStatementFound = false;
             let statementsFound = false;
+            let customerCardFound = false;
 
             querySnapshot.docs.forEach((doc) => {
                 const data = doc.data();
@@ -45,6 +50,10 @@ function MainPage() {
                     statementsFound = true;
                 }
 
+                if (data.customerCard !== undefined) {
+                    customerCardFound = true;
+                }
+
                 customers.push({
                     id: doc.id,
                     firstName: data.firstName || '',
@@ -54,12 +63,12 @@ function MainPage() {
                     healthStatement: healthStatementFound,
                     clientStatement: statementsFound,
                     startDate: data.startDate || '',
-                    clientCard: '12345',
+                    clientCard: customerCardFound,
                 });
             });
 
             setAllCustomers(customers);
-            setLoading(false);
+            // setLoading(false);
         });
 
         return () => unsubscribe();
@@ -98,7 +107,6 @@ function MainPage() {
             customer.firstName.toLowerCase().includes(searchTerm) ||
             customer.lastName.toLowerCase().includes(searchTerm)
         );
-
         setFilteredCustomers(filteredList);
     };
 
@@ -122,16 +130,45 @@ function MainPage() {
         }
     };
 
+    const customerCard = (customerCardExist: boolean) => {
+        if (customerCardExist) {
+            return <button className={styles.healthButton}>כרטיס לקוח</button>
+        } else {
+            return (
+                <button className={styles.addCardButton}>+כרטיס חדש</button>
+            )
+        }
+    };
+
+    const handleDeleteCustomer = async (ustomerId: string) => {
+        try {
+            await deleteDoc(doc(db, "customers", ustomerId));
+
+            setAllCustomers((prev) => prev.filter((customer) => customer.id !== ustomerId));
+
+        } catch (error) {
+            console.error("Error deleting customer:", error);
+        } finally {
+            setDeleteAlert(false);
+        }
+    };
+
     return (
         <div className={styles.tableContainer}>
+            {deleteAlert ?
+                <DeleteAlert
+                    message='אתה בטוח שאתה רוצה למחוק לקוח ?'
+                    onConfirm={() => handleDeleteCustomer(currentCustomerId)}
+                    onCancel={() => setDeleteAlert(false)}
+                /> : null}
             <div className={styles.headerSection}>
                 <h2>לקוחות</h2>
                 <div className={styles.buutons}>
+                    <NavLink to="/">
+                        <button className={styles.newCardButton}>+ כרטיס לקוח </button>
+                    </NavLink>
                     <NavLink to="/Form">
                         <button className={styles.newClientButton}>+ לקוח חדש</button>
-                    </NavLink>
-                    <NavLink to="/">
-                        <button className={styles.newClientButton}>+ כרטיס לקוח </button>
                     </NavLink>
                 </div>
             </div>
@@ -142,7 +179,7 @@ function MainPage() {
                     className={styles.searchBox}
                     value={search}
                     onChange={handleSearch}
-                />
+                /><Search01Icon className={styles.searchIcon} />
                 <select
                     value={filterBy}
                     onChange={(e) => setFilterBy(e.target.value)}
@@ -183,17 +220,23 @@ function MainPage() {
                                 </td>
                                 <td>{statements(customer.clientStatement)}</td>
                                 <td>{customer.startDate}</td>
-                                <td>{customer.clientCard}</td>
+                                <td>{customerCard(customer.clientCard)}</td>
                                 <td>
-                                    <Edit02Icon
-                                        style={{ cursor: 'pointer' }}
-                                        // onClick={() => }
-                                        color={'blue'}
-                                    />
+                                    <NavLink to={`/Edit-Customer/${customer.id}`}>
+                                        <Edit02Icon
+                                            style={{ cursor: 'pointer' }}
+                                            color={'green'}
+                                            className={styles.editdelete}
+                                        />
+                                    </NavLink>
                                     <Delete01Icon
                                         style={{ cursor: 'pointer' }}
-                                        // onClick={() => }
-                                        color={'#ff0000'} />
+                                        onClick={() => {
+                                            setDeleteAlert(true);
+                                            setCurrentCustomerId(customer.id);
+                                        }}
+                                        color={'#ff0000'}
+                                        className={styles.editdelete} />
                                 </td>
                             </tr>
                         ))
