@@ -4,6 +4,7 @@ import styles from './HealthStatement.module.scss';
 import { NavLink } from 'react-router';
 import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
+import { format } from 'date-fns';
 
 interface Props {
     // onBack: () => void;
@@ -57,7 +58,7 @@ function HealthStatement({ customerEmail }: Props) {
     const initialQuestions = questions.slice(0, 6);
     const remainingQuestions = questions.slice(6);
 
-    const [date, setDate] = useState<string>();
+    const [date, setDate] = useState<string>('');
     const [answers, setAnswers] = useState(
         initialQuestions.concat(remainingQuestions).map((question) => ({
             id: question.id,
@@ -199,7 +200,11 @@ function HealthStatement({ customerEmail }: Props) {
                 <input
                     type='date'
                     className={styles.dateInputContainer}
-                    onChange={(e) => setDate(e.target.value)}
+                    onChange={(e) => {
+                        const selectedDate = new Date(e.target.value);
+                        const formatedDate = format(selectedDate, 'dd/MM/yyyy');
+                        setDate(formatedDate);
+                    }}
                     required={true}
                 />
 

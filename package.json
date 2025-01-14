@@ -12,8 +12,10 @@
   "dependencies": {
     "date-fns": "^4.1.0",
     "firebase": "^11.1.0",
+    "moment": "^2.30.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.4.0",
     "react-router": "^7.1.1",
     "react-signature-canvas": "^1.0.7",
     "sass": "^1.83.1"
