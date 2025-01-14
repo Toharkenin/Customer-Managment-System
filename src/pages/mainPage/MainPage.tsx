@@ -91,6 +91,16 @@ function MainPage() {
     }, [allCustomers, search, filterBy]);
 
 
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const searchTerm = e.target.value.toLowerCase();
+        setSearch(searchTerm);
+        const filteredList = allCustomers.filter((customer) =>
+            customer.firstName.toLowerCase().includes(searchTerm) ||
+            customer.lastName.toLowerCase().includes(searchTerm)
+        );
+
+        setFilteredCustomers(filteredList);
+    };
 
     const healthStatement = (health: boolean) => {
         if (health) {
@@ -131,8 +141,7 @@ function MainPage() {
                     placeholder="חיפוש..."
                     className={styles.searchBox}
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                // style={{ padding: '8px', fontSize: '16px' }}
+                    onChange={handleSearch}
                 />
                 <select
                     value={filterBy}
@@ -178,12 +187,12 @@ function MainPage() {
                                 <td>
                                     <Edit02Icon
                                         style={{ cursor: 'pointer' }}
-                                        // onClick={() => setIconColor(iconColor === '#000000' ? '#ff0000' : '#000000')}
-                                        color={'blue'} // Change icon color dynamically
+                                        // onClick={() => }
+                                        color={'blue'}
                                     />
                                     <Delete01Icon
                                         style={{ cursor: 'pointer' }}
-                                        // onClick={() => setIconColor(iconColor === '#000000' ? '#ff0000' : '#000000')}
+                                        // onClick={() => }
                                         color={'#ff0000'} />
                                 </td>
                             </tr>
