@@ -1,7 +1,6 @@
-
 import { useEffect, useState } from 'react';
 import styles from './EditCustomer.module.scss';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 function EditCustomer() {
@@ -13,6 +12,8 @@ function EditCustomer() {
     const [email, setEmail] = useState<string>("");
     const [userId, setUserId] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     //get users info
     useEffect(() => {
@@ -45,20 +46,32 @@ function EditCustomer() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
+        setSuccess(true);
         await handleEditCustomer();
-        setLoading(false);
     };
 
 
-    //TODO: handle edit to DB
     const handleEditCustomer = async () => {
-        // try {
-        //     const customerRef = doc(db, 'customers', id);
-        //     await updateDoc(customerRef, {
-        //     });
-        // } catch (error) {
-        //     console.error("Error adding array:", error);
-        // }
+        try {
+            if (id) {
+                const customerRef = doc(db, 'customers', id);
+                await updateDoc(customerRef, {
+                    firstName: firstName,
+                    lastName: lastName,
+                    phoneNumber: phoneNumber,
+                    email: email,
+                    id: userId,
+                });
+
+            }
+            setTimeout(() => {
+                setLoading(false);
+                setSuccess(false);
+                navigate('/');
+            }, 2000);
+        } catch (error) {
+            console.error("Error adding array:", error);
+        }
     };
 
     return (
@@ -122,10 +135,10 @@ function EditCustomer() {
                         required
                     />
                 </div>
-
                 <button type="submit" className={styles.button}>
-                    {loading ? "עובדים על זה..." : "אישור"}
+                    {loading ? "עובדים על זה..." : "עריכה"}
                 </button>
+                {success ? <h4 className={styles.success}>לקוח התעדכן בהצלחה</h4> : null}
             </form>
         </>
     )

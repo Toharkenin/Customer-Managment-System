@@ -1,71 +1,65 @@
+.input-group {
+  margin-bottom: 2rem;
+  // width: 80%; 
+}
 
-  .container {
-    // height: 100vh;
-    // scroll-snap-align: start;
-  }
-  
-  .input-group {
-      // position: relative;
-      margin-bottom: 2rem;
-      width: 80%; 
-  }
+.label {
+margin-right: 16px;
+display: block;
+text-align: right;
+margin-top: 2rem;
+//   transform: translateY(-50%);
+font-size: 14px;
+color: #8d8d8d;
+pointer-events: none;
+transition: all 0.2s ease-in-out;
+color: #007bff;
+}
 
-  .label {
-    margin-right: 16px;
-    display: block;
-    text-align: right;
-    margin-top: 2rem;
-    transform: translateY(-50%);
-    font-size: 14px;
-    color: #8d8d8d;
-    pointer-events: none;
-    transition: all 0.2s ease-in-out;
-    color: #007bff;
-  }
+.input {
+width: 40vw;
+height: 40px;
+border: none;
+border-bottom: 1px solid #8d8d8d;
+padding: 0 16px;
+font-size: 16px;
+color: #161616;
+background: transparent;
+box-sizing: border-box;
+outline: 2px solid transparent;
+outline-offset: -2px;
+transition: border-color 0.2s ease-in-out;
+}
 
-  .input {
-    width: 100%;
-    height: 40px;
-    border: none;
-    border-bottom: 1px solid #8d8d8d;
-    padding: 0 16px;
-    font-size: 16px;
-    color: #161616;
-    background: transparent;
-    box-sizing: border-box;
-    outline: 2px solid transparent;
-    outline-offset: -2px;
-    transition: border-color 0.2s ease-in-out;
-  }
-  
-  .input:focus {
-    border-bottom: 1px solid #0f62fe;
-    outline: none;
+.input:focus {
+border-bottom: 1px solid #0f62fe;
+outline: none;
 
 
-  }
+}
 
-  // .input-group .input:focus + .label {
-  //   color: #feee0f;
-  // }
-  .label + .input:focus {
-    color: #161616;
-  }
-  
+.label + .input:focus {
+color: #161616;
+}
 
 
-  input:focus::placeholder {
-    color: transparent;
-  }
-  
-  .button {
-    width: 40%;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-    margin-top: 2rem;
-  }
+
+input:focus::placeholder {
+color: transparent;
+}
+
+.button {
+width: 40%;
+background-color: #007bff;
+color: #fff;
+border: none;
+border-radius: 4px;
+font-size: 16px;
+cursor: pointer;
+margin-top: 4rem;
+};
+
+.success {
+  color: red;
+  font-weight: 200;
+}

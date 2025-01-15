@@ -1,6 +1,6 @@
 .input-group {
     margin-bottom: 2rem;
-    width: 80%; 
+    // width: 80%; 
 }
 
 .label {
@@ -8,7 +8,7 @@
   display: block;
   text-align: right;
   margin-top: 2rem;
-  transform: translateY(-50%);
+//   transform: translateY(-50%);
   font-size: 14px;
   color: #8d8d8d;
   pointer-events: none;
@@ -17,7 +17,7 @@
 }
 
 .input {
-  width: 100%;
+  width: 40vw;
   height: 40px;
   border: none;
   border-bottom: 1px solid #8d8d8d;
@@ -59,6 +59,10 @@ input:focus::placeholder {
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-  margin-top: 10px;
-  margin-top: 2rem;
+  margin-top: 4rem;
+};
+
+.success {
+    color: red;
+    font-weight: 200;
 }
