@@ -1,0 +1,72 @@
+.tableContainer {
+    margin: 30px;
+    padding: 20px;
+    max-width: 100vw;
+    border-radius: 10px;
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    z-index: 1000; 
+    padding-bottom: 20px; 
+}
+
+.tableHeader {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.chooseTreatment {
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: background-color 0.2s ease-in-out 0s, border-color 0.2s ease-in-out 0s;
+    line-height: 1.42857; 
+    padding: 8px 6px;
+    height: 36px;
+    width: 14rem; 
+    margin: 1rem;
+}
+
+.table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+}
+
+.table th,
+.table td {
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
+.signatureBox {
+    min-height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed #007bff;
+    color: #007bff;
+    font-size: 0.9rem;
+    padding: 5px;
+    font-style: italic;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.signatureBox:hover {
+    background-color: #007bff;
+    color: #fff;
+}

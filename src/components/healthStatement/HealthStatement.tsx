@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import SignatureCanvas from 'react-signature-canvas'
 import styles from './HealthStatement.module.scss';
-import { NavLink, useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { format } from 'date-fns';

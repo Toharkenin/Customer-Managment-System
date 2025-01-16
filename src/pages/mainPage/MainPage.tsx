@@ -78,7 +78,6 @@ function MainPage() {
     useEffect(() => {
         let filteredList = allCustomers;
         let sortedList = allCustomers;
-        console.log(filterBy)
 
         if (filterBy === 'firstName') {
 
@@ -222,7 +221,11 @@ function MainPage() {
                                 </td>
                                 <td>{statements(customer.clientStatement, customer.id)}</td>
                                 <td>{customer.startDate}</td>
-                                <td>{customerCard(customer.clientCard)}</td>
+                                <td>
+                                    <NavLink to={`/Customer-Card/${customer.id}`}>
+                                        {customerCard(customer.clientCard)}
+                                    </NavLink>
+                                </td>
                                 <td>
                                     <NavLink to={`/Edit-Customer/${customer.id}`}>
                                         <Edit02Icon

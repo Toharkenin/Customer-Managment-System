@@ -6,6 +6,7 @@ import Login from './pages/login/Login'
 import MainPage from './pages/mainPage/MainPage'
 import EditCustomer from './pages/editCustomer/EditCustomer'
 import HealthStatement from './components/healthStatement/HealthStatement'
+import CustomerCard from './components/customerCard/CustomerCard'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
             <Route path="/Form" element={<ClientForm />} />
             <Route path="/Edit-Customer/:id" element={<EditCustomer />} />
             <Route path="/Health-Statement/:id" element={<HealthStatement customerEmail='' />} />
+            <Route path="/Customer-Card/:id" element={<CustomerCard customerEmail='' />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
