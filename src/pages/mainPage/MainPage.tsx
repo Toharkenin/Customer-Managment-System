@@ -24,7 +24,6 @@ interface Customer {
 function MainPage() {
 
     const usersCollectionRef = collection(db, 'customers');
-    // const [loading, setLoading] = useState<boolean>(false);
     const [allCustomers, setAllCustomers] = useState<Customer[]>([]);
     const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
     const [search, setSearch] = useState<string>('');
@@ -68,7 +67,6 @@ function MainPage() {
             });
 
             setAllCustomers(customers);
-            // setLoading(false);
         });
 
         return () => unsubscribe();
@@ -110,22 +108,26 @@ function MainPage() {
         setFilteredCustomers(filteredList);
     };
 
-    const healthStatement = (health: boolean) => {
+    const healthStatement = (health: boolean, id: string) => {
         if (health) {
             return <button className={styles.healthButton}>הצהרת בריאות</button>
         } else {
             return (
-                <button className={styles.addHealthButton}>+ חדש</button>
+                <NavLink to={`/Health-Statement/${id}`}>
+                    <button className={styles.addHealthButton}>+ חדש</button>
+                </NavLink>
             )
         }
     };
 
-    const statements = (statementsExist: boolean) => {
+    const statements = (statementsExist: boolean, id: string) => {
         if (statementsExist) {
             return <button className={styles.healthButton}>הצהרת הלקוח</button>
         } else {
             return (
-                <button className={styles.addHealthButton}>+ חדש</button>
+                <NavLink to={`/Health-Statement/${id}`}>
+                    <button className={styles.addHealthButton}>+ חדש</button>
+                </NavLink>
             )
         }
     };
@@ -216,9 +218,9 @@ function MainPage() {
                                 <td>{customer.phone}</td>
                                 <td>{customer.email}</td>
                                 <td>
-                                    {healthStatement(customer.healthStatement)}
+                                    {healthStatement(customer.healthStatement, customer.id)}
                                 </td>
-                                <td>{statements(customer.clientStatement)}</td>
+                                <td>{statements(customer.clientStatement, customer.id)}</td>
                                 <td>{customer.startDate}</td>
                                 <td>{customerCard(customer.clientCard)}</td>
                                 <td>

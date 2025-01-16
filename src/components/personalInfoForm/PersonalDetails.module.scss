@@ -8,7 +8,6 @@ margin-right: 16px;
 display: block;
 text-align: right;
 margin-top: 2rem;
-//   transform: translateY(-50%);
 font-size: 14px;
 color: #8d8d8d;
 pointer-events: none;
@@ -19,8 +18,8 @@ color: #007bff;
 .input {
 width: 40vw;
 height: 40px;
-border: none;
-border-bottom: 1px solid #8d8d8d;
+// border: none;
+border: 1px solid #8d8d8d;
 padding: 0 16px;
 font-size: 16px;
 color: #161616;
@@ -60,6 +59,6 @@ margin-top: 4rem;
 };
 
 .success {
-  color: red;
+  color: #ff0000;
   font-weight: 200;
 }

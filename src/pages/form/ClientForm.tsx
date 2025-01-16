@@ -1,4 +1,4 @@
-import PersonalDetailsForm from '../../components/ClientInfoForm/PersonalDetailsForm';
+import PersonalDetailsForm from '../../components/personalInfoForm/PersonalDetailsForm';
 import { useEffect, useRef, useState } from 'react';
 import styles from './clientForm.module.scss';
 import ConsentForm from '../../components/consentForm/ConsentForm';
@@ -13,7 +13,7 @@ function ClientForm() {
     const fourthConsentFormRef = useRef<HTMLDivElement>(null);
     const healthStatmentRef = useRef<HTMLDivElement>(null);
 
-    const [showStatements, setShowStatement] = useState<boolean>(false);
+    const [showStatements, setShowStatement] = useState<boolean>(true);
     const [showHealthStatements, setShowHealthStatements] = useState<boolean>(false);
     const [customerEmail, setCustomerEmail] = useState<string>("");
 
@@ -122,8 +122,7 @@ function ClientForm() {
                 <div style={{ marginTop: 100 }} ref={healthStatmentRef}>
                     <HealthStatement
                         // onBack={() => scrollToSection(firstconsentFormRef)}
-                        customerEmail={customerEmail}
-                    />
+                        customerEmail={customerEmail} />
                 </div>
             }
         </div>

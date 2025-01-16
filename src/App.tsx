@@ -4,7 +4,8 @@ import { AuthProvider } from './AuthContext'
 import ClientForm from './pages/form/ClientForm'
 import Login from './pages/login/Login'
 import MainPage from './pages/mainPage/MainPage'
-import EditCustomer from './components/editCustomer/EditCustomer'
+import EditCustomer from './pages/editCustomer/EditCustomer'
+import HealthStatement from './components/healthStatement/HealthStatement'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/Form" element={<ClientForm />} />
             <Route path="/Edit-Customer/:id" element={<EditCustomer />} />
+            <Route path="/Health-Statement/:id" element={<HealthStatement customerEmail='' />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

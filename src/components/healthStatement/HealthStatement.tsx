@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 import SignatureCanvas from 'react-signature-canvas'
 import styles from './HealthStatement.module.scss';
-import { NavLink } from 'react-router';
-import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import { NavLink, useNavigate, useParams } from 'react-router';
+import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { format } from 'date-fns';
 
@@ -18,6 +18,7 @@ interface Question {
 
 function HealthStatement({ customerEmail }: Props) {
 
+    const { id } = useParams();
     const sigPadRef = useRef<SignatureCanvas>(null);
 
     const questions: Question[] = [
@@ -66,6 +67,9 @@ function HealthStatement({ customerEmail }: Props) {
             answer: "",
         }))
     );
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
 
     const handleAnswerChange = (id: number, field: "checkbox" | "details", value: string) => {
         setAnswers((prev) =>
@@ -143,14 +147,19 @@ function HealthStatement({ customerEmail }: Props) {
             const signatureData = sigPadRef.current.toDataURL("image/png");
 
             try {
-                const customerRef = doc(db, 'customers', customerEmail);
+                setLoading(true);
+                setSuccess(true);
+                const customerRef = doc(db, 'customers', id || customerEmail);
                 await updateDoc(customerRef, {
                     HealthStatement: allAnswers,
                     signature: signatureData,
                     startDate: date,
                 });
-                console.log("Array successfully added!");
-                console.log("all answers", allAnswers);
+                setTimeout(() => {
+                    setLoading(false);
+                    setSuccess(false);
+                    navigate('/');
+                }, 2000);
             } catch (error) {
                 console.error("Error adding array:", error);
             }
@@ -221,9 +230,10 @@ function HealthStatement({ customerEmail }: Props) {
                     className={styles.clearButton}>מחיקה</button>
             </div>
 
-            <NavLink to="/">
-                <button type='submit' className={styles.sendButton} onClick={handleSendForm}>שליחה</button>
-            </NavLink>
+            <button type='submit' className={styles.sendButton} onClick={handleSendForm}>
+                {loading ? "עובדים על זה..." : "שליחה"}
+            </button>
+            {success ? <h4 className={styles.success}>לקוח התעדכן בהצלחה</h4> : null}
         </div>
     )
 }
