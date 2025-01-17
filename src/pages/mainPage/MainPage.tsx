@@ -17,7 +17,7 @@ interface Customer {
     email: string;
     healthStatement: boolean;
     clientStatement: boolean;
-    startDate: string;
+    lastTreatment: string;
     clientCard: boolean;
 }
 
@@ -49,7 +49,7 @@ function MainPage() {
                     statementsFound = true;
                 }
 
-                if (data.customerCard !== undefined) {
+                if (Array.isArray(data.cards)) {
                     customerCardFound = true;
                 }
 
@@ -61,19 +61,18 @@ function MainPage() {
                     email: data.email || '',
                     healthStatement: healthStatementFound,
                     clientStatement: statementsFound,
-                    startDate: data.startDate || '',
+                    lastTreatment: data.lastTreatment || '',
                     clientCard: customerCardFound,
                 });
             });
 
             setAllCustomers(customers);
+
+
         });
 
         return () => unsubscribe();
     }, []);
-
-
-
 
     useEffect(() => {
         let filteredList = allCustomers;
@@ -199,7 +198,7 @@ function MainPage() {
                         <th>אימייל</th>
                         <th>הצהרת בריאות</th>
                         <th>הצהרת הלקוח</th>
-                        <th>תאריך התחלה</th>
+                        <th>טיפול אחרון</th>
                         <th>כרטיס לקוח</th>
                         <th>פעולות</th>
                     </tr>
@@ -220,7 +219,7 @@ function MainPage() {
                                     {healthStatement(customer.healthStatement, customer.id)}
                                 </td>
                                 <td>{statements(customer.clientStatement, customer.id)}</td>
-                                <td>{customer.startDate}</td>
+                                <td>{customer.lastTreatment}</td>
                                 <td>
                                     <NavLink to={`/Customer-Card/${customer.id}`}>
                                         {customerCard(customer.clientCard)}

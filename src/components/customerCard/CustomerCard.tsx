@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './CustomerCard.module.scss';
 import { useParams } from 'react-router';
-import { doc, getDoc } from 'firebase/firestore';
+import { arrayUnion, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
+import SignatureCanvas from 'react-signature-canvas'
+import { format } from 'date-fns';
 
 interface Props {
     customerEmail: string;
@@ -17,64 +19,65 @@ interface Card {
 function CustomerCard({ customerEmail }: Props) {
 
     const { id } = useParams();
-    const [isCardNew, setIsCardNew] = useState<boolean>(true);
     const [treatmentType, setTreatmentType] = useState<string>('');
     const [selectedTreatment, setSelectedTreatment] = useState("");
     const [cardData, setCardData] = useState<Card[]>([]);
+    const [docExists, setDocExists] = useState<boolean>(false);
     const [newRow, setNewRow] = useState({
         date: "",
         customerSignature: "",
         providerSignature: "",
     });
+    const [newDate, setNewDate] = useState<string>("");
+    const [name, setName] = useState<string>('');
+    const sigPadRefCustomer = useRef<SignatureCanvas>(null);
+    const sigPadRefProvider = useRef<SignatureCanvas>(null);
 
 
 
 
     // get customer's card
     useEffect(() => {
-
-        const cardArray: Card[] = [];
-
         if (id || customerEmail) {
-            const getCard = async () => {
+            const customerRef = doc(db, 'customers', id || customerEmail);
 
-                try {
-                    const customerRef = doc(db, 'customers', id || customerEmail);
-                    const customerSnap = await getDoc(customerRef);
+            const unsubscribe = onSnapshot(customerRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.data();
+                    const customerCards = data.cards || [];
+                    const treatment = data.treatment || '';
+                    const customerName = data.firstName + " " + data.lastName;
+                    setName(customerName);
 
-                    if (customerSnap.exists()) {
-                        const data = customerSnap.data();
-
-                        const customerCards = data.card || [];
-                        const treatment = data.treatment || '';
-
-
-                        if (Array.isArray(customerCards)) {
-                            customerCards.forEach((card: Card) => {
-                                cardArray.push(card);
-                                setCardData(cardArray);
-                                setTreatmentType(treatment);
-                            });
-                        } else {
-                            setIsCardNew(true);
-                        }
-                    } else {
-                        console.error('No such document!');
+                    if (customerCards.length > 0) {
+                        setCardData(customerCards);
+                        setTreatmentType(treatment);
+                        setDocExists(true);
                     }
-                } catch (err) { }
-            };
-            getCard();
-        }
+                } else {
+                    console.error('No such document!');
+                    setDocExists(false);
+                    setCardData([]);
+                }
+            });
 
-    }, []);
+            return () => unsubscribe();
+        }
+    }, [id, customerEmail]);
 
     const treatments = [
-        "Hair Removal",
-        "Facial Treatment",
-        "Body Contouring",
-        "Laser Therapy",
-        "Massage Therapy",
-        // Add more treatments here...
+        "גב",
+        "בטן",
+        "כתפיים",
+        "חזה",
+        "עורף",
+        "עצמות לחיים",
+        "צאוור",
+        "בין הגבות",
+        "גבות",
+        "אוזניים",
+        "ידיים",
+        "אף",
     ];
 
 
@@ -83,6 +86,10 @@ function CustomerCard({ customerEmail }: Props) {
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedDate = new Date(e.target.value);
+        const formatedDate = format(selectedDate, 'dd/MM/yyyy');
+        console.log(typeof formatedDate);
+        setNewDate(formatedDate);
         const { name, value } = e.target;
         setNewRow((prevRow) => ({
             ...prevRow,
@@ -90,19 +97,72 @@ function CustomerCard({ customerEmail }: Props) {
         }));
     };
 
-    const handleAddRow = () => {
-        if (newRow.date && newRow.customerSignature && newRow.providerSignature) {
-            setCardData((prevData) => [...prevData, newRow]);
+
+    const handleAddCardRow = async () => {
+        if (newRow.date && !sigPadRefCustomer.current?.isEmpty() && !sigPadRefProvider.current?.isEmpty()) {
+            const customerSignatureData = sigPadRefCustomer.current?.toDataURL("image/png");
+            const providerSignatureData = sigPadRefProvider.current?.toDataURL("image/png");
+
+
+            const rowToAdd: Card = {
+                date: newRow.date,
+                customerSignature: customerSignatureData || "",
+                providerSignature: providerSignatureData || "",
+            };
+
+            setCardData((prevData) => [...prevData, rowToAdd]);
+
+
             setNewRow({ date: "", customerSignature: "", providerSignature: "" });
+
+
+            try {
+                await addCardToDB(rowToAdd);
+            } catch (error) {
+                console.error("Error adding card to DB:", error);
+            }
         } else {
             alert("Please fill out all fields!");
         }
     };
 
+
+    const addCardToDB = async (data: Card) => {
+        try {
+            const customerRef = doc(db, 'customers', id || customerEmail);
+            await updateDoc(customerRef, {
+                cards: arrayUnion(data),
+            });
+            if (!docExists) {
+                await updateDoc(customerRef, {
+                    treatment: selectedTreatment,
+                });
+            }
+            if (newDate !== "") {
+                console.log('d', newDate);
+                await updateDoc(customerRef, {
+                    lastTreatment: newDate,
+                });
+            }
+        } catch (error) {
+            console.error("Error adding array:", error);
+        }
+    };
+    const handleClearSign = (id: string) => {
+
+        if (id === "customer" && sigPadRefCustomer.current) {
+            sigPadRefCustomer.current.clear();
+        } else if (id === "provider" && sigPadRefProvider.current)
+            sigPadRefProvider.current.clear();
+    };
+
+
+
     return (
         <div className={styles.tableContainer}>
             <h2 className={styles.tableHeader}>כרטיס לקוח</h2>
-            {isCardNew ?
+            <h4>שם: {name}</h4>
+            {!docExists ?
                 <select
                     id="treatmentSelector"
                     value={selectedTreatment}
@@ -118,7 +178,8 @@ function CustomerCard({ customerEmail }: Props) {
                         </option>
                     ))}
                 </select> :
-                <h3>`סוג טיפול: {treatmentType}`</h3>}
+                <h3>סוג טיפול: {treatmentType}</h3>}
+
             <table className={styles.table}>
                 <thead>
                     <tr>
@@ -130,12 +191,12 @@ function CustomerCard({ customerEmail }: Props) {
                 <tbody>
                     {cardData.map((row, index) => (
                         <tr key={index}>
-                            <td>{row.date}</td>
+                            <td className={styles.date}>{row.date}</td>
                             <td>
-                                <div className={styles.signatureBox}>{row.customerSignature}</div>
+                                <img src={row.customerSignature} alt={'customer-signature'} />
                             </td>
                             <td>
-                                <div className={styles.signatureBox}>{row.providerSignature}</div>
+                                <img src={row.providerSignature} alt={'provider-signature'} />
                             </td>
                         </tr>
 
@@ -147,34 +208,36 @@ function CustomerCard({ customerEmail }: Props) {
                                 name="date"
                                 value={newRow.date}
                                 onChange={handleInputChange}
-                                className={styles.inputField}
+                                className={styles.dateInputContainer}
                             />
                         </td>
                         <td>
-                            <input
-                                type="text"
-                                name="customerSignature"
-                                value={newRow.customerSignature}
-                                onChange={handleInputChange}
-                                placeholder="Enter customer signature"
-                                className={styles.inputField}
-                            />
+                            <div className={styles.signatureBox}>
+                                <SignatureCanvas penColor='black'
+                                    canvasProps={{ width: 300, height: 150, className: 'sigCanvas' }}
+                                    ref={sigPadRefCustomer}
+                                />
+                            </div>
+                            <button
+                                onClick={() => handleClearSign('customer')}
+                                className={styles.clearButton}>מחיקה</button>
                         </td>
                         <td>
-                            <input
-                                type="text"
-                                name="providerSignature"
-                                value={newRow.providerSignature}
-                                onChange={handleInputChange}
-                                placeholder="Enter provider signature"
-                                className={styles.inputField}
-                            />
+                            <div className={styles.signatureBox}>
+                                <SignatureCanvas penColor='black'
+                                    canvasProps={{ width: 300, height: 150, className: 'sigCanvas' }}
+                                    ref={sigPadRefProvider}
+                                />
+                            </div>
+                            <button
+                                onClick={() => handleClearSign('provider')}
+                                className={styles.clearButton}>מחיקה</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <button onClick={handleAddRow} className={styles.addButton}>
-                הוסף שורה חדשה
+            <button onClick={handleAddCardRow} className={styles.addButton}>
+                {docExists ? 'הוספת שורה חדשה' : 'יצירת כרטיס'}
             </button>
         </div>
     );

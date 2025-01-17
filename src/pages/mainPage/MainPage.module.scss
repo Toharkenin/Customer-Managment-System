@@ -1,9 +1,7 @@
 .tableContainer {
-    margin: 30px;
-    padding: 20px;
-    max-width: 100vw;
+    margin-top: 30px;
+    width: 100%;
     border-radius: 10px;
-    position: fixed; 
     top: 0; 
     left: 0; 
     right: 0; 
@@ -102,6 +100,8 @@
     padding: 0.3rem;
     text-align: center;
     border: 1px solid #ddd;
+    font-weight: 400;
+
 }
 
 .clientTable th {
@@ -111,10 +111,11 @@
 
 .clientTable tr:nth-child(even) {
     background-color: #f9f9f9;
+    
 }
 
 .clientTable tr:hover {
-    // background-color: #f1f1f1;
+    // background-color: #f1f1f1;   
 }
 
 .healthButton {
@@ -130,7 +131,7 @@
     text-align: center;
     text-decoration: none;
     transition: background 0.1s ease-out 0s, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
-    background: green;
+    background: rgb(255, 246, 192);
     cursor: pointer;
     height: 24px;
     line-height: 24px;
@@ -138,7 +139,7 @@
     vertical-align: middle;
     width: auto;
     font-size: 14px;
-    color: rgb(255, 255, 255);
+    color: #2c2a2a;
     :hover {
         background: rgb(0, 101, 255);
         text-decoration: inherit;
@@ -188,7 +189,7 @@
     font-weight: 700;
     border: 0;
     border-radius: 0;
-    color: rgb(0, 101, 255);
+    color: greenyellow;
     transition-timing-function: ease-in-out;
     transition-property: background;
     transition-duration: 150ms;
