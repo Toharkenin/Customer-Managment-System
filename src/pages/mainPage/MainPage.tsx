@@ -34,24 +34,9 @@ function MainPage() {
     useEffect(() => {
         const unsubscribe = onSnapshot(usersCollectionRef, (querySnapshot) => {
             const customers: Customer[] = [];
-            let healthStatementFound = false;
-            let statementsFound = false;
-            let customerCardFound = false;
 
             querySnapshot.docs.forEach((doc) => {
                 const data = doc.data();
-
-                if (Array.isArray(data.HealthStatement)) {
-                    healthStatementFound = true;
-                }
-
-                if (data.statements !== undefined) {
-                    statementsFound = true;
-                }
-
-                if (Array.isArray(data.cards)) {
-                    customerCardFound = true;
-                }
 
                 customers.push({
                     id: doc.id,
@@ -59,10 +44,10 @@ function MainPage() {
                     lastName: data.lastName || '',
                     phone: data.phoneNumber || '',
                     email: data.email || '',
-                    healthStatement: healthStatementFound,
-                    clientStatement: statementsFound,
+                    healthStatement: !!data.HealthStatement,
+                    clientStatement: !!data.statements,
                     lastTreatment: data.lastTreatment || '',
-                    clientCard: customerCardFound,
+                    clientCard: !!data.cards,
                 });
             });
 
