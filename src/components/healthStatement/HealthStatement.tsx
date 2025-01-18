@@ -161,7 +161,7 @@ function HealthStatement({ customerEmail, onNext }: Props) {
             if (id) {
                 setSuccessMessage("טופס נשלח בהצלחה");
                 setTimeout(() => {
-                    navigate(`/Confirmation${customerEmail}`);
+                    navigate(`/Confirmation/${id}`);
                 }, 2000);
             }
 

@@ -1,6 +1,6 @@
 import { doc, updateDoc } from "firebase/firestore";
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import SignatureCanvas from 'react-signature-canvas'
 import { db } from "../../../firebase";
 import styles from "./Confirmation.module.scss";
@@ -25,6 +25,8 @@ function Confirmation({ customerEmail }: Props) {
         }
     };
 
+    const { id } = useParams();
+
     const handleSendForm = async () => {
 
         if (date === "" || sigPadRef.current?.isEmpty() || !authorazation) {
@@ -36,19 +38,24 @@ function Confirmation({ customerEmail }: Props) {
         }
         if (sigPadRef.current) {
             const signatureData = sigPadRef.current.toDataURL("image/png");
+            if (id || customerEmail) {
+                try {
 
-            try {
-                setSuccessMessage("טופס נשלח בהצלחה");
-                const customerRef = doc(db, 'customers', customerEmail);
-                await updateDoc(customerRef, {
-                    signature: signatureData,
-                    startDate: date,
-                });
-                setTimeout(() => {
-                    navigate('/');
-                }, 2000);
-            } catch (error) {
-                console.error("Error adding array:", error);
+                    setSuccessMessage("טופס נשלח בהצלחה");
+
+
+                    const customerRef = doc(db, 'customers', id || customerEmail);
+                    await updateDoc(customerRef, {
+                        signature: signatureData,
+                        startDate: date,
+                    });
+                    setTimeout(() => {
+                        navigate('/');
+                    }, 2000);
+
+                } catch (error) {
+                    console.error("Error adding array:", error);
+                }
             }
         }
     };

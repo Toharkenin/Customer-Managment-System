@@ -32,6 +32,7 @@ function CustomerCard() {
     const [name, setName] = useState<string>('');
     const sigPadRefCustomer = useRef<SignatureCanvas>(null);
     const sigPadRefProvider = useRef<SignatureCanvas>(null);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
 
 
@@ -99,7 +100,7 @@ function CustomerCard() {
 
 
     const handleAddCardRow = async () => {
-        if (newRow.date && !sigPadRefCustomer.current?.isEmpty() && !sigPadRefProvider.current?.isEmpty()) {
+        if (newRow.date && !sigPadRefCustomer.current?.isEmpty() && !sigPadRefProvider.current?.isEmpty() && treatmentType !== "") {
             const customerSignatureData = sigPadRefCustomer.current?.toDataURL("image/png");
             const providerSignatureData = sigPadRefProvider.current?.toDataURL("image/png");
 
@@ -122,7 +123,10 @@ function CustomerCard() {
                 console.error("Error adding card to DB:", error);
             }
         } else {
-            alert("Please fill out all fields!");
+            setErrorMessage("יש למלא את כל השדות");
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 2000)
         }
     };
 
@@ -238,9 +242,11 @@ function CustomerCard() {
                     </tr>
                 </tbody>
             </table>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
             <button onClick={handleAddCardRow} className={styles.addButton}>
                 {docExists ? 'הוספת שורה חדשה' : 'יצירת כרטיס'}
             </button>
+
         </div>
     );
 };
