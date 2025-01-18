@@ -7,6 +7,9 @@
     right: 0; 
     z-index: 1000; 
     padding-bottom: 20px; 
+    flex-direction: column;
+    height: 100vh; 
+    overflow: hidden;
 }
 
 .headerSection {

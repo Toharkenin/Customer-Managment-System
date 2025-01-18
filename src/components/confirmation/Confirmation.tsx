@@ -6,13 +6,17 @@ import { db } from "../../../firebase";
 import styles from "./Confirmation.module.scss";
 import { format } from "date-fns";
 
+interface Props {
+    customerEmail: string;
+}
 
-function Confirmation() {
+function Confirmation({ customerEmail }: Props) {
 
     const sigPadRef = useRef<SignatureCanvas>(null);
     const [date, setDate] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
-    const [success, setSuccess] = useState<boolean>(false);
+    const [successMessage, setSuccessMessage] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const [authorazation, setAuthorazation] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const handleClearSign = () => {
@@ -22,19 +26,27 @@ function Confirmation() {
     };
 
     const handleSendForm = async () => {
+
+        if (date === "" || sigPadRef.current?.isEmpty() || !authorazation) {
+            setErrorMessage("אנא מלא/י את כל השדות הנדרשים לפני שליחה");
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 2000)
+            return
+        }
         if (sigPadRef.current) {
             const signatureData = sigPadRef.current.toDataURL("image/png");
 
             try {
-
-                // const customerRef = doc(db, 'customers', id || customerEmail);
-                // await updateDoc(customerRef, {
-                //     signature: signatureData,
-                //     startDate: date,
-                // });
-                // setTimeout(() => {
-                //     navigate('/');
-                // }, 2000);
+                setSuccessMessage("טופס נשלח בהצלחה");
+                const customerRef = doc(db, 'customers', customerEmail);
+                await updateDoc(customerRef, {
+                    signature: signatureData,
+                    startDate: date,
+                });
+                setTimeout(() => {
+                    navigate('/');
+                }, 2000);
             } catch (error) {
                 console.error("Error adding array:", error);
             }
@@ -47,6 +59,7 @@ function Confirmation() {
                 <input
                     type="checkbox"
                     name="authorazation"
+                    onChange={() => setAuthorazation(true)}
                     required />
                 <h5>אני מצהיר\ה בזה כי הפרטים שמסרתי לעיל הם נכונים</h5>
             </div>
@@ -76,9 +89,10 @@ function Confirmation() {
             </div>
 
             <button type='submit' className={styles.sendButton} onClick={handleSendForm}>
-                {loading ? "עובדים על זה..." : "שליחה"}
+                שליחה
             </button>
-            {success ? <h4 className={styles.success}>לקוח התעדכן בהצלחה</h4> : null}
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+            {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
         </div>
     )
 }

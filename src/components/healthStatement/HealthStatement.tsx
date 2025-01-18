@@ -59,7 +59,6 @@ function HealthStatement({ customerEmail, onNext }: Props) {
     const initialQuestions = questions.slice(0, 6);
     const remainingQuestions = questions.slice(6);
 
-    const [date, setDate] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [answers, setAnswers] = useState(
         initialQuestions.concat(remainingQuestions).map((question) => ({
@@ -79,7 +78,7 @@ function HealthStatement({ customerEmail, onNext }: Props) {
 
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
-    const [success, setSuccess] = useState<boolean>(false);
+    const [successMessage, setSuccessMessage] = useState<string>("");
 
     const handleAnswerChange = (id: number, field: "checkbox" | "details", value: string) => {
         setAnswers((prev) =>
@@ -146,34 +145,30 @@ function HealthStatement({ customerEmail, onNext }: Props) {
 
 
         }
-        onNext();
+        if (customerEmail) onNext();
+
         const allAnswers = answers.map((a) => ({
             questionId: a.id,
             checkbox: a.checkbox,
             answer: a.answer,
         }));
 
-        if (sigPadRef.current) {
-            const signatureData = sigPadRef.current.toDataURL("image/png");
-
-            try {
-                setLoading(true);
-                setSuccess(true);
-                const customerRef = doc(db, 'customers', id || customerEmail);
-                await updateDoc(customerRef, {
-                    HealthStatement: allAnswers,
-                    signature: signatureData,
-                    startDate: date,
-                });
+        try {
+            const customerRef = doc(db, 'customers', id || customerEmail);
+            await updateDoc(customerRef, {
+                HealthStatement: allAnswers,
+            });
+            if (id) {
+                setSuccessMessage("טופס נשלח בהצלחה");
                 setTimeout(() => {
-                    setLoading(false);
-                    setSuccess(false);
-                    navigate('/');
+                    navigate(`/Confirmation${customerEmail}`);
                 }, 2000);
-            } catch (error) {
-                console.error("Error adding array:", error);
             }
+
+        } catch (error) {
+            console.error("Error adding array:", error);
         }
+        // }
     };
 
 
@@ -206,6 +201,7 @@ function HealthStatement({ customerEmail, onNext }: Props) {
                 </div>
             </div>
             {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+            {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
             <button type='submit' className={styles.sendButton} onClick={handleSendForm}>
                 {loading ? "עובדים על זה..." : "שליחה"}
             </button>

@@ -6,9 +6,9 @@ import { db } from '../../../firebase';
 import SignatureCanvas from 'react-signature-canvas'
 import { format } from 'date-fns';
 
-interface Props {
-    customerEmail: string;
-}
+// interface Props {
+//     customerEmail: string;
+// }
 
 interface Card {
     date: string;
@@ -16,7 +16,7 @@ interface Card {
     providerSignature: string;
 }
 
-function CustomerCard({ customerEmail }: Props) {
+function CustomerCard() {
 
     const { id } = useParams();
     const [treatmentType, setTreatmentType] = useState<string>('');
@@ -38,8 +38,8 @@ function CustomerCard({ customerEmail }: Props) {
 
     // get customer's card
     useEffect(() => {
-        if (id || customerEmail) {
-            const customerRef = doc(db, 'customers', id || customerEmail);
+        if (id) {
+            const customerRef = doc(db, 'customers', id);
 
             const unsubscribe = onSnapshot(customerRef, (snapshot) => {
                 if (snapshot.exists()) {
@@ -63,7 +63,7 @@ function CustomerCard({ customerEmail }: Props) {
 
             return () => unsubscribe();
         }
-    }, [id, customerEmail]);
+    }, [id]);
 
     const treatments = [
         "גב",
@@ -129,20 +129,22 @@ function CustomerCard({ customerEmail }: Props) {
 
     const addCardToDB = async (data: Card) => {
         try {
-            const customerRef = doc(db, 'customers', id || customerEmail);
-            await updateDoc(customerRef, {
-                cards: arrayUnion(data),
-            });
-            if (!docExists) {
+            if (id) {
+                const customerRef = doc(db, 'customers', id);
                 await updateDoc(customerRef, {
-                    treatment: selectedTreatment,
+                    cards: arrayUnion(data),
                 });
-            }
-            if (newDate !== "") {
-                console.log('d', newDate);
-                await updateDoc(customerRef, {
-                    lastTreatment: newDate,
-                });
+                if (!docExists) {
+                    await updateDoc(customerRef, {
+                        treatment: selectedTreatment,
+                    });
+                }
+                if (newDate !== "") {
+                    console.log('d', newDate);
+                    await updateDoc(customerRef, {
+                        lastTreatment: newDate,
+                    });
+                }
             }
         } catch (error) {
             console.error("Error adding array:", error);
