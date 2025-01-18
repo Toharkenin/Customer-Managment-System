@@ -5,14 +5,14 @@ interface Props {
     onBack: () => void;
     header: string;
     text: string;
-    onActive: boolean;
+    // onActive: boolean;
 };
 
-function ConsentForm({ onBack, onNext, header, text, onActive }: Props) {
+function ConsentForm({ onBack, onNext, header, text }: Props) {
 
     const handleButtonClicked = () => {
         onNext();
-        onActive = true;
+        // onActive = true;
     };
 
     return (

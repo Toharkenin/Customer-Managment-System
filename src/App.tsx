@@ -7,6 +7,8 @@ import MainPage from './pages/mainPage/MainPage'
 import EditCustomer from './pages/editCustomer/EditCustomer'
 import HealthStatement from './components/healthStatement/HealthStatement'
 import CustomerCard from './components/customerCard/CustomerCard'
+import NewCustomer from './pages/newCustomer/NewCustomer'
+import StatementsPage from './pages/statementsPage/StatementsPage'
 
 function App() {
 
@@ -17,9 +19,11 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/Form" element={<ClientForm />} />
+            <Route path="/Form2" element={<ClientForm />} />
+            <Route path="/Form" element={<NewCustomer />} />
             <Route path="/Edit-Customer/:id" element={<EditCustomer />} />
             <Route path="/Health-Statement/:id" element={<HealthStatement customerEmail='' />} />
+            <Route path="/Statements-Page/:id" element={<StatementsPage />} />
             <Route path="/Customer-Card/:id" element={<CustomerCard customerEmail='' />} />
           </Routes>
         </BrowserRouter>

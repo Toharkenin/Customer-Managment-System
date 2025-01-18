@@ -1,27 +1,30 @@
-import PersonalDetailsForm from '../../components/personalInfoForm/PersonalDetailsForm';
 import { useEffect, useRef, useState } from 'react';
-import styles from './clientForm.module.scss';
+import styles from './StatementsPage.module.scss';
 import ConsentForm from '../../components/consentForm/ConsentForm';
-import HealthStatement from '../../components/healthStatement/HealthStatement';
+import { useNavigate, useParams } from 'react-router';
+import { db } from '../../../firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 
-function ClientForm() {
+function StatementsPage() {
 
     const personalDetailsRef = useRef<HTMLDivElement>(null);
     const firstconsentFormRef = useRef<HTMLDivElement>(null);
     const seconsConsentFormRef = useRef<HTMLDivElement>(null);
     const thirdConsentFormRef = useRef<HTMLDivElement>(null);
     const fourthConsentFormRef = useRef<HTMLDivElement>(null);
-    const healthStatmentRef = useRef<HTMLDivElement>(null);
+
+    const { id } = useParams();
 
     const [showStatements, setShowStatement] = useState<boolean>(true);
-    const [showHealthStatements, setShowHealthStatements] = useState<boolean>(false);
-    const [customerEmail, setCustomerEmail] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const [successMessage, setSuccessMessage] = useState<string>("");
+
+    const navigate = useNavigate();
 
     const [statmentActivity, setShowStatementActivity] = useState([
         { id: 1, active: false },
         { id: 2, active: false },
         { id: 3, active: false },
-        { id: 4, active: false },
     ]);
 
     const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
@@ -30,17 +33,11 @@ function ClientForm() {
         }
     };
 
-    useEffect(() => {
-        if (showStatements && firstconsentFormRef.current) {
-            scrollToSection(firstconsentFormRef);
-        }
-    }, [showStatements]);
-
-    useEffect(() => {
-        if (showHealthStatements && healthStatmentRef.current) {
-            scrollToSection(healthStatmentRef);
-        }
-    }, [showHealthStatements]);
+    // useEffect(() => {
+    //     if (showStatements && firstconsentFormRef.current) {
+    //         scrollToSection(firstconsentFormRef);
+    //     }
+    // }, [showStatements]);
 
 
     const setActiveButton = (id: number) => {
@@ -51,18 +48,35 @@ function ClientForm() {
         );
     };
 
-    const addToDB = () => {
+    const addToDB = async () => {
         const areAllStatementsActive = statmentActivity.every(statement => statement.active);
+        console.log()
+        if (!areAllStatementsActive) {
+            setErrorMessage("אנא אשר\י את כל השדות הנדרשים לפני שליחה");
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 2000)
+            return;
+        }
 
-        //TODO: add to Db -- How to get the user and check if exist..
+        try {
+            if (id) {
+                setSuccessMessage("טופס נשלח בהצלחה")
+                const customerRef = doc(db, 'customers', id);
+                await updateDoc(customerRef, {
+                    statements: new Date(),
+                });
+                setTimeout(() => {
+                    navigate('/');
+                }, 2000);
+            }
+        } catch (error) {
+            console.error("Error adding array:", error);
+        }
+
     }
     return (
         <div className={styles.container}>
-            <div ref={personalDetailsRef} className={styles.infoSection}>
-                <PersonalDetailsForm
-                    onNext={() => { setShowStatement(true) }}
-                    customerEmail={setCustomerEmail} />
-            </div>
             {showStatements &&
                 <>
                     <div style={{ marginTop: 100 }} ref={firstconsentFormRef} className={styles.statementsSection}>
@@ -74,7 +88,6 @@ function ClientForm() {
                                 scrollToSection(seconsConsentFormRef)
                                 setActiveButton(1)
                             }}
-                        // onActive={true}
                         />
                     </div>
 
@@ -87,7 +100,6 @@ function ClientForm() {
                                 scrollToSection(thirdConsentFormRef)
                                 setActiveButton(2)
                             }}
-                        // onActive
                         />
                     </div>
                     <div style={{ marginTop: 100 }} ref={thirdConsentFormRef} className={styles.statementsSection}>
@@ -99,7 +111,6 @@ function ClientForm() {
                                 scrollToSection(fourthConsentFormRef)
                                 setActiveButton(3)
                             }}
-                        // onActive
                         />
                     </div>
                     <div style={{ marginTop: 100 }} ref={fourthConsentFormRef} className={styles.statementsSection}>
@@ -108,25 +119,16 @@ function ClientForm() {
                             header="הצהרת המטופל/ת:"
                             text="אני מאשר/ת את הסכמתי לפתיחת תיק מעקב טיפולים בו ירשמו ויתועדו נתוני האישיים ונתוני הטיפולים לרבות צילומים של אזור הטיפול, תגובות ותוצאות הטיפולים ומידע אישי )גיל, מין ואנמנזה רפואית, ככל שישנן(."
                             onNext={() => {
-                                setShowHealthStatements(true)
-                                setActiveButton(4)
                                 addToDB();
                             }}
-                        // onActive
                         />
+                        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+                        {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
                     </div>
                 </>
-            }
-            {
-                showHealthStatements &&
-                <div style={{ marginTop: 100 }} ref={healthStatmentRef}>
-                    <HealthStatement
-                        // onBack={() => scrollToSection(firstconsentFormRef)}
-                        customerEmail={customerEmail} />
-                </div>
             }
         </div>
     )
 };
 
-export default ClientForm;
+export default StatementsPage;

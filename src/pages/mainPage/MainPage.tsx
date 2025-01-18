@@ -45,7 +45,7 @@ function MainPage() {
                     healthStatementFound = true;
                 }
 
-                if (data.statement !== undefined) {
+                if (data.statements !== undefined) {
                     statementsFound = true;
                 }
 
@@ -123,7 +123,7 @@ function MainPage() {
             return <button className={styles.healthButton}>הצהרת הלקוח</button>
         } else {
             return (
-                <NavLink to={`/Health-Statement/${id}`}>
+                <NavLink to={`/Statements-Page/${id}`}>
                     <button className={styles.addHealthButton}>+ חדש</button>
                 </NavLink>
             )

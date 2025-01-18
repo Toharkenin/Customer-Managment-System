@@ -51,79 +51,80 @@ function PersonalDetailsForm({ onNext, customerEmail }: Props) {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit} className={styles.container}>
-        <div className={styles.inputGroup}>
-          <label htmlFor="firstName" className={styles.label}>שם פרטי</label>
-          <input
-            type="firstName"
-            id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className={styles.input}
-            placeholder="שם פרטי"
-            required
-          />
-        </div>
 
-        <div className={styles.inputGroup}>
-          <label htmlFor="lastName" className={styles.label}>שם משפחה</label>
-          <input
-            type="lastName"
-            id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className={styles.input}
-            placeholder="שם משפחה"
-            required
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="id" className={styles.label}>תעודת זהות</label>
-          <input
-            type="number"
-            id="id"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            className={styles.input}
-            placeholder="תעודת זהות"
-            required
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="phoneNumber" className={styles.label}>מספר טלפון</label>
-          <input
-            type="phoneNumber"
-            id="phoneNumber"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            className={styles.input}
-            placeholder="מספר טלפון"
-            required
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="email" className={styles.label}>אימייל</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value)
-              customerEmail(e.target.value)
-            }}
-            className={styles.input}
-            placeholder="אימייל"
-            required
-          />
-        </div>
+    <form onSubmit={handleSubmit} className={styles.container}>
+      <h2>פרטים אישיים</h2>
+      <div className={styles.inputGroup}>
+        <label htmlFor="firstName" className={styles.label}>שם פרטי</label>
+        <input
+          type="firstName"
+          id="firstName"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          className={styles.input}
+          placeholder="שם פרטי"
+          required
+        />
+      </div>
 
-        <button type="submit" className={styles.button}>
-          {loading ? "עובדים על זה..." : "אישור"}
-        </button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </form>
-    </>
+      <div className={styles.inputGroup}>
+        <label htmlFor="lastName" className={styles.label}>שם משפחה</label>
+        <input
+          type="lastName"
+          id="lastName"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          className={styles.input}
+          placeholder="שם משפחה"
+          required
+        />
+      </div>
+      <div className={styles.inputGroup}>
+        <label htmlFor="id" className={styles.label}>תעודת זהות</label>
+        <input
+          type="number"
+          id="id"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          className={styles.input}
+          placeholder="תעודת זהות"
+          required
+        />
+      </div>
+      <div className={styles.inputGroup}>
+        <label htmlFor="phoneNumber" className={styles.label}>מספר טלפון</label>
+        <input
+          type="phoneNumber"
+          id="phoneNumber"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+          className={styles.input}
+          placeholder="מספר טלפון"
+          required
+        />
+      </div>
+      <div className={styles.inputGroup}>
+        <label htmlFor="email" className={styles.label}>אימייל</label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value)
+            customerEmail(e.target.value)
+          }}
+          className={styles.input}
+          placeholder="אימייל"
+          required
+        />
+      </div>
+
+      <button type="submit" className={styles.button}>
+        {loading ? "עובדים על זה..." : "אישור"}
+      </button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </form>
+
   )
 };
 

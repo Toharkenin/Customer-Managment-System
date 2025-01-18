@@ -4,10 +4,10 @@ import styles from './HealthStatement.module.scss';
 import { useNavigate, useParams } from 'react-router';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
-import { format } from 'date-fns';
 
 interface Props {
     // onBack: () => void;
+    onNext: () => void;
     customerEmail: string;
 };
 
@@ -16,7 +16,7 @@ interface Question {
     text: string;
 };
 
-function HealthStatement({ customerEmail }: Props) {
+function HealthStatement({ customerEmail, onNext }: Props) {
 
     const { id } = useParams();
     const sigPadRef = useRef<SignatureCanvas>(null);
@@ -60,6 +60,7 @@ function HealthStatement({ customerEmail }: Props) {
     const remainingQuestions = questions.slice(6);
 
     const [date, setDate] = useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [answers, setAnswers] = useState(
         initialQuestions.concat(remainingQuestions).map((question) => ({
             id: question.id,
@@ -67,6 +68,15 @@ function HealthStatement({ customerEmail }: Props) {
             answer: "",
         }))
     );
+
+    const isFormValid = () => {
+        return answers.every(
+            (answer) =>
+                answer.checkbox &&
+                (answer.checkbox === "no" || (answer.checkbox === "yes" && answer.answer.trim() !== ""))
+        );
+    };
+
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
@@ -79,6 +89,7 @@ function HealthStatement({ customerEmail }: Props) {
                     : answer
             )
         );
+        setErrorMessage("");
     };
 
 
@@ -113,12 +124,11 @@ function HealthStatement({ customerEmail }: Props) {
                 {answers.find((a) => a.id === question.id)?.checkbox === 'yes' && (
                     <div className={styles.details}>
                         <input
-                            className={styles.detailsInput}
                             type="text"
-                            name={`question-${question.id}`}
-                            placeholder='פירוט'
-                            onChange={(e) => handleAnswerChange(question.id, 'details', e.target.value)}
-                            required={true}
+                            placeholder="פירוט"
+                            value={answers.find((a) => a.id === question.id)?.answer || ""}
+                            onChange={(e) => handleAnswerChange(question.id, "details", e.target.value)}
+                            required
                         />
                     </div>
                 )}
@@ -126,17 +136,17 @@ function HealthStatement({ customerEmail }: Props) {
         );
     };
 
-
-
-    const handleClearSign = () => {
-        if (sigPadRef.current) {
-            sigPadRef.current.clear();
-        }
-    };
-
-
     const handleSendForm = async () => {
+        if (!isFormValid()) {
+            setErrorMessage("אנא מלא/י את כל השדות הנדרשים לפני שליחה");
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 2000)
+            return;
 
+
+        }
+        onNext();
         const allAnswers = answers.map((a) => ({
             questionId: a.id,
             checkbox: a.checkbox,
@@ -195,45 +205,11 @@ function HealthStatement({ customerEmail }: Props) {
                     </div>
                 </div>
             </div>
-            <div>
-                <h3>הצהרה:</h3>
-                <div className={styles.authorazation}>
-                    <input
-                        type="checkbox"
-                        name="authorazation"
-                        required />
-                    <h5>אני מצהיר\ה בזה כי הפרטים שמסרתי לעיל הם נכונים</h5>
-                </div>
-            </div>
-            <div className="styles.date">
-                <input
-                    type='date'
-                    className={styles.dateInputContainer}
-                    onChange={(e) => {
-                        const selectedDate = new Date(e.target.value);
-                        const formatedDate = format(selectedDate, 'dd/MM/yyyy');
-                        setDate(formatedDate);
-                    }}
-                    required={true}
-                />
-
-            </div>
-            <div className={styles.signatureContainer}>
-                <div style={{ border: '1px solid black', width: 500 }}>
-                    <SignatureCanvas penColor='black'
-                        canvasProps={{ width: 500, height: 200, className: 'sigCanvas' }}
-                        ref={sigPadRef}
-                    />
-                </div>
-                <button
-                    onClick={handleClearSign}
-                    className={styles.clearButton}>מחיקה</button>
-            </div>
-
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
             <button type='submit' className={styles.sendButton} onClick={handleSendForm}>
                 {loading ? "עובדים על זה..." : "שליחה"}
             </button>
-            {success ? <h4 className={styles.success}>לקוח התעדכן בהצלחה</h4> : null}
+
         </div>
     )
 }

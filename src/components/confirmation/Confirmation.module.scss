@@ -1,52 +1,12 @@
 .container {
-    padding: 0 20rem;
-}
-
-.header {
-    font-weight: 500;
-}
-
-.topText {
-    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .authorazation {
     display: flex;
 }
-
-.questionContainer {
-    margin-top: 20px;
-    text-align: right;
-}
-
-.questions {
-    margin-top: 4rem;
-}
-
-.question {
-    font-weight: 600;
-}
-
-.details {
-    display: flex;
-    align-items: center;
-}
-
-.detailsInput {
-    width: 100%;
-    height: 40px;
-    border: none;
-    border-bottom: 1px solid #8d8d8d;
-    padding: 0 16px;
-    font-size: 16px;
-    color: #161616;
-    background: transparent;
-    box-sizing: border-box;
-    outline: 2px solid transparent;
-    outline-offset: -2px;
-    transition: border-color 0.2s ease-in-out;
-}
-
 
 
 .dateInputContainer[type="date"] {
@@ -67,6 +27,7 @@
     font-weight: 400;
     box-sizing: border-box;
     border: 1px solid rgb(0, 120, 212);
+    margin-bottom: 2rem;
   }
 
 .signatureContainer {
@@ -103,12 +64,6 @@
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
-    margin-top: 4px;
+    margin-top: 10px;
     margin-top: 4rem;
-}
-
-.errorMessage {
-    color: #ff0000;
-    font-weight: 200;
-    margin-bottom: -4px;
 }
