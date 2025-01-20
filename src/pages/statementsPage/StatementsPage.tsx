@@ -33,12 +33,6 @@ function StatementsPage() {
         }
     };
 
-    // useEffect(() => {
-    //     if (showStatements && firstconsentFormRef.current) {
-    //         scrollToSection(firstconsentFormRef);
-    //     }
-    // }, [showStatements]);
-
 
     const setActiveButton = (id: number) => {
         setShowStatementActivity(prevState =>
@@ -79,11 +73,11 @@ function StatementsPage() {
         <div className={styles.container}>
             {showStatements &&
                 <>
-                    <div style={{ marginTop: 100 }} ref={firstconsentFormRef} className={styles.statementsSection}>
+                    <div ref={firstconsentFormRef} className={styles.statementsSection}>
                         <ConsentForm
                             onBack={() => scrollToSection(personalDetailsRef)}
                             header="טופס הסכמה לטיפול בהסרת שיער בטכנולוגיית לייזר"
-                            text="אודות הטיפול טיפול הסרת שיער המתבצע באמצעות טכנולוגיית לייזר המאפשרת חימום הדרגתי של זקיק השערה והרקמה לאורך זמן ותוך כדי תנועה. תאום ציפיות התוצאות הקליניות של הטיפול עשויות להשתנות מאדם לאדם בהתאם לתכונותיו הפיזיולוגיות, גילו ומינו ובהתאם למצב המטופל. מסיבות אלו לא ניתן לחזות במדויק את מספר הטיפולים הנדרשים להשגת תוצאה אופטימאלית ולכן מספר הטיפולים הנדרשים שונה בין אדם לאדם. לפי מחקרים רפואיים, באחוז נמוך מהמקרים, לא יושגו תוצאות משביעות רצון במהלך הטיפולים. אין הסבר מדעי לכך והסיבה טמונה ככל הנראה בהבדלים פיזיולוגיים בין אדם לאדם. מהלך הטיפול ותהליך ההחלמה: תיתכן אי נוחות מסוימת, תחושת חום, עקצוץ או כאבים במהלך הטיפול. תיתכן הופעת אדמומיות )Erythema( ו/או גרד אשר יחלפו, בדרך כלל, כיום עד יומיים לאחר הטיפול. תהליך החלמת העור עשוי להימשך מספר ימים עד מספר שבועות במקרים חריגים. לעיתים נדירות, תופיע באזור המטופל תגובת רגישות יתר ,שתתבטא בנפיחות או בצקת, שלפוחיות, כוויה שטחית, גלדים, חבורות זמניות, תגובות אלרגיות והופעת פצעונים אשר יחלפו תוך מספר שעות/ימים עם ו/או בלי קבלת טיפול מתאים. במקרים של תגובת רגישות יתר יש לפנות לאבחון וטיפול רפואי. עלולים להיות שינויים זמניים בגוון העור באזור שטופל. שינויים אלה חולפים לרוב תוך מספר שבועות – חודשים מתום הטיפול."
+                            text="אודות הטיפול טיפול הסרת שיער המתבצע באמצעות טכנולוגיית לייזר המאפשרת חימום הדרגתי של זקיק השערה והרקמה לאורך זמן ותוך כדי תנועה. תאום ציפיות התוצאות הקליניות של הטיפול עשויות להשתנות מאדם לאדם בהתאם לתכונותיו הפיזיולוגיות, גילו ומינו ובהתאם למצב המטופל. מסיבות אלו לא ניתן לחזות במדויק את מספר הטיפולים הנדרשים להשגת תוצאה אופטימאלית ולכן מספר הטיפולים הנדרשים שונה בין אדם לאדם. לפי מחקרים רפואיים, באחוז נמוך מהמקרים, לא יושגו תוצאות משביעות רצון במהלך הטיפולים. אין הסבר מדעי לכך והסיבה טמונה ככל הנראה בהבדלים פיזיולוגיים בין אדם לאדם. מהלך הטיפול ותהליך ההחלמה: תיתכן אי נוחות מסוימת, תחושת חום, עקצוץ או כאבים במהלך הטיפול. תיתכן הופעת אדמומיות )Erythema( ו/או גרד אשר יחלפו, בדרך כלל, כיום עד יומיים לאחר הטיפול. <br />תהליך החלמת העור עשוי להימשך מספר ימים עד מספר שבועות במקרים חריגים. לעיתים נדירות, תופיע באזור המטופל תגובת רגישות יתר ,שתתבטא בנפיחות או בצקת, שלפוחיות, כוויה שטחית, גלדים, חבורות זמניות, תגובות אלרגיות והופעת פצעונים אשר יחלפו תוך מספר שעות/ימים עם ו/או בלי קבלת טיפול מתאים. במקרים של תגובת רגישות יתר יש לפנות לאבחון וטיפול רפואי. עלולים להיות שינויים זמניים בגוון העור באזור שטופל. שינויים אלה חולפים לרוב תוך מספר שבועות – חודשים מתום הטיפול."
                             onNext={() => {
                                 scrollToSection(seconsConsentFormRef)
                                 setActiveButton(1)
@@ -91,7 +85,7 @@ function StatementsPage() {
                         />
                     </div>
 
-                    <div style={{ marginTop: 100 }} ref={seconsConsentFormRef} className={styles.statementsSection}>
+                    <div ref={seconsConsentFormRef} className={styles.statementsSection}>
                         <ConsentForm
                             onBack={() => scrollToSection(firstconsentFormRef)}
                             header="הצהרת המטופל/ת:"
@@ -102,7 +96,7 @@ function StatementsPage() {
                             }}
                         />
                     </div>
-                    <div style={{ marginTop: 100 }} ref={thirdConsentFormRef} className={styles.statementsSection}>
+                    <div ref={thirdConsentFormRef} className={styles.statementsSection}>
                         <ConsentForm
                             onBack={() => scrollToSection(seconsConsentFormRef)}
                             header="הצהרת המטופל/ת:"
@@ -113,7 +107,7 @@ function StatementsPage() {
                             }}
                         />
                     </div>
-                    <div style={{ marginTop: 100 }} ref={fourthConsentFormRef} className={styles.statementsSection}>
+                    <div ref={fourthConsentFormRef} className={styles.statementsSection}>
                         <ConsentForm
                             onBack={() => scrollToSection(thirdConsentFormRef)}
                             header="הצהרת המטופל/ת:"

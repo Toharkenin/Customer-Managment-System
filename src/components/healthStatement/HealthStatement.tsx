@@ -1,12 +1,10 @@
-import { useState, useRef } from 'react';
-import SignatureCanvas from 'react-signature-canvas'
+import { useState } from 'react';
 import styles from './HealthStatement.module.scss';
 import { useNavigate, useParams } from 'react-router';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 
 interface Props {
-    // onBack: () => void;
     onNext: () => void;
     customerEmail: string;
 };
@@ -19,7 +17,6 @@ interface Question {
 function HealthStatement({ customerEmail, onNext }: Props) {
 
     const { id } = useParams();
-    const sigPadRef = useRef<SignatureCanvas>(null);
 
     const questions: Question[] = [
         { id: 1, text: 'האם הנך נוטל/ת תרופות באופן קבוע ?' },
@@ -77,10 +74,9 @@ function HealthStatement({ customerEmail, onNext }: Props) {
     };
 
     const navigate = useNavigate();
-    const [loading, setLoading] = useState<boolean>(false);
     const [successMessage, setSuccessMessage] = useState<string>("");
 
-    const handleAnswerChange = (id: number, field: "checkbox" | "details", value: string) => {
+    const handleAnswerChange = (id: number, field: "checkbox" | "answer", value: string) => {
         setAnswers((prev) =>
             prev.map((answer) =>
                 answer.id === id
@@ -88,11 +84,16 @@ function HealthStatement({ customerEmail, onNext }: Props) {
                     : answer
             )
         );
-        setErrorMessage("");
+        if (field === "answer") {
+            setErrorMessage("");
+        }
     };
 
 
+
     const QuestionComponent = ({ question }: { question: Question }) => {
+        const currentAnswer = answers.find((a) => a.id === question.id);
+
         return (
             <div key={question.id} className={styles.questionContainer}>
                 <p className={styles.question}>{question.text}</p>
@@ -101,32 +102,31 @@ function HealthStatement({ customerEmail, onNext }: Props) {
                         <input
                             type="radio"
                             name={`question-${question.id}`}
-                            checked={answers.find((a) => a.id === question.id)?.checkbox === 'yes'}
+                            checked={currentAnswer?.checkbox === 'yes'}
                             onChange={() => handleAnswerChange(question.id, 'checkbox', 'yes')}
-                            required={true}
+                            required
                         />
                         כן
                     </label>
                     <label style={{ marginTop: '1rem' }}>
-
                         <input
                             type="radio"
                             name={`question-${question.id}`}
-                            checked={answers.find((a) => a.id === question.id)?.checkbox === 'no'}
+                            checked={currentAnswer?.checkbox === 'no'}
                             onChange={() => handleAnswerChange(question.id, 'checkbox', 'no')}
-                            required={true}
+                            required
                         />
                         לא
                     </label>
                 </div>
                 <br />
-                {answers.find((a) => a.id === question.id)?.checkbox === 'yes' && (
+                {currentAnswer?.checkbox === 'yes' && (
                     <div className={styles.details}>
                         <input
                             type="text"
                             placeholder="פירוט"
-                            value={answers.find((a) => a.id === question.id)?.answer || ""}
-                            onChange={(e) => handleAnswerChange(question.id, "details", e.target.value)}
+                            value={currentAnswer.answer}
+                            onChange={(e) => handleAnswerChange(question.id, "answer", e.target.value)}
                             required
                         />
                     </div>
@@ -203,7 +203,7 @@ function HealthStatement({ customerEmail, onNext }: Props) {
             {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
             {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
             <button type='submit' className={styles.sendButton} onClick={handleSendForm}>
-                {loading ? "עובדים על זה..." : "שליחה"}
+                שליחה
             </button>
 
         </div>

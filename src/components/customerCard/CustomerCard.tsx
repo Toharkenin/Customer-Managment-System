@@ -6,10 +6,6 @@ import { db } from '../../../firebase';
 import SignatureCanvas from 'react-signature-canvas'
 import { format } from 'date-fns';
 
-// interface Props {
-//     customerEmail: string;
-// }
-
 interface Card {
     date: string;
     customerSignature: string;

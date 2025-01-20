@@ -7,6 +7,7 @@ import Edit02Icon from '../../assets/edit-02-stroke-rounded';
 import Delete01Icon from '../../assets/delete-01-stroke-rounded';
 import Search01Icon from '../../assets/search-01-stroke-rounded';
 import DeleteAlert from '../../components/deleteAlert/DeleteAlert';
+import logoDark from '../../assets/logo-dark.png';
 
 
 interface Customer {
@@ -93,7 +94,11 @@ function MainPage() {
 
     const healthStatement = (health: boolean, id: string) => {
         if (health) {
-            return <button className={styles.healthButton}>הצהרת בריאות</button>
+            return (
+                <NavLink to={`/Health-statements-view/${id}`}>
+                    <button className={styles.healthButton}>הצהרת בריאות</button>
+                </NavLink>
+            )
         } else {
             return (
                 <NavLink to={`/Health-Statement/${id}`}>
@@ -147,11 +152,11 @@ function MainPage() {
                     onCancel={() => setDeleteAlert(false)}
                 /> : null}
             <div className={styles.headerSection}>
-                <h2>לקוחות</h2>
                 <div className={styles.buutons}>
-                    <NavLink to="/">
-                        <button className={styles.newCardButton}>+ כרטיס לקוח </button>
-                    </NavLink>
+                    <img src={logoDark} alt="Logo" className={styles.logo} />
+                    <h2>לקוחות</h2>
+                </div>
+                <div className={styles.buutons}>
                     <NavLink to="/Form">
                         <button className={styles.newClientButton}>+ לקוח חדש</button>
                     </NavLink>

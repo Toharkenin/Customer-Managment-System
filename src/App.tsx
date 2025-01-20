@@ -10,6 +10,7 @@ import CustomerCard from './components/customerCard/CustomerCard'
 import NewCustomer from './pages/newCustomer/NewCustomer'
 import StatementsPage from './pages/statementsPage/StatementsPage'
 import Confirmation from './components/confirmation/Confirmation'
+import ViewHealthStatements from './pages/viewHealthStatements/ViewHealthStatements'
 
 function App() {
 
@@ -23,10 +24,11 @@ function App() {
             <Route path="/Form2" element={<ClientForm />} />
             <Route path="/Form" element={<NewCustomer />} />
             <Route path="/Edit-Customer/:id" element={<EditCustomer />} />
-            <Route path="/Health-Statement/:id" element={<HealthStatement customerEmail='' />} />
+            <Route path="/Health-Statement/:id" element={<HealthStatement customerEmail='' onNext={() => { }} />} />
             <Route path="/Statements-Page/:id" element={<StatementsPage />} />
             <Route path="/Customer-Card/:id" element={<CustomerCard />} />
             <Route path="/Confirmation/:id" element={<Confirmation customerEmail='' />} />
+            <Route path="/Health-statements-view/:id" element={<ViewHealthStatements />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
