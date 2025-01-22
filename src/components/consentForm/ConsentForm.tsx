@@ -4,11 +4,10 @@ interface Props {
     onNext: () => void;
     onBack: () => void;
     header: string;
-    text: string;
-    // onActive: boolean;
+    texts: string[];
 };
 
-function ConsentForm({ onBack, onNext, header, text }: Props) {
+function ConsentForm({ onBack, onNext, header, texts }: Props) {
 
     const handleButtonClicked = () => {
         onNext();
@@ -18,11 +17,15 @@ function ConsentForm({ onBack, onNext, header, text }: Props) {
     return (
         <div className={styles.container}>
             <h2 className={styles.header}>{header}</h2>
-            <h3 className={styles.text}>{text}</h3>
+            {texts.map((text, index) => (
+                <p key={index} className={styles.text}>
+                    {text}
+                </p>
+            ))}
             <button
                 type="button"
                 className={styles.button}
-                onClick={() => handleButtonClicked()}
+                onClick={handleButtonClicked}
             >
                 אני מאשר\ת
             </button>

@@ -110,7 +110,10 @@ function MainPage() {
 
     const statements = (statementsExist: boolean, id: string) => {
         if (statementsExist) {
-            return <button className={styles.healthButton}>הצהרת הלקוח</button>
+
+            return <NavLink to={`/Statements-Page/${id}`}>
+                <button className={styles.healthButton}>הצהרת הלקוח</button>
+            </NavLink>
         } else {
             return (
                 <NavLink to={`/Statements-Page/${id}`}>
@@ -154,7 +157,7 @@ function MainPage() {
             <div className={styles.headerSection}>
                 <div className={styles.buutons}>
                     <img src={logoDark} alt="Logo" className={styles.logo} />
-                    <h2>לקוחות</h2>
+                    <h2>יומן לקוחות</h2>
                 </div>
                 <div className={styles.buutons}>
                     <NavLink to="/Form">
