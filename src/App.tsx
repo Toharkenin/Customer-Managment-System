@@ -11,6 +11,7 @@ import NewCustomer from './pages/newCustomer/NewCustomer'
 import StatementsPage from './pages/statementsPage/StatementsPage'
 import Confirmation from './components/confirmation/Confirmation'
 import ViewHealthStatements from './pages/viewHealthStatements/ViewHealthStatements'
+import ProtectedRoute from './routes/ProtectedRoute'
 
 function App() {
 
@@ -19,16 +20,24 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/Form2" element={<ClientForm />} />
-            <Route path="/Form" element={<NewCustomer />} />
-            <Route path="/Edit-Customer/:id" element={<EditCustomer />} />
-            <Route path="/Health-Statement/:id" element={<HealthStatement customerEmail='' onNext={() => { }} />} />
-            <Route path="/Statements-Page/:id" element={<StatementsPage />} />
-            <Route path="/Customer-Card/:id" element={<CustomerCard />} />
-            <Route path="/Confirmation/:id" element={<Confirmation customerEmail='' />} />
-            <Route path="/Health-statements-view/:id" element={<ViewHealthStatements />} />
+            <Route
+              path="/*"
+              element={
+                <ProtectedRoute>
+                  <Routes>
+                    <Route path="/" element={<MainPage />} />
+                    <Route path="/Form2" element={<ClientForm />} />
+                    <Route path="/Form" element={<NewCustomer />} />
+                    <Route path="/Edit-Customer/:id" element={<EditCustomer />} />
+                    <Route path="/Health-Statement/:id" element={<HealthStatement customerEmail='' onNext={() => { }} />} />
+                    <Route path="/Statements-Page/:id" element={<StatementsPage />} />
+                    <Route path="/Customer-Card/:id" element={<CustomerCard />} />
+                    <Route path="/Confirmation/:id" element={<Confirmation customerEmail='' />} />
+                    <Route path="/Health-statements-view/:id" element={<ViewHealthStatements />} />
+                  </Routes>
+                </ProtectedRoute>
+              } />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

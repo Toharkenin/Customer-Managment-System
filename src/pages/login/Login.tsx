@@ -2,6 +2,9 @@ import { useState } from "react";
 import styles from './Login.module.scss';
 import { db } from "../../../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router";
+
 
 function Login() {
     const [email, setEmail] = useState<string>("");
@@ -9,30 +12,36 @@ function Login() {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
+    const navigate = useNavigate();
+
     const handleLogin = async () => {
-        console.log("handleLogin");
+        const auth = getAuth();
         try {
+            const adminCredential = await signInWithEmailAndPassword(auth, email, password);
+            const admin = adminCredential.user;
+
+            if (!admin) {
+                console.error("No user found");
+                return;
+            }
+
             const adminRef = collection(db, "Admin");
-            const data = query(adminRef, where("email", "==", email.toLowerCase()));
-            const querySnapshot = await getDocs(data);
+            const q = query(adminRef, where("email", "==", email));
+            const adminSnapshot = await getDocs(q);
+            if (!adminSnapshot.empty) {
+                const adminData = adminSnapshot.docs[0].data();
+                if (adminData.role === "admin") {
+                    console.log("Admin login successful");
+                    navigate("/");
 
-            if (!querySnapshot.empty) {
-
-
-                querySnapshot.forEach((doc) => {
-                    const adminData = doc.data();
-                    const adminPassword = adminData.password;
-                    if (adminPassword !== password) {
-                        setError("הסיסמא שהזנת לא נכונה, נסה שנית");
-                    }
-                });
+                } else {
+                    console.error("User does not have admin privileges");
+                }
             } else {
-                setError("אימייל לא קיים במערכת, נסה שנית")
+                console.error("User is not registered as an admin in Firestore");
             }
         } catch (error) {
-            console.error("Error checking user:", error);
-            setError("An error occurred while logging in.");
-            return false;
+            console.error("Error during login:", error);
         }
     };
 
@@ -40,15 +49,7 @@ function Login() {
         e.preventDefault();
         setError(null);
         setLoading(true);
-
-        const success = await handleLogin();
-
-        setLoading(false);
-        if (success) {
-            console.log("Login successful");
-        } else {
-            console.log("Login failed");
-        }
+        await handleLogin();
     };
 
     return (
