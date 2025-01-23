@@ -10,6 +10,7 @@
     flex-direction: column;
     height: 100vh; 
     overflow: hidden;
+
 }
 
 .headerSection {
@@ -211,3 +212,105 @@
     width: 1rem;
     margin: 0 0.8rem;
 }
+
+
+@media (max-width: 1357px) {
+    .tableContainer {
+        width: 95vw;
+    }
+
+    // .headerSection {
+    //     flex-direction: column;
+    //     align-items: flex-start;
+    // }
+
+    // .buutons {
+    //     justify-content: center;
+    //     flex-wrap: wrap;
+    // }
+
+    // .logo {
+    //     height: 3.5rem;
+    // }
+
+    // .searchBoxContainer {
+    //     flex-direction: column;
+    //     align-items: stretch;
+    // }
+
+    // .searchBox, .filterSelector {
+    //     width: 100%;
+    // }
+}
+
+/* Breakpoint: Smartphone */
+@media (max-width: 768px) {
+    .tableContainer {
+        height: auto;
+        padding: 1rem;
+    }
+
+    .clientTable {
+        display: block; /* Collapse table into block layout */
+        width: 100%;
+    }
+
+    .clientTable th,
+    .clientTable td {
+        display: none; /* Hide all columns initially */
+    }
+
+    .clientTable th:nth-child(1),
+    .clientTable th:nth-child(2),
+    .clientTable th:nth-child(3),
+    .clientTable td:nth-child(1),
+    .clientTable td:nth-child(2),
+    .clientTable td:nth-child(3) {
+        display: table-cell; /* Show the first three columns */
+    }
+
+    .clientTable tr {
+        position: relative;
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .clientTable tr:hover {
+        background: none; /* Remove hover effect */
+    }
+
+    .clientTable td {
+        text-align: left;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .clientTable td::before {
+        content: attr(data-label); /* Add label for hidden columns */
+        position: absolute;
+        left: 1rem;
+        font-weight: bold;
+    }
+
+    .dropdownDetails {
+        display: none;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .dropdownToggle {
+        display: block;
+        background-color: #1B365D;
+        color: #fff;
+        padding: 0.5rem;
+        text-align: center;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .dropdownToggle:hover {
+        background-color: #143250;
+    }
+}
+
+/* Additional JS Required */

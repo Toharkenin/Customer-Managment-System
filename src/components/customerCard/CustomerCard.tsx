@@ -182,6 +182,7 @@ function CustomerCard() {
                 </select> :
                 <h3>סוג טיפול: {treatmentType}</h3>}
 
+
             <table className={styles.table}>
                 <thead>
                     <tr>
@@ -191,18 +192,6 @@ function CustomerCard() {
                     </tr>
                 </thead>
                 <tbody>
-                    {cardData.map((row, index) => (
-                        <tr key={index}>
-                            <td className={styles.date}>{row.date}</td>
-                            <td>
-                                <img src={row.customerSignature} alt={'customer-signature'} />
-                            </td>
-                            <td>
-                                <img src={row.providerSignature} alt={'provider-signature'} />
-                            </td>
-                        </tr>
-
-                    ))}
                     <tr>
                         <td>
                             <input
@@ -242,10 +231,43 @@ function CustomerCard() {
             <button onClick={handleAddCardRow} className={styles.addButton}>
                 {docExists ? 'הוספת שורה חדשה' : 'יצירת כרטיס'}
             </button>
+            <br />
+            {docExists ?
+                <>
+                    <h3 style={{ marginTop: '10rem' }}>היסטוריית תורים</h3>
+                    <table className={styles.table} >
+                        <thead>
+                            <tr>
+                                <th>תאריך</th>
+                                <th>חתימת לקוח/ה</th>
+                                <th>חתימת מטפל/ת</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cardData.map((row, index) => (
+                                <tr key={index}>
+                                    <td className={styles.date}>{row.date}</td>
+                                    <td>
+                                        <img src={row.customerSignature} alt={'customer-signature'} />
+                                    </td>
+                                    <td>
+                                        <img src={row.providerSignature} alt={'provider-signature'} />
+                                    </td>
+                                </tr>
 
-        </div>
+                            ))}
+                        </tbody>
+
+                    </table>
+                </> : null}
+
+        </div >
     );
 };
 
 
 export default CustomerCard;
+
+
+
+//1357 first bareakpoint 

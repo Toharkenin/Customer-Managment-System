@@ -54,8 +54,9 @@
 }
 
 .date {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 500;
+    min-width: 12rem;
 }
 
 .signatureBox {
@@ -72,14 +73,13 @@
 .dateInputContainer[type="date"] {
 
     padding: 1rem;
-
     display: inline-block;
     outline: 0;
     text-align: center;
     cursor: pointer;
     padding: 0px 25px;
     border-radius: 2px;
-    min-width: 80px;
+    min-width: 12rem;
     height: 32px;
     background-color: #fff;
     color: rgb(0, 120, 212);
