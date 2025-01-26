@@ -27,12 +27,114 @@
     height: 36px;
     width: 14rem; 
     margin: 1rem;
+    cursor: pointer;
+    margin: 0 auto;
+    border: 0.2px solid #ccc;
+    width: 40%;
+};
+
+.dropDown {
+    position:absolute;
+    left: 40%;
+    right: 40%;
+    background-color: #fff;
+    z-index: 1000;
+    border-radius: 20px;
+    box-shadow:0px 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-10px); 
+    transition: height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+    animation: rotateX 300ms ease-in-out forwards;
+    padding: 0.2rem
+};
+
+
+@keyframes rotateX {
+    0% {
+      opacity: 0;
+      transform: rotateX(-90deg);
+    }
+    50% {
+      transform: rotateX(-20deg);
+    }
+    100% {
+      opacity: 1;
+      transform: rotateX(0deg);
+    }
+  }
+
+
+.itemList {
+    padding: 0.3rem 0.2rem;
+    cursor: pointer;
+}
+
+.itemList:hover {
+    background-color: #f0f0f0;
+  };
+
+  .itemList:last-child {
+    border-bottom: none;
+  }
+  
+  .selected {
+    background-color: #fff7de;
+    color: #000;
+    // border:  1px solid #242424;
+  }
+
+  .selected:hover {
+    background-color: #fff;
+    color: #DAAF2B;
+  }
+
+  .nonSelected {
+    background-color: #f9f9f9;
+    color: #333;
+  }
+
+.submitOptionsButton {
+    background-color: #242424;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.customerTreatments {
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    gap: 2%;
+    margin-top: 2rem;
+}
+
+.treatmentsListContainer {
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+}
+
+.CustomerTreatments {
+    box-shadow:0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0.3rem 2rem;
+}
+
+.removeIcon{
+    width: 1rem;
+    bottom: 0.6rem;
+    position: absolute;
+    right: 0.4rem;
+    top: 0.4rem;
+    cursor: pointer;
 }
 
 .table {
     width: 80%;
-    // border-collapse: collapse;
+    border-collapse: collapse;
     margin: 0 auto;
+    margin-top: 2rem;
     background-color: #f9f9f9;
     // position: fixed; 
 }

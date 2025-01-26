@@ -10,7 +10,6 @@ import DeleteAlert from '../../components/deleteAlert/DeleteAlert';
 import logoDark from '../../assets/logo-dark.png';
 import Logout01Icon from '../../assets/logout-01-stroke-rounded';
 import { useAuth } from "../../routes/AuthContext";
-import { getAuth, signOut } from 'firebase/auth';
 
 
 interface Customer {

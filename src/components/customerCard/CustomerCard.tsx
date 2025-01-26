@@ -5,6 +5,8 @@ import { arrayUnion, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import SignatureCanvas from 'react-signature-canvas'
 import { format } from 'date-fns';
+import MultiplicationSignIcon from '../../assets/multiplication-sign-stroke-rounded';
+import ConfirmMessage from '../confirmMessage/confirmMessage';
 
 interface Card {
     date: string;
@@ -15,8 +17,8 @@ interface Card {
 function CustomerCard() {
 
     const { id } = useParams();
-    const [treatmentType, setTreatmentType] = useState<string>('');
-    const [selectedTreatment, setSelectedTreatment] = useState("");
+    const [treatmentTypes, setTreatmentTypes] = useState<string[]>([]);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [cardData, setCardData] = useState<Card[]>([]);
     const [docExists, setDocExists] = useState<boolean>(false);
     const [newRow, setNewRow] = useState({
@@ -26,6 +28,7 @@ function CustomerCard() {
     });
     const [newDate, setNewDate] = useState<string>("");
     const [name, setName] = useState<string>('');
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
     const sigPadRefCustomer = useRef<SignatureCanvas>(null);
     const sigPadRefProvider = useRef<SignatureCanvas>(null);
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -42,13 +45,14 @@ function CustomerCard() {
                 if (snapshot.exists()) {
                     const data = snapshot.data();
                     const customerCards = data.cards || [];
-                    const treatment = data.treatment || '';
+                    const treatments = data.treatments || [];
                     const customerName = data.firstName + " " + data.lastName;
+                    const customerPhoneNumber = data.phoneNumber;
                     setName(customerName);
-
+                    setPhoneNumber(customerPhoneNumber);
                     if (customerCards.length > 0) {
                         setCardData(customerCards);
-                        setTreatmentType(treatment);
+                        setTreatmentTypes(treatments);
                         setDocExists(true);
                     }
                 } else {
@@ -77,11 +81,6 @@ function CustomerCard() {
         "אף",
     ];
 
-
-    const handleTreatmentSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedTreatment(e.target.value);
-    };
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedDate = new Date(e.target.value);
         const formatedDate = format(selectedDate, 'dd/MM/yyyy');
@@ -96,7 +95,8 @@ function CustomerCard() {
 
 
     const handleAddCardRow = async () => {
-        if (newRow.date && !sigPadRefCustomer.current?.isEmpty() && !sigPadRefProvider.current?.isEmpty() && treatmentType !== "") {
+        if (newRow.date && !sigPadRefCustomer.current?.isEmpty() && !sigPadRefProvider.current?.isEmpty()
+            && (treatmentTypes.length > 0 || treatmentTypes.length > 0)) {
             const customerSignatureData = sigPadRefCustomer.current?.toDataURL("image/png");
             const providerSignatureData = sigPadRefProvider.current?.toDataURL("image/png");
 
@@ -111,7 +111,8 @@ function CustomerCard() {
 
 
             setNewRow({ date: "", customerSignature: "", providerSignature: "" });
-
+            sigPadRefCustomer.current?.clear();
+            sigPadRefProvider.current?.clear();
 
             try {
                 await addCardToDB(rowToAdd);
@@ -126,6 +127,45 @@ function CustomerCard() {
         }
     };
 
+    const toggleDropdown = () => {
+        setIsDropdownOpen((prev) => !prev);
+    };
+
+    const handleOptionClick = async (option: string) => {
+        setTreatmentTypes((prev) =>
+            prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
+        );
+        try {
+
+            if (id) {
+                const customerRef = doc(db, 'customers', id);
+
+                await updateDoc(customerRef, {
+                    treatments: arrayUnion(option),
+                });
+            }
+        } catch (error) {
+            console.error("Error adding treatment:", error);
+        }
+    };
+
+
+    const removeTreatment = async (treatment: string) => {
+        try {
+            setTreatmentTypes((prev) => prev.filter((item) => item !== treatment));
+
+            if (id) {
+                const customerRef = doc(db, 'customers', id);
+
+                await updateDoc(customerRef, {
+                    treatments: arrayUnion(treatment),
+                });
+            }
+        } catch (error) {
+            console.error("Error removing treatment:", error);
+        }
+    };
+
 
     const addCardToDB = async (data: Card) => {
         try {
@@ -136,11 +176,10 @@ function CustomerCard() {
                 });
                 if (!docExists) {
                     await updateDoc(customerRef, {
-                        treatment: selectedTreatment,
+                        treatments: treatmentTypes,
                     });
                 }
                 if (newDate !== "") {
-                    console.log('d', newDate);
                     await updateDoc(customerRef, {
                         lastTreatment: newDate,
                     });
@@ -164,24 +203,48 @@ function CustomerCard() {
         <div className={styles.tableContainer}>
             <h2 className={styles.tableHeader}>כרטיס לקוח</h2>
             <h4>שם: {name}</h4>
-            {!docExists ?
-                <select
-                    id="treatmentSelector"
-                    value={selectedTreatment}
-                    onChange={handleTreatmentSelection}
-                    className={styles.chooseTreatment}
-                >
-                    <option value="" disabled>
-                        בחר\י סוג טיפול
-                    </option>
-                    {treatments.map((treatment, index) => (
-                        <option key={index} value={treatment}>
-                            {treatment}
-                        </option>
-                    ))}
-                </select> :
-                <h3>סוג טיפול: {treatmentType}</h3>}
+            <h4>מספר טלפון: {phoneNumber}</h4>
 
+
+            <div className={styles.chooseTreatment}
+                onClick={toggleDropdown}>
+                בחירת טיפול
+            </div>
+            {isDropdownOpen && (
+                <div className={styles.dropDown}>
+                    <ul
+                        style={{ listStyle: "none", padding: 0, margin: 0 }}
+                    >
+                        {treatments.map((option) => (
+                            <li
+                                key={option}
+                                className={`${styles.itemList} ${treatmentTypes.includes(option) ? styles.selected : ""
+                                    }`}
+                                onClick={() => handleOptionClick(option)}
+                            >
+                                {option}
+                            </li>
+                        ))}
+                    </ul>
+                </div>)}
+            <div className={styles.customerTreatments}>
+                {treatmentTypes.map((treatment) => (
+                    <div key={treatment} className={styles.treatmentsListContainer}>
+                        <div className={styles.CustomerTreatments}>
+                            <MultiplicationSignIcon
+                                className={styles.removeIcon}
+                                onClick={() => removeTreatment(treatment)}
+                            />
+                            {treatment}
+                        </div>
+                    </div>
+                ))}
+            </div>
+            {/* <ConfirmMessage
+                message='אתה בטוח שאתה רוצה למחוק טיפול ?'
+                onConfirm={() => handleDeleteCustomer(currentCustomerId)}
+                onCancel={() => setDeleteAlert(false)}
+            /> */}
 
             <table className={styles.table}>
                 <thead>
