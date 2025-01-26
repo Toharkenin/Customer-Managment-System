@@ -34,11 +34,15 @@ function Login() {
                     console.log("Admin login successful");
                     navigate("/");
                 }
-            } else {
-                setError("שם משתמש לא קיים")
             }
         } catch (error) {
-            setError("שם משתמש לא קיים")
+            setError("הפרטים שהזנת אינם נכונים");
+            setEmail("");
+            setPassword("");
+            setTimeout(() => {
+                setError("");
+            }, 2000);
+
         }
     };
 
@@ -47,6 +51,7 @@ function Login() {
         setError(null);
         setLoading(true);
         await handleLogin();
+        setLoading(false);
     };
 
     return (
