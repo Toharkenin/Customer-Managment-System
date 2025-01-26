@@ -19,6 +19,7 @@ function Login() {
         try {
             const adminCredential = await signInWithEmailAndPassword(auth, email, password);
             const admin = adminCredential.user;
+            localStorage.setItem("loginTime", Date.now().toString());
 
             if (!admin) {
                 console.error("No user found");

@@ -69,7 +69,7 @@
     
     background-color: rgb(250, 251, 252);
     border-color: rgb(223, 225, 230);
-    color: rgb(9, 30, 66);
+    color: #000;
     cursor: text;
     border-radius: 3px;
     border-width: 2px;
@@ -120,7 +120,8 @@
 
 .clientTable th {
     background-color: #f2f2f2;
-    font-weight: bold;
+    font-weight: 600;
+    color: #000;
 }
 
 .clientTable tr:nth-child(even) {
@@ -180,7 +181,7 @@
     font-weight: 700;
     border: 0;
     border-radius: 0;
-    color: #FF6C0E;
+    color: #bc8700;
     transition-timing-function: ease-in-out;
     transition-property: background;
     transition-duration: 150ms;
@@ -203,7 +204,7 @@
     font-weight: 700;
     border: 0;
     border-radius: 0;
-    color: #FF6C0E;
+    color: #bc8700;
     transition-timing-function: ease-in-out;
     transition-property: background;
     transition-duration: 150ms;

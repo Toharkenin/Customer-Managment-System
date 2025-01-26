@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
 import './App.css'
-import { AuthProvider, useAuth } from './AuthContext'
+import { AuthProvider } from './AuthContext'
 import ClientForm from './pages/form/ClientForm'
 import Login from './pages/login/Login'
 import MainPage from './pages/mainPage/MainPage'
@@ -13,26 +13,27 @@ import Confirmation from './components/confirmation/Confirmation'
 import ViewHealthStatements from './pages/viewHealthStatements/ViewHealthStatements'
 import ProtectedRoute from './routes/ProtectedRoute'
 import { useEffect } from 'react'
-import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../firebase'
 
 function App() {
 
-  // const { admin, login, logout, isAuthenticated } = useAuth();
+  const maxSessionDuration = 7 * 24 * 60 * 60 * 1000;
 
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       console.log("Logged in user:", user);
-  //       login(user.email);
-  //     } else {
-  //       console.log("No user logged in");
-  //       logout();
-  //     }
-  //   });
 
-  //   return () => unsubscribe();
-  // }, [login, logout]);
+  useEffect(() => {
+    const checkSessionExpiration = async () => {
+      const loginTime = localStorage.getItem("loginTime");
+
+      if (loginTime && Date.now() - parseInt(loginTime) > maxSessionDuration) {
+        await auth.signOut();
+        localStorage.removeItem("loginTime");
+        window.location.reload();
+      }
+    };
+
+    checkSessionExpiration();
+  }, []);
+
 
   return (
     <div dir="rtl">

@@ -169,7 +169,7 @@ function MainPage() {
             <div className={styles.headerSection}>
                 <div className={styles.buutons}>
                     <img src={logoDark} alt="Logo" className={styles.logo} />
-                    <h2>יומן לקוחות</h2>
+                    <h2 style={{ color: "#000" }}>יומן לקוחות</h2>
                 </div>
                 <div className={styles.buutons}>
                     <NavLink to="/Form">

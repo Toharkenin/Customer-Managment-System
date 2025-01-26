@@ -86,6 +86,7 @@ function EditCustomer() {
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         className={styles.input}
+                        maxLength={30}
                         required
                     />
                 </div>
@@ -98,17 +99,23 @@ function EditCustomer() {
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         className={styles.input}
+                        maxLength={30}
                         required
                     />
                 </div>
                 <div className={styles.inputGroup}>
                     <label htmlFor="id" className={styles.label}>תעודת זהות</label>
                     <input
-                        type="number"
+                        type="text"
                         id="userId"
                         value={userId}
                         onChange={(e) => setUserId(e.target.value)}
                         className={styles.input}
+                        maxLength={11}
+                        onInput={(e: React.FormEvent<HTMLInputElement>) => {
+                            const input = e.target as HTMLInputElement;
+                            input.value = input.value.replace(/[^0-9]/g, '').slice(0, 12);
+                        }}
                         required
                     />
                 </div>
@@ -120,6 +127,7 @@ function EditCustomer() {
                         value={phoneNumber}
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         className={styles.input}
+                        maxLength={12}
                         required
                     />
                 </div>
@@ -133,6 +141,7 @@ function EditCustomer() {
                             setEmail(e.target.value)
                         }}
                         className={styles.input}
+                        maxLength={30}
                         required
                     />
                 </div>
