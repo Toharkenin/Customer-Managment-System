@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import styles from './MainPage.module.scss';
 import { useEffect, useState } from 'react';
 import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
@@ -8,6 +8,9 @@ import Delete01Icon from '../../assets/delete-01-stroke-rounded';
 import Search01Icon from '../../assets/search-01-stroke-rounded';
 import DeleteAlert from '../../components/deleteAlert/DeleteAlert';
 import logoDark from '../../assets/logo-dark.png';
+import Logout01Icon from '../../assets/logout-01-stroke-rounded';
+import { useAuth } from "../../routes/AuthContext";
+import { getAuth, signOut } from 'firebase/auth';
 
 
 interface Customer {
@@ -24,6 +27,7 @@ interface Customer {
 
 function MainPage() {
 
+
     const usersCollectionRef = collection(db, 'customers');
     const [allCustomers, setAllCustomers] = useState<Customer[]>([]);
     const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
@@ -31,6 +35,9 @@ function MainPage() {
     const [filterBy, setFilterBy] = useState<string>('firstName');
     const [deleteAlert, setDeleteAlert] = useState<boolean>(false)
     const [currentCustomerId, setCurrentCustomerId] = useState<string>('');
+    const navigation = useNavigate();
+    const { logout } = useAuth();
+
 
     useEffect(() => {
         const unsubscribe = onSnapshot(usersCollectionRef, (querySnapshot) => {
@@ -146,6 +153,11 @@ function MainPage() {
         }
     };
 
+    const handleLogout = async () => {
+        logout();
+        navigation('/login');
+    };
+
     return (
         <div className={styles.tableContainer}>
             {deleteAlert ?
@@ -154,6 +166,7 @@ function MainPage() {
                     onConfirm={() => handleDeleteCustomer(currentCustomerId)}
                     onCancel={() => setDeleteAlert(false)}
                 /> : null}
+
             <div className={styles.headerSection}>
                 <div className={styles.buutons}>
                     <img src={logoDark} alt="Logo" className={styles.logo} />
@@ -163,6 +176,7 @@ function MainPage() {
                     <NavLink to="/Form">
                         <button className={styles.newClientButton}>+ לקוח חדש</button>
                     </NavLink>
+                    <Logout01Icon className={styles.logoutIcon} onClick={handleLogout} />
                 </div>
             </div>
             <div className={styles.searchBoxContainer}>

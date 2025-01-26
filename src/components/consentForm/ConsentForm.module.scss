@@ -32,7 +32,7 @@
     font-size: 15px;
     line-height: 30px;
     font-weight: 400;
-    text-align: center;
+    // text-align: center;
 
 }
 
@@ -41,11 +41,17 @@
     border-color: #005fb2;
     color: #fff;
 } 
-.button:active {
-    border: 1rem solid #005fb2;
-    background-color: #005fb2; 
+// .button:active {
+//     // border: 1rem solid #005fb2;
+//     // background-color: #005fb2; 
 
-}
-.button.clicked {
-    border: 1rem solid #000;
+// }
+// .button.clicked {
+//     // border: 1rem solid #000;
+// }
+
+.checkIcon {
+    color: green;
+    width: 2rem;
+    height: auto;
 }

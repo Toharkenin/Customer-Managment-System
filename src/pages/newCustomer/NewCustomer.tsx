@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./newCustomer.module.scss";
 import PersonalDetailsForm from "../../components/personalInfoForm/PersonalDetailsForm";
 import ConsentForm from "../../components/consentForm/ConsentForm";
@@ -6,6 +6,7 @@ import HealthStatement from "../../components/healthStatement/HealthStatement";
 import Confirmation from "../../components/confirmation/Confirmation";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
+import { useAuth } from "../../AuthContext";
 
 function NewCustomer() {
 
@@ -27,15 +28,20 @@ function NewCustomer() {
         "אני מאשר/ת את הסכמתי לפתיחת תיק מעקב טיפולים.",
         "התיק יכלול נתונים אישיים ונתוני הטיפולים, כולל צילומים של אזור הטיפול.",
         "כמו כן, יתועדו תגובות ותוצאות הטיפולים, מידע אישי כגון גיל, מין ואנמנזה רפואית ככל שישנן.",
+        " ",
         "אני מאשר/ת את הסכמתי לפתיחת תיק מעקב טיפולים.",
         "התיק יכלול נתונים אישיים ונתוני הטיפולים, כולל צילומים של אזור הטיפול.",
         "כמו כן, יתועדו תגובות ותוצאות הטיפולים, מידע אישי כגון גיל, מין ואנמנזה רפואית ככל שישנן.",
     ];
 
-
     const steps = ["PersonalDetails", "statement1", "statement2", "statement3", "healthStatement", "confirm"];
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [customerEmail, setCustomerEmail] = useState<string>("");
+
+    useEffect(() => {
+        // setButtonActive(false);
+    }, [thirdConsentTexts]);
+
 
     const handleNextStep = (lastStatemrnt: boolean) => {
         if (lastStatemrnt) {
@@ -46,11 +52,11 @@ function NewCustomer() {
         }
     };
 
-    const handlePrevStep = () => {
-        if (currentStep > 0) {
-            setCurrentStep((prevStep) => prevStep - 1);
-        }
-    };
+    // const handlePrevStep = () => {
+    //     if (currentStep > 0) {
+    //         setCurrentStep((prevStep) => prevStep - 1);
+    //     }
+    // };
 
     const addStatementsToDB = async () => {
         try {
@@ -76,28 +82,29 @@ function NewCustomer() {
             case "statement1":
                 return (
                     <ConsentForm
+                        key={`statement1-${currentStep}`}
                         header="טופס הסכמה לטיפול בהסרת שיער בטכנולוגיית לייזר"
                         texts={firstConsentTexts}
                         onNext={() => handleNextStep(false)}
-                        onBack={handlePrevStep}
                     />
                 );
             case "statement2":
                 return (
                     <ConsentForm
+                        key={`statement2-${currentStep}`}
                         header="הצהרת המטופל/ת:"
                         texts={secondConsentTexts}
                         onNext={() => handleNextStep(false)}
-                        onBack={handlePrevStep}
                     />
                 );
             case "statement3":
                 return (
                     <ConsentForm
+                        key={`statement3-${currentStep}`}
                         header="הצהרת המטופל/ת:"
                         texts={thirdConsentTexts}
                         onNext={() => handleNextStep(true)}
-                        onBack={handlePrevStep}
+                    // onBack={handlePrevStep}
                     />
                 );
             case "healthStatement":

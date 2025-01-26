@@ -4,7 +4,7 @@ import ConsentForm from '../../components/consentForm/ConsentForm';
 import { useNavigate, useParams } from 'react-router';
 import { db } from '../../../firebase';
 import { doc, updateDoc } from 'firebase/firestore';
-import VIcon from '../../assets/V-icon';
+import Tick01Icon from '../../assets/V-icon';
 
 function StatementsPage() {
 
@@ -45,6 +45,7 @@ function StatementsPage() {
     const [showStatements, setShowStatements] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [successMessage, setSuccessMessage] = useState<string>("");
+    const [buttonPressed, setButtonPressed] = useState<boolean>(false);
 
     const navigate = useNavigate();
 

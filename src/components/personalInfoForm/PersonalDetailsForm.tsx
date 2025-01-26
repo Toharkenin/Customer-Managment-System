@@ -63,6 +63,7 @@ function PersonalDetailsForm({ onNext, customerEmail }: Props) {
           onChange={(e) => setFirstName(e.target.value)}
           className={styles.input}
           placeholder="שם פרטי"
+          maxLength={20}
           required
         />
       </div>
@@ -76,18 +77,24 @@ function PersonalDetailsForm({ onNext, customerEmail }: Props) {
           onChange={(e) => setLastName(e.target.value)}
           className={styles.input}
           placeholder="שם משפחה"
+          maxLength={20}
           required
         />
       </div>
       <div className={styles.inputGroup}>
         <label htmlFor="id" className={styles.label}>תעודת זהות</label>
         <input
-          type="number"
+          type='text'
           id="id"
           value={id}
           onChange={(e) => setId(e.target.value)}
           className={styles.input}
           placeholder="תעודת זהות"
+          maxLength={10}
+          onInput={(e: React.FormEvent<HTMLInputElement>) => {
+            const input = e.target as HTMLInputElement;
+            input.value = input.value.replace(/[^0-9]/g, '').slice(0, 12);
+          }}
           required
         />
       </div>
@@ -100,6 +107,7 @@ function PersonalDetailsForm({ onNext, customerEmail }: Props) {
           onChange={(e) => setPhoneNumber(e.target.value)}
           className={styles.input}
           placeholder="מספר טלפון"
+          maxLength={10}
           required
         />
       </div>
@@ -115,6 +123,7 @@ function PersonalDetailsForm({ onNext, customerEmail }: Props) {
           }}
           className={styles.input}
           placeholder="אימייל"
+          maxLength={30}
           required
         />
       </div>

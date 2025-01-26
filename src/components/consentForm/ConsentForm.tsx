@@ -1,17 +1,20 @@
+import { useState } from 'react';
 import styles from './ConsentForm.module.scss';
+import Tick01Icon from '../../assets/V-icon';
 
 interface Props {
     onNext: () => void;
-    onBack: () => void;
     header: string;
     texts: string[];
 };
 
-function ConsentForm({ onBack, onNext, header, texts }: Props) {
+function ConsentForm({ onNext, header, texts, }: Props) {
+
+    const [buttonActive, setButtonActive] = useState<boolean>(false);
 
     const handleButtonClicked = () => {
         onNext();
-        // onActive = true;
+        setButtonActive(true);
     };
 
     return (
@@ -22,13 +25,14 @@ function ConsentForm({ onBack, onNext, header, texts }: Props) {
                     {text}
                 </p>
             ))}
-            <button
+
+            {!buttonActive ? <button
                 type="button"
                 className={styles.button}
                 onClick={handleButtonClicked}
             >
                 אני מאשר\ת
-            </button>
+            </button> : <Tick01Icon className={styles.checkIcon} />}
         </div>
     )
 }

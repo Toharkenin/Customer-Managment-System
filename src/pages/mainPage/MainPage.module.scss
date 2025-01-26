@@ -28,7 +28,7 @@
 }
 
 .newClientButton {
-    background-color: #1B365D;
+    background-color: #000;
     color: #fff;
     height: 2.8rem;
     text-align: center;
@@ -49,7 +49,12 @@
     color: #2c2a2a;
 }
 
-
+.logoutIcon {
+    margin-top: 0.6rem;
+    width: 2rem;
+    height: auto;
+    cursor: pointer;
+}
 
 .searchBoxContainer {
     display: flex;
@@ -312,5 +317,6 @@
         background-color: #143250;
     }
 }
+
 
 /* Additional JS Required */

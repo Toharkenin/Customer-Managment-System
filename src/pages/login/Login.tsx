@@ -33,15 +33,12 @@ function Login() {
                 if (adminData.role === "admin") {
                     console.log("Admin login successful");
                     navigate("/");
-
-                } else {
-                    console.error("User does not have admin privileges");
                 }
             } else {
-                console.error("User is not registered as an admin in Firestore");
+                setError("שם משתמש לא קיים")
             }
         } catch (error) {
-            console.error("Error during login:", error);
+            setError("שם משתמש לא קיים")
         }
     };
 
@@ -66,6 +63,7 @@ function Login() {
                             onChange={(e) => setEmail(e.target.value)}
                             className={styles.input}
                             placeholder="אימייל"
+                            maxLength={30}
                             required
                         />
                         <label htmlFor="password" className={styles.label}>סיסמא</label>
@@ -76,6 +74,7 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}
                             className={styles.input}
                             placeholder="סיסמא"
+                            maxLength={30}
                             required
                         />
                     </div>

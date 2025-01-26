@@ -15,6 +15,7 @@ function EditCustomer() {
     const [success, setSuccess] = useState<boolean>(false);
     const navigate = useNavigate();
 
+
     //get users info
     useEffect(() => {
         if (!id) return;

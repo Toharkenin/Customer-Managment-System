@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './clientForm.module.scss';
 import ConsentForm from '../../components/consentForm/ConsentForm';
 import HealthStatement from '../../components/healthStatement/HealthStatement';
+import { useAuth } from '../../AuthContext';
 
 function ClientForm() {
 
