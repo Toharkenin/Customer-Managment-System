@@ -6,8 +6,6 @@ import { db } from '../../../firebase';
 import SignatureCanvas from 'react-signature-canvas'
 import { format } from 'date-fns';
 import MultiplicationSignIcon from '../../assets/multiplication-sign-stroke-rounded';
-import ConfirmMessage from '../confirmMessage/confirmMessage';
-import ArrowLeft02Icon from '../../assets/arrow-left-02-stroke-rounded';
 
 interface Card {
     date: string;
@@ -202,7 +200,6 @@ function CustomerCard() {
 
     return (
         <div className={styles.tableContainer}>
-            <ArrowLeft02Icon className={styles.arrowBack} />
             <h2 className={styles.tableHeader}>כרטיס לקוח</h2>
             <h4>שם: {name}</h4>
             <h4>מספר טלפון: {phoneNumber}</h4>

@@ -5,7 +5,9 @@
 }
 
 .authorazation {
-    display: inline;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     input[type="checkbox"] {
         width: 20px;
         height: 20px;
