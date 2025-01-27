@@ -61,7 +61,7 @@ function Login() {
                 <h2 className={styles.title}>התחברות</h2>
                 <form onSubmit={handleSubmit}>
                     <div className={styles.inputGroup}>
-                        <label htmlFor="email" className={styles.label}>אימייל</label>
+                        {/* <label htmlFor="email" className={styles.label}>אימייל</label> */}
                         <input
                             type="email"
                             id="email"
@@ -72,7 +72,7 @@ function Login() {
                             maxLength={30}
                             required
                         />
-                        <label htmlFor="password" className={styles.label}>סיסמא</label>
+                        {/* <label htmlFor="password" className={styles.label}>סיסמא</label> */}
                         <input
                             type="password"
                             id="password"

@@ -239,6 +239,7 @@ function MainPage() {
                                             className={styles.editdelete}
                                         />
                                     </NavLink>
+
                                     <Delete01Icon
                                         style={{ cursor: 'pointer' }}
                                         onClick={() => {

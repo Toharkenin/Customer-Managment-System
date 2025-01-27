@@ -9,6 +9,12 @@
     z-index: 1000; 
     padding-bottom: 20px; 
     margin: 0;
+    position: relative;
+}
+
+.arrowBack {
+    width: 4rem;
+    position: absolute;
 }
 
 .tableHeader {
