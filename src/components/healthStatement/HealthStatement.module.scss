@@ -1,13 +1,23 @@
 .container {
-    padding: 0 20rem;
+    padding: 2rem 10rem;
+    background-color: #ecebeb73;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .header {
     font-weight: 500;
+    color: #ffc42f;
+    font-size: 2rem;
+}
+
+.header2{ 
+    font-weight: 500;
+    color: #000;
 }
 
 .topText {
-    font-weight: 400;
+    font-weight: 500;
+    color: #000;
 }
 
 .authorazation {
@@ -21,7 +31,13 @@
 
 .questions {
     margin-top: 4rem;
+    font-weight: 500;
+    color: #000;
 }
+
+.radio[type="radio"]{
+    accent-color: #ffc42f;
+  }
 
 .question {
     font-weight: 600;
@@ -96,15 +112,16 @@
 }
 
 .sendButton {
-    width: 20%;
-    background-color: #007bff;
-    color: #fff;
+    width: 40%;
+    background-color: #ffc42f;
+    color: #000;
     border: none;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
     margin-top: 4px;
     margin-top: 4rem;
+    border-radius: 30px;
 }
 
 .errorMessage {

@@ -101,6 +101,7 @@ function HealthStatement({ customerEmail, onNext }: Props) {
                     <label>
                         <input
                             type="radio"
+                            className={styles.radio}
                             name={`question-${question.id}`}
                             checked={currentAnswer?.checkbox === 'yes'}
                             onChange={() => handleAnswerChange(question.id, 'checkbox', 'yes')}
@@ -110,6 +111,7 @@ function HealthStatement({ customerEmail, onNext }: Props) {
                     </label>
                     <label style={{ marginTop: '1rem' }}>
                         <input
+                            className={styles.radio}
                             type="radio"
                             name={`question-${question.id}`}
                             checked={currentAnswer?.checkbox === 'no'}
@@ -125,8 +127,8 @@ function HealthStatement({ customerEmail, onNext }: Props) {
                         <input
                             type="text"
                             placeholder="פירוט"
-                            value={currentAnswer.answer}
-                            onChange={(e) => handleAnswerChange(question.id, "answer", e.target.value)}
+                            // value={currentAnswer.answer}
+                            // onChange={(e) => handleAnswerChange(question.id, "answer", e.target.value)}
                             required
                         />
                     </div>
@@ -184,7 +186,7 @@ function HealthStatement({ customerEmail, onNext }: Props) {
                     ))}
                 </div>
 
-                <h3 className={styles.header}>האם היה לך / יש לך כעת</h3>
+                <h3 className={styles.header2}>האם היה לך / יש לך כעת</h3>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div>

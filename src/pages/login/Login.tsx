@@ -61,7 +61,6 @@ function Login() {
                 <h2 className={styles.title}>התחברות</h2>
                 <form onSubmit={handleSubmit}>
                     <div className={styles.inputGroup}>
-                        {/* <label htmlFor="email" className={styles.label}>אימייל</label> */}
                         <input
                             type="email"
                             id="email"
@@ -72,7 +71,6 @@ function Login() {
                             maxLength={30}
                             required
                         />
-                        {/* <label htmlFor="password" className={styles.label}>סיסמא</label> */}
                         <input
                             type="password"
                             id="password"
@@ -87,9 +85,11 @@ function Login() {
                     <button type="submit" className={styles.button} disabled={loading}>
                         {loading ? "מתחבר..." : "התחברות"}
                     </button>
-                    {error && <p style={{ color: "red" }}>{error}</p>}
+                    {error ? <div className={styles.error}><p style={{ color: "red" }}>{error}</p></div> : null}
                 </form>
+
             </div>
+
         </div>
     );
 }
