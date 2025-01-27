@@ -20,6 +20,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
 }
 
 .buutons{
@@ -71,7 +73,7 @@
     border-color: rgb(223, 225, 230);
     color: #000;
     cursor: text;
-    border-radius: 3px;
+    border-radius: 10px;
     border-width: 2px;
     border-style: solid;
     box-sizing: border-box;
@@ -101,6 +103,7 @@
     line-height: 1.42857; 
     padding: 8px 6px;
     height: 36px;
+    border-radius: 10px;
     width: 14rem;
 }
 
@@ -115,13 +118,12 @@
     text-align: center;
     border: 1px solid #ddd;
     font-weight: 400;
-
 }
 
 .clientTable th {
     background-color: #f2f2f2;
     font-weight: 600;
-    color: #000;
+    color: #000000;
 }
 
 .clientTable tr:nth-child(even) {
@@ -178,7 +180,7 @@
     font-weight: 700;
     border: 0;
     border-radius: 0;
-    color: #bc8700;
+    color: #000000;
     transition-timing-function: ease-in-out;
     transition-property: background;
     transition-duration: 150ms;
@@ -201,7 +203,7 @@
     font-weight: 700;
     border: 0;
     border-radius: 0;
-    color: #bc8700;
+    color: #000000;
     transition-timing-function: ease-in-out;
     transition-property: background;
     transition-duration: 150ms;
