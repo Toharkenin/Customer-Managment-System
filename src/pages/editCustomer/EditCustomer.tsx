@@ -78,6 +78,7 @@ function EditCustomer() {
     return (
         <>
             <form onSubmit={handleSubmit} className={styles.container}>
+                <h4 className={styles.header}>עריכת פרטים אישיים</h4>
                 <div className={styles.inputGroup}>
                     <label htmlFor="firstName" className={styles.label}>שם פרטי</label>
                     <input

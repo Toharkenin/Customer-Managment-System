@@ -1,6 +1,19 @@
 .input-group {
     margin-bottom: 2rem;
+    background-color: #ecebeb73;
     // width: 80%; 
+}
+
+.container {
+  background-color: #ecebeb73;
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem 10rem;
+}
+
+.header {
+    font-weight: 500;
+    color: #ffc42f;
+    font-size: 1.5rem;
 }
 
 .label {
@@ -8,13 +21,14 @@
   display: block;
   text-align: right;
   margin-top: 2rem;
+  margin-bottom: 0.2rem;
 //   transform: translateY(-50%);
   font-size: 14px;
   color: #8d8d8d;
   pointer-events: none;
   transition: all 0.2s ease-in-out;
   color: #ffc42f;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .input {

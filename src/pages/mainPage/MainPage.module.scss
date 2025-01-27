@@ -10,8 +10,15 @@
     flex-direction: column;
     height: 100vh; 
     overflow: hidden;
+    display: flex;
+    overflow-x: auto;
 
 }
+
+.clientTable {
+    min-width: 7rem; 
+    width: 100%;
+    }
 
 .headerSection {
     background-color: #f2f2f2;
