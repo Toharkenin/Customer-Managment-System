@@ -227,141 +227,141 @@
 }
 
 
-@media (max-width: 1357px) {
-    .tableContainer {
-        width: 95vw;
-    }
+// // @media (max-width: 1357px) {
+// //     .tableContainer {
+// //         width: 95vw;
+// //     }
 
-    // .headerSection {
-    //     flex-direction: column;
-    //     align-items: flex-start;
-    // }
+//     // .headerSection {
+//     //     flex-direction: column;
+//     //     align-items: flex-start;
+//     // }
 
-    // .buutons {
-    //     justify-content: center;
-    //     flex-wrap: wrap;
-    // }
+//     // .buutons {
+//     //     justify-content: center;
+//     //     flex-wrap: wrap;
+//     // }
 
-    // .logo {
-    //     height: 3.5rem;
-    // }
+//     // .logo {
+//     //     height: 3.5rem;
+//     // }
 
-    // .searchBoxContainer {
-    //     flex-direction: column;
-    //     align-items: stretch;
-    // }
+//     // .searchBoxContainer {
+//     //     flex-direction: column;
+//     //     align-items: stretch;
+//     // }
 
-    // .searchBox, .filterSelector {
-    //     width: 100%;
-    // }
-}
+//     // .searchBox, .filterSelector {
+//     //     width: 100%;
+//     // }
+// }
 
-/* Breakpoint: Smartphone */
-@media (max-width: 768px) {
-    .tableContainer {
-        height: auto;
-        padding: 1rem;
-    }
+// /* Breakpoint: Smartphone */
+// @media (max-width: 768px) {
+//     .tableContainer {
+//         height: auto;
+//         padding: 1rem;
+//     }
 
-    .clientTable {
-        display: block; /* Collapse table into block layout */
-        width: 100%;
-    }
+//     .clientTable {
+//         display: block; /* Collapse table into block layout */
+//         width: 100%;
+//     }
 
-    .clientTable th,
-    .clientTable td {
-        display: none; /* Hide all columns initially */
-    }
+//     .clientTable th,
+//     .clientTable td {
+//         display: none; /* Hide all columns initially */
+//     }
 
-    .clientTable th:nth-child(1),
-    .clientTable th:nth-child(2),
-    .clientTable th:nth-child(3),
-    .clientTable td:nth-child(1),
-    .clientTable td:nth-child(2),
-    .clientTable td:nth-child(3) {
-        display: table-cell; /* Show the first three columns */
-    }
+//     .clientTable th:nth-child(1),
+//     .clientTable th:nth-child(2),
+//     .clientTable th:nth-child(3),
+//     .clientTable td:nth-child(1),
+//     .clientTable td:nth-child(2),
+//     .clientTable td:nth-child(3) {
+//         display: table-cell; /* Show the first three columns */
+//     }
 
-    .clientTable tr {
-        position: relative;
-        display: block;
-        margin-bottom: 1rem;
-    }
+//     .clientTable tr {
+//         position: relative;
+//         display: block;
+//         margin-bottom: 1rem;
+//     }
 
-    .clientTable tr:hover {
-        background: none; /* Remove hover effect */
-    }
+//     .clientTable tr:hover {
+//         background: none; /* Remove hover effect */
+//     }
 
-    .clientTable td {
-        text-align: left;
-        padding-left: 50%;
-        position: relative;
-    }
+//     .clientTable td {
+//         text-align: left;
+//         padding-left: 50%;
+//         position: relative;
+//     }
 
-    .clientTable td::before {
-        content: attr(data-label); /* Add label for hidden columns */
-        position: absolute;
-        left: 1rem;
-        font-weight: bold;
-    }
+//     .clientTable td::before {
+//         content: attr(data-label); /* Add label for hidden columns */
+//         position: absolute;
+//         left: 1rem;
+//         font-weight: bold;
+//     }
 
-    .dropdownDetails {
-        display: none;
-        width: 100%;
-        margin-top: 0.5rem;
-    }
+//     .dropdownDetails {
+//         display: none;
+//         width: 100%;
+//         margin-top: 0.5rem;
+//     }
 
-    .dropdownToggle {
-        display: block;
-        background-color: #1B365D;
-        color: #fff;
-        padding: 0.5rem;
-        text-align: center;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+//     .dropdownToggle {
+//         display: block;
+//         background-color: #1B365D;
+//         color: #fff;
+//         padding: 0.5rem;
+//         text-align: center;
+//         border-radius: 5px;
+//         cursor: pointer;
+//     }
 
-    .dropdownToggle:hover {
-        background-color: #143250;
-    }
-}
-
-
-/* Additional JS Required */
+//     .dropdownToggle:hover {
+//         background-color: #143250;
+//     }
+// }
 
 
-@media (max-width: 768px) {
-    .headerSection {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1rem;
-    }
+// /* Additional JS Required */
 
-    .searchBoxContainer {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem 0;
-    }
 
-    .searchBox,
-    .filterSelector {
-        width: 100%;
-    }
+// @media (max-width: 768px) {
+//     .headerSection {
+//         flex-direction: column;
+//         align-items: flex-start;
+//         padding: 1rem;
+//     }
 
-    .clientTable th,
-    .clientTable td {
-        font-size: 0.85rem;
-        padding: 0.3rem;
-    }
+//     .searchBoxContainer {
+//         flex-direction: column;
+//         gap: 1rem;
+//         padding: 1rem 0;
+//     }
 
-    .buutons {
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
+//     .searchBox,
+//     .filterSelector {
+//         width: 100%;
+//     }
 
-    .newClientButton {
-        width: 100%;
-        font-size: 0.9rem;
-        height: 2.5rem;
-    }
-}
+//     .clientTable th,
+//     .clientTable td {
+//         font-size: 0.85rem;
+//         padding: 0.3rem;
+//     }
+
+//     .buutons {
+//         gap: 0.5rem;
+//         flex-wrap: wrap;
+//     }
+
+//     .newClientButton {
+//         width: 100%;
+//         font-size: 0.9rem;
+//         height: 2.5rem;
+//     }
+// }
