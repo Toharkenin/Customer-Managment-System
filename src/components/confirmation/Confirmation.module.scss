@@ -5,12 +5,20 @@
 }
 
 .authorazation {
+<<<<<<< HEAD
     display: flex;
+=======
+    display: inline;
+>>>>>>> 64f299ad884b03845d5f064d351f23c3bd800ead
     input[type="checkbox"] {
         width: 20px;
         height: 20px;
         cursor: pointer;
+<<<<<<< HEAD
         accent-color: #c71414; /* Changes the color of the checkbox for supported browsers */
+=======
+        accent-color: #ffc42f;
+>>>>>>> 64f299ad884b03845d5f064d351f23c3bd800ead
       }
 }
 
