@@ -108,7 +108,7 @@ function MainPage() {
         } else {
             return (
                 <NavLink to={`/Health-Statement/${id}`}>
-                    <button className={styles.addHealthButton}>+ חדש</button>
+                    <button className={styles.addHealthButton}>הוספת הצהרה</button>
                 </NavLink>
             )
         }
@@ -123,7 +123,7 @@ function MainPage() {
         } else {
             return (
                 <NavLink to={`/Statements-Page/${id}`}>
-                    <button className={styles.addHealthButton}>+ חדש</button>
+                    <button className={styles.addHealthButton}>הוספת הצהרה</button>
                 </NavLink>
             )
         }
@@ -134,7 +134,7 @@ function MainPage() {
             return <button className={styles.healthButton}>כרטיס לקוח</button>
         } else {
             return (
-                <button className={styles.addCardButton}>+כרטיס חדש</button>
+                <button className={styles.addCardButton}>הוסף כרטיס</button>
             )
         }
     };

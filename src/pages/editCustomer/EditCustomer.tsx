@@ -145,10 +145,12 @@ function EditCustomer() {
                         required
                     />
                 </div>
-                <button type="submit" className={styles.button}>
-                    {loading ? "עובדים על זה..." : "עריכה"}
-                </button>
-                {success ? <h4 className={styles.success}>לקוח התעדכן בהצלחה</h4> : null}
+                <div>
+                    <button type="submit" className={styles.button}>
+                        {loading ? "עובדים על זה..." : "עריכה"}
+                    </button>
+                    {success ? <h4 className={styles.success}>לקוח התעדכן בהצלחה</h4> : null}
+                </div>
             </form>
         </>
     )
