@@ -284,87 +284,18 @@
     }
 }
 
-/* Breakpoint: Smartphone */
-@media (max-width: 768px) {
-    .tableContainer {
-        height: auto;
-        width: 95vw;
-        padding: 1rem;
-    }
-
-    .clientTable {
-        display: block; 
-        width: 100%;
-    }
-
-    .clientTable th,
-    .clientTable td {
-        display: none; 
-    }
-}
-
-//     .clientTable th:nth-child(1),
-//     .clientTable th:nth-child(2),
-//     .clientTable th:nth-child(3),
-//     .clientTable td:nth-child(1),
-//     .clientTable td:nth-child(2),
-//     .clientTable td:nth-child(3) {
-//         display: table-cell; /* Show the first three columns */
-//     }
-
-//     .clientTable tr {
-//         position: relative;
-//         display: block;
-//         margin-bottom: 1rem;
-//     }
-
-//     .clientTable tr:hover {
-//         background: none; /* Remove hover effect */
-//     }
-
-//     .clientTable td {
-//         text-align: left;
-//         padding-left: 50%;
-//         position: relative;
-//     }
-
-//     .clientTable td::before {
-//         content: attr(data-label); /* Add label for hidden columns */
-//         position: absolute;
-//         left: 1rem;
-//         font-weight: bold;
-//     }
-
-//     .dropdownDetails {
-//         display: none;
-//         width: 100%;
-//         margin-top: 0.5rem;
-//     }
-
-//     .dropdownToggle {
-//         display: block;
-//         background-color: #1B365D;
-//         color: #fff;
-//         padding: 0.5rem;
-//         text-align: center;
-//         border-radius: 5px;
-//         cursor: pointer;
-//     }
-
-//     .dropdownToggle:hover {
-//         background-color: #143250;
-//     }
-// }
-
-
-// /* Additional JS Required */
-
 
 @media (max-width: 768px) {
     .headerSection {
         flex-direction: column;
         align-items: flex-start;
         padding: 1rem;
+        background-color: #ffffff;
+    }
+
+    .buttons {
+        gap: 1.5rem;
+        background-color: #1B365D;
     }
 
     .searchBoxContainer {

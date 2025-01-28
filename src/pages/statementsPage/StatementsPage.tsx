@@ -45,7 +45,6 @@ function StatementsPage() {
     const [showStatements, setShowStatements] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [successMessage, setSuccessMessage] = useState<string>("");
-    const [buttonPressed, setButtonPressed] = useState<boolean>(false);
 
     const navigate = useNavigate();
 

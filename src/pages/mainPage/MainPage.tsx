@@ -117,7 +117,7 @@ function MainPage() {
     const statements = (statementsExist: boolean, id: string) => {
         if (statementsExist) {
 
-            return <NavLink to={`/Statements-Page/${id}`}>
+            return <NavLink to={`/Statements/${id}`}>
                 <button className={styles.healthButton}>הצהרת הלקוח</button>
             </NavLink>
         } else {

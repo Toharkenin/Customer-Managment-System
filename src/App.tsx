@@ -14,6 +14,7 @@ import ViewHealthStatements from './pages/viewHealthStatements/ViewHealthStateme
 import ProtectedRoute from './routes/ProtectedRoute'
 import { useEffect } from 'react'
 import { auth } from '../firebase'
+import ExistingStatements from './components/existingStatements/ExistingStatements'
 
 function App() {
 
@@ -56,6 +57,7 @@ function App() {
                     <Route path="/Customer-Card/:id" element={<CustomerCard />} />
                     <Route path="/Confirmation/:id" element={<Confirmation customerEmail='' />} />
                     <Route path="/Health-statements-view/:id" element={<ViewHealthStatements />} />
+                    <Route path="/Statements/:id" element={<ExistingStatements />} />
                   </Routes>
                 </ProtectedRoute>
               } />
