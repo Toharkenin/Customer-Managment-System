@@ -13,40 +13,12 @@
     display: flex;
     overflow-x: auto;
 
-    @media screen and (max-width: 1024px) {
-        width: 95vw;
-        padding-bottom: 15px;
-    }
-
-    @media screen and (max-width: 768px) {
-        width: 100vw;
-        padding: 10px;
-        height: auto;
-        overflow-y: auto;
-    }
 }
 
 .clientTable {
+    // min-width: 100; 
     width: 100%;
-
-    @media screen and (max-width: 768px) {
-        display: block;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        
-        th, td {
-            min-width: 120px; // Ensures columns don't get too narrow
-            white-space: nowrap; // Prevents text wrapping
-        }
     }
-
-    @media screen and (max-width: 480px) {
-        th, td {
-            padding: 0.2rem;
-            font-size: 14px;
-        }
-    }
-}
 
 .headerSection {
     background-color: #f2f2f2;
@@ -57,27 +29,11 @@
     padding: 1rem 2rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-    @media screen and (max-width: 768px) {
-        flex-direction: column;
-        padding: 1rem;
-        gap: 1rem;
-    }
 }
 
-.buutons {
+.buutons{
     display: flex;
     gap: 1rem;
-
-    @media screen and (max-width: 768px) {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    @media screen and (max-width: 480px) {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-    }
 }
 
 .newClientButton {
@@ -89,26 +45,24 @@
     display: inline-block;
     font-size: 16px;
     border-radius: 0.4rem;
-    padding: 0 1rem;
-
-    @media screen and (max-width: 480px) {
-        width: 100%;
-        height: 2.5rem;
-        font-size: 14px;
-    }
 }
 
 .logo {
     width: auto;
     height: 4.5rem;
+}
 
-    @media screen and (max-width: 768px) {
-        height: 3.5rem;
-    }
 
-    @media screen and (max-width: 480px) {
-        height: 3rem;
-    }
+.newCardButton {
+    background-color: #f2f2f2;
+    color: #2c2a2a;
+}
+
+.logoutIcon {
+    margin-top: 0.6rem;
+    width: 2rem;
+    height: auto;
+    cursor: pointer;
 }
 
 .searchBoxContainer {
@@ -118,15 +72,10 @@
     align-items: center;
     padding: 1.5rem 0;
     position: relative;
-
-    @media screen and (max-width: 768px) {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem 0;
-    }
 }
 
 .searchBox {
+    
     background-color: rgb(250, 251, 252);
     border-color: rgb(223, 225, 230);
     color: #000;
@@ -142,27 +91,16 @@
     height: 36px;
     width: 20rem;
     padding-right: 30px;
-
-    &:hover {
-        background-color: rgb(235, 236, 240);
+        :hover{
+            background-color: rgb(235, 236, 240);
+        }
     }
-
-    @media screen and (max-width: 768px) {
-        width: 100%;
-    }
-}
 
 .searchIcon {
     position: absolute;
     right: 10px;
     width: 1rem;
-    color: rgb(157, 162, 174);
-
-    @media screen and (max-width: 768px) {
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+    color:rgb(157, 162, 174);
 }
 
 .filterSelector {
@@ -174,48 +112,36 @@
     height: 36px;
     border-radius: 10px;
     width: 14rem;
-
-    @media screen and (max-width: 768px) {
-        width: 100%;
-    }
 }
 
 .clientTable {
     border-collapse: collapse;
     width: 100%;
-
-    th, td {
-        padding: 0.3rem;
-        text-align: center;
-        border: 1px solid #ddd;
-        font-weight: 400;
-
-        @media screen and (max-width: 768px) {
-            padding: 0.2rem;
-            font-size: 14px;
-        }
-    }
-
-    th {
-        background-color: #f2f2f2;
-        font-weight: 600;
-        color: #000000;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-
-        @media screen and (max-width: 768px) {
-            position: sticky;
-            left: 0;
-        }
-    }
-
-    tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
 }
 
-.healthButton, .addHealthButton, .addCardButton {
+.clientTable th,
+.clientTable td {
+    padding: 0.3rem;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-weight: 400;
+    // padding: 0.5rem;
+}
+
+.clientTable th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+    color: #000000;
+}
+
+.clientTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+    
+}
+
+
+.healthButton {
+
     display: inline-block;
     outline: none;
     border-width: 0px;
@@ -227,36 +153,34 @@
     text-align: center;
     text-decoration: none;
     transition: background 0.1s ease-out 0s, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
+    background: #ededed;
     cursor: pointer;
+    height: 24px;
+    line-height: 24px;
     padding: 0px 12px;
     vertical-align: middle;
     width: auto;
-
-    @media screen and (max-width: 768px) {
-        padding: 0px 8px;
-        font-size: 12px;
-        height: 22px;
-        line-height: 22px;
-    }
-}
-
-.healthButton {
-    background: #ededed;
-    height: 24px;
-    line-height: 24px;
     font-size: 14px;
     color: #1B365D;
-
-    &:hover {
+    :hover {
         background: #1B365D;
         text-decoration: inherit;
         transition-duration: 0s, 0.15s;
         color: rgb(255, 255, 255);
     }
+
+
+    
 }
 
-.addHealthButton, .addCardButton {
+.addHealthButton {
+
+    
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
     font-size: 14px;
+    padding: 0 12px;
     line-height: 20px;
     height: 30px;
     max-height: 30px;
@@ -269,8 +193,30 @@
     transition-property: background;
     transition-duration: 150ms;
     box-shadow: none;
+    :hover {
+        background: #F7F9FD;
+    }
+}
 
-    &:hover {
+.addCardButton {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 12px;
+    line-height: 20px;
+    height: 30px;
+    max-height: 30px;
+    background: none;
+    font-weight: 700;
+    border: 0;
+    border-radius: 0;
+    color: #000000;
+    transition-timing-function: ease-in-out;
+    transition-property: background;
+    transition-duration: 150ms;
+    box-shadow: none;
+    :hover {
         background: #F7F9FD;
     }
 }
@@ -278,9 +224,144 @@
 .editdelete {
     width: 1rem;
     margin: 0 0.8rem;
+}
 
-    @media screen and (max-width: 768px) {
-        width: 0.8rem;
-        margin: 0 0.4rem;
+
+@media (max-width: 1357px) {
+    .tableContainer {
+        width: 95vw;
+    }
+
+    // .headerSection {
+    //     flex-direction: column;
+    //     align-items: flex-start;
+    // }
+
+    // .buutons {
+    //     justify-content: center;
+    //     flex-wrap: wrap;
+    // }
+
+    // .logo {
+    //     height: 3.5rem;
+    // }
+
+    // .searchBoxContainer {
+    //     flex-direction: column;
+    //     align-items: stretch;
+    // }
+
+    // .searchBox, .filterSelector {
+    //     width: 100%;
+    // }
+}
+
+/* Breakpoint: Smartphone */
+@media (max-width: 768px) {
+    .tableContainer {
+        height: auto;
+        padding: 1rem;
+    }
+
+    .clientTable {
+        display: block; /* Collapse table into block layout */
+        width: 100%;
+    }
+
+    .clientTable th,
+    .clientTable td {
+        display: none; /* Hide all columns initially */
+    }
+
+    .clientTable th:nth-child(1),
+    .clientTable th:nth-child(2),
+    .clientTable th:nth-child(3),
+    .clientTable td:nth-child(1),
+    .clientTable td:nth-child(2),
+    .clientTable td:nth-child(3) {
+        display: table-cell; /* Show the first three columns */
+    }
+
+    .clientTable tr {
+        position: relative;
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .clientTable tr:hover {
+        background: none; /* Remove hover effect */
+    }
+
+    .clientTable td {
+        text-align: left;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .clientTable td::before {
+        content: attr(data-label); /* Add label for hidden columns */
+        position: absolute;
+        left: 1rem;
+        font-weight: bold;
+    }
+
+    .dropdownDetails {
+        display: none;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .dropdownToggle {
+        display: block;
+        background-color: #1B365D;
+        color: #fff;
+        padding: 0.5rem;
+        text-align: center;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .dropdownToggle:hover {
+        background-color: #143250;
+    }
+}
+
+
+/* Additional JS Required */
+
+
+@media (max-width: 768px) {
+    .headerSection {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .searchBoxContainer {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 0;
+    }
+
+    .searchBox,
+    .filterSelector {
+        width: 100%;
+    }
+
+    .clientTable th,
+    .clientTable td {
+        font-size: 0.85rem;
+        padding: 0.3rem;
+    }
+
+    .buutons {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .newClientButton {
+        width: 100%;
+        font-size: 0.9rem;
+        height: 2.5rem;
     }
 }
