@@ -27,8 +27,8 @@
     padding: 0 16px;
     background-color: #fff;
     border-radius: 0.25rem;
-    border: 1px solid #0070d2;
-    color: #0070d2;
+    border: 1px solid #000;
+    color: #000;
     font-size: 15px;
     line-height: 30px;
     font-weight: 400;
@@ -37,18 +37,29 @@
 }
 
 .button:hover {
-    background-color: #005fb2;  
-    border-color: #005fb2;
+    background-color: #ffc42f;  
+    border-color: #ffc42f;
     color: #fff;
 } 
 // .button:active {
-//     // border: 1rem solid #005fb2;
-//     // background-color: #005fb2; 
+//     // border: 1rem solid #ffc42f;
+//     // background-color: #ffc42f; 
 
 // }
 // .button.clicked {
 //     // border: 1rem solid #000;
 // }
+
+.agreedComtainer {
+    display: flex;
+    justify-content: center;
+}
+
+.agreedText {
+    color: green;
+    font-size: 1rem;
+    font-weight: 600;
+}
 
 .checkIcon {
     color: green;

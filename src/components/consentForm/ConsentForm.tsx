@@ -32,7 +32,12 @@ function ConsentForm({ onNext, header, texts, }: Props) {
                 onClick={handleButtonClicked}
             >
                 אני מאשר\ת
-            </button> : <Tick01Icon className={styles.checkIcon} />}
+            </button> :
+                <div className={styles.agreedComtainer}>
+                    <h4 className={styles.agreedText}>אושר</h4>
+                    <Tick01Icon className={styles.checkIcon} />
+
+                </div>}
         </div>
     )
 }

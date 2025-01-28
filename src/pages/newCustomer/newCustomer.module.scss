@@ -33,6 +33,38 @@
     padding: 3rem 0;
     background-color: #fff; 
     z-index: 1000; 
+
+    // @media screen and (max-width: 1024px) {
+    //     width: 90%;
+    //     padding: 2rem 0;
+    // }
+
+    // @media screen and (max-width: 768px) {
+    //     position: fixed;
+    //     left:-10px;
+    //     width: 95%;
+    //     padding: 1.5rem 0;
+    //     overflow-x: auto;
+    //     justify-content: flex-start;
+    //     gap: 1rem;
+
+    //     &::-webkit-scrollbar {
+    //         height: 4px;
+    //     }
+
+    //     &::-webkit-scrollbar-track {
+    //         background: #f1f1f1;
+    //     }
+
+    //     &::-webkit-scrollbar-thumb {
+    //         background: #888;
+    //         border-radius: 2px;
+    //     }
+    // }
+
+    // @media screen and (max-width: 480px) {
+    //     padding: 1rem 0;
+    // }
 }
 
 .step {

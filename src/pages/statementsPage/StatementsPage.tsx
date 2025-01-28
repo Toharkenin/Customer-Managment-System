@@ -103,7 +103,6 @@ function StatementsPage() {
                 <>
                     <div ref={firstconsentFormRef} className={styles.statementsSection}>
                         <ConsentForm
-                            onBack={() => scrollToSection(personalDetailsRef)}
                             header="טופס הסכמה לטיפול בהסרת שיער בטכנולוגיית לייזר"
                             texts={firstConsentTexts}
                             onNext={() => {
@@ -115,7 +114,6 @@ function StatementsPage() {
 
                     <div ref={seconsConsentFormRef} className={styles.statementsSection}>
                         <ConsentForm
-                            onBack={() => scrollToSection(firstconsentFormRef)}
                             header="הצהרת המטופל/ת:"
                             texts={secondConsentTexts}
                             onNext={() => {
@@ -126,7 +124,6 @@ function StatementsPage() {
                     </div>
                     <div ref={thirdConsentFormRef} className={styles.statementsSection}>
                         <ConsentForm
-                            onBack={() => scrollToSection(seconsConsentFormRef)}
                             header="הצהרת המטופל/ת:"
                             texts={thirdConsentTexts}
                             onNext={() => {
@@ -137,15 +134,15 @@ function StatementsPage() {
                     </div>
                     <div ref={fourthConsentFormRef} className={styles.statementsSection}>
                         <ConsentForm
-                            onBack={() => scrollToSection(thirdConsentFormRef)}
                             header="הצהרת המטופל/ת:"
                             texts={fourthConsentTexts}
                             onNext={() => {
                                 addToDB();
                             }}
                         />
-                        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
                         {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
+                        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+
                     </div>
                 </>
             }
