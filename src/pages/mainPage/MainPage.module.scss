@@ -9,15 +9,42 @@
     padding-bottom: 20px; 
     flex-direction: column;
     height: 100vh; 
-    // overflow: hidden;
     display: flex;
-    // overflow-x: auto;
 
+    @media screen and (max-width: 1024px) {
+        width: 95vw;
+        padding-bottom: 15px;
+    }
+
+    @media screen and (max-width: 768px) {
+        width: 100vw;
+        padding: 10px;
+        height: auto;
+        overflow-y: auto;
+    }
 }
 
 .clientTable {
     // min-width: 100; 
     width: 100%;
+
+    @media screen and (max-width: 768px) {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        
+        th, td {
+            min-width: 120px; // Ensures columns don't get too narrow
+            white-space: nowrap; // Prevents text wrapping
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        th, td {
+            padding: 0.2rem;
+            font-size: 14px;
+        }
+    }
     }
 
 .headerSection {
@@ -232,102 +259,105 @@
         width: 95vw;
     }
 
-    // .headerSection {
-    //     flex-direction: column;
-    //     align-items: flex-start;
-    // }
+    .headerSection {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem
+    }
 
-    // .buutons {
-    //     justify-content: center;
-    //     flex-wrap: wrap;
-    // }
+    .buutons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 
-    // .logo {
-    //     height: 3.5rem;
-    // }
+    .logo {
+        height: 3.5rem;
+    }
 
-    // .searchBoxContainer {
-    //     flex-direction: column;
-    //     align-items: stretch;
-    // }
+    .searchBoxContainer {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-    // .searchBox, .filterSelector {
-    //     width: 100%;
-    // }
+    .searchBox, .filterSelector {
+        width: 100%;
+    }
 }
 
 /* Breakpoint: Smartphone */
 @media (max-width: 768px) {
     .tableContainer {
         height: auto;
+        width: 95vw;
         padding: 1rem;
     }
 
     .clientTable {
-        display: block; /* Collapse table into block layout */
+        display: block; 
         width: 100%;
     }
 
     .clientTable th,
     .clientTable td {
-        display: none; /* Hide all columns initially */
-    }
-
-    .clientTable th:nth-child(1),
-    .clientTable th:nth-child(2),
-    .clientTable th:nth-child(3),
-    .clientTable td:nth-child(1),
-    .clientTable td:nth-child(2),
-    .clientTable td:nth-child(3) {
-        display: table-cell; /* Show the first three columns */
-    }
-
-    .clientTable tr {
-        position: relative;
-        display: block;
-        margin-bottom: 1rem;
-    }
-
-    .clientTable tr:hover {
-        background: none; /* Remove hover effect */
-    }
-
-    .clientTable td {
-        text-align: left;
-        padding-left: 50%;
-        position: relative;
-    }
-
-    .clientTable td::before {
-        content: attr(data-label); /* Add label for hidden columns */
-        position: absolute;
-        left: 1rem;
-        font-weight: bold;
-    }
-
-    .dropdownDetails {
-        display: none;
-        width: 100%;
-        margin-top: 0.5rem;
-    }
-
-    .dropdownToggle {
-        display: block;
-        background-color: #1B365D;
-        color: #fff;
-        padding: 0.5rem;
-        text-align: center;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .dropdownToggle:hover {
-        background-color: #143250;
+        display: none; 
     }
 }
 
+//     .clientTable th:nth-child(1),
+//     .clientTable th:nth-child(2),
+//     .clientTable th:nth-child(3),
+//     .clientTable td:nth-child(1),
+//     .clientTable td:nth-child(2),
+//     .clientTable td:nth-child(3) {
+//         display: table-cell; /* Show the first three columns */
+//     }
 
-/* Additional JS Required */
+//     .clientTable tr {
+//         position: relative;
+//         display: block;
+//         margin-bottom: 1rem;
+//     }
+
+//     .clientTable tr:hover {
+//         background: none; /* Remove hover effect */
+//     }
+
+//     .clientTable td {
+//         text-align: left;
+//         padding-left: 50%;
+//         position: relative;
+//     }
+
+//     .clientTable td::before {
+//         content: attr(data-label); /* Add label for hidden columns */
+//         position: absolute;
+//         left: 1rem;
+//         font-weight: bold;
+//     }
+
+//     .dropdownDetails {
+//         display: none;
+//         width: 100%;
+//         margin-top: 0.5rem;
+//     }
+
+//     .dropdownToggle {
+//         display: block;
+//         background-color: #1B365D;
+//         color: #fff;
+//         padding: 0.5rem;
+//         text-align: center;
+//         border-radius: 5px;
+//         cursor: pointer;
+//     }
+
+//     .dropdownToggle:hover {
+//         background-color: #143250;
+//     }
+// }
+
+
+// /* Additional JS Required */
 
 
 @media (max-width: 768px) {
