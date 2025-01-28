@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from './HealthStatement.module.scss';
 import { useNavigate, useParams } from 'react-router';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -64,6 +64,9 @@ function HealthStatement({ customerEmail, onNext }: Props) {
             answer: "",
         }))
     );
+    const [details, setDetails] = useState<string>("");
+
+
 
     const isFormValid = () => {
         return answers.every(
@@ -90,9 +93,27 @@ function HealthStatement({ customerEmail, onNext }: Props) {
     };
 
 
+    const handleDetailAnswerChange = (questionId: number, value: string) => {
 
-    const QuestionComponent = ({ question }: { question: Question }) => {
+        setAnswers((prevAnswers) =>
+            prevAnswers.map((a) =>
+                a.id === questionId ? { ...a, answer: value } : a
+            )
+        );
+
+    };
+
+
+
+    const QuestionComponent = React.memo(({ question }: { question: Question }) => {
         const currentAnswer = answers.find((a) => a.id === question.id);
+        const [localAnswer, setLocalAnswer] = useState(
+            answers.find((a) => a.id === question.id)?.answer || ''
+        );
+
+        const handleBlur = () => {
+            handleDetailAnswerChange(question.id, localAnswer);
+        };
 
         return (
             <div key={question.id} className={styles.questionContainer}>
@@ -127,15 +148,16 @@ function HealthStatement({ customerEmail, onNext }: Props) {
                         <input
                             type="text"
                             placeholder="פירוט"
-                            // value={currentAnswer.answer}
-                            // onChange={(e) => handleAnswerChange(question.id, "answer", e.target.value)}
+                            value={localAnswer}
+                            onChange={(e) => setLocalAnswer(e.target.value)}
+                            onBlur={handleBlur}
                             required
                         />
                     </div>
                 )}
             </div>
         );
-    };
+    });
 
     const handleSendForm = async () => {
         if (!isFormValid()) {
