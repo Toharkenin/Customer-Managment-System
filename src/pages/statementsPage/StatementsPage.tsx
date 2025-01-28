@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from './StatementsPage.module.scss';
 import ConsentForm from '../../components/consentForm/ConsentForm';
 import { useNavigate, useParams } from 'react-router';
 import { db } from '../../../firebase';
 import { doc, updateDoc } from 'firebase/firestore';
-import Tick01Icon from '../../assets/V-icon';
 
 function StatementsPage() {
 
