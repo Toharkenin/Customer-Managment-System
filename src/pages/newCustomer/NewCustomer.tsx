@@ -52,6 +52,12 @@ function NewCustomer() {
         }
     };
 
+    // const handlePrevStep = () => {
+    //     if (currentStep > 0) {
+    //         setCurrentStep((prevStep) => prevStep - 1);
+    //     }
+    // };
+
     const addStatementsToDB = async () => {
         try {
             const customerRef = doc(db, 'customers', customerEmail);
@@ -98,16 +104,15 @@ function NewCustomer() {
                         header="הצהרת המטופל/ת:"
                         texts={thirdConsentTexts}
                         onNext={() => handleNextStep(true)}
+                    // onBack={handlePrevStep}
                     />
                 );
             case "healthStatement":
                 return (
-                    <div className={styles.healthStatementsWrapper}>
-                        <HealthStatement
-                            onNext={() => handleNextStep(false)}
-                            customerEmail={customerEmail}
-                        />
-                    </div>
+                    <HealthStatement
+                        onNext={() => handleNextStep(false)}
+                        customerEmail={customerEmail}
+                    />
                 );
             case "confirm":
                 return (

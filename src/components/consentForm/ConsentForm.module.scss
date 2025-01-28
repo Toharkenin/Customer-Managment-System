@@ -6,7 +6,6 @@
 
 .header {
     font-weight: 500;
-    color: #000;
 }
 
 .text {
@@ -28,8 +27,8 @@
     padding: 0 16px;
     background-color: #fff;
     border-radius: 0.25rem;
-    border: 1px solid #000;
-    color: #000;
+    border: 1px solid #0070d2;
+    color: #0070d2;
     font-size: 15px;
     line-height: 30px;
     font-weight: 400;
@@ -38,30 +37,21 @@
 }
 
 .button:hover {
-    background-color: #ffc42f;  
-    border-color: #ffc42f;
+    background-color: #005fb2;  
+    border-color: #005fb2;
     color: #fff;
 } 
 // .button:active {
-//     // border: 1rem solid #ffc42f;
-//     // background-color: #ffc42f; 
+//     // border: 1rem solid #005fb2;
+//     // background-color: #005fb2; 
 
 // }
 // .button.clicked {
 //     // border: 1rem solid #000;
 // }
 
-.agreedContainer {
-    display: flex;
-    justify-content: center;
-}
-
 .checkIcon {
     color: green;
     width: 2rem;
     height: auto;
-};
-
-.agreeText {
-    color: green;
 }
