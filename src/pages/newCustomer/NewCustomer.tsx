@@ -6,7 +6,6 @@ import HealthStatement from "../../components/healthStatement/HealthStatement";
 import Confirmation from "../../components/confirmation/Confirmation";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { useAuth } from "../../AuthContext";
 
 function NewCustomer() {
 
@@ -109,10 +108,12 @@ function NewCustomer() {
                 );
             case "healthStatement":
                 return (
-                    <HealthStatement
-                        onNext={() => handleNextStep(false)}
-                        customerEmail={customerEmail}
-                    />
+                    <div className={styles.healthStatementContaier}>
+                        <HealthStatement
+                            onNext={() => handleNextStep(false)}
+                            customerEmail={customerEmail}
+                        />
+                    </div>
                 );
             case "confirm":
                 return (

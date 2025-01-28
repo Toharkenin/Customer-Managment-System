@@ -64,7 +64,6 @@ function HealthStatement({ customerEmail, onNext }: Props) {
             answer: "",
         }))
     );
-    const [details, setDetails] = useState<string>("");
 
 
 

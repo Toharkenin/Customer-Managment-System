@@ -1,5 +1,5 @@
 .container {
-    width: 80vw;
+    width: 100vw;
     @media screen and (max-width: 1024px) {
         width: 100%;
     }
@@ -59,6 +59,9 @@
     // @media screen and (max-width: 480px) {
     //     padding: 1rem 0;
     // }
+}
+.content {
+    margin-top: 7rem
 }
 
 .step {
@@ -146,4 +149,10 @@ button:disabled {
             line-height: 1.5; // Better line height for readability
         }
     }
+}
+
+.healthStatementContaier {
+    margin-top: 5rem;
+    width: 70vw;
+    // margin: 5rem 10rem 5rem 10rem;
 }
