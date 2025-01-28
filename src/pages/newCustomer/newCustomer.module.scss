@@ -1,13 +1,11 @@
 .container {
     width: 80vw;
-    // margin: 0 auto; /* Center the container horizontally */
 }
 
 .stepContainer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 0 auto;
     position: fixed; 
     top: 0; 
     width: 80%; 
@@ -46,7 +44,6 @@
     background-color: #ccc;
     position: absolute;
     top: 50%;
-    // left: 15px;
     right: 50%;
     z-index: 0;
     transition: background-color 0.3s ease;
@@ -81,4 +78,8 @@ button {
 button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+.healthStatementsWrapper {
+    padding: 5rem;
 }
