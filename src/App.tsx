@@ -15,6 +15,7 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import { useEffect } from 'react'
 import { auth } from '../firebase'
 import ExistingStatements from './components/existingStatements/ExistingStatements'
+import { ChakraProvider } from '@chakra-ui/react';
 
 function App() {
 
@@ -37,7 +38,9 @@ function App() {
 
 
   return (
+    
     <div dir="rtl">
+       <ChakraProvider>
       <AuthProvider>
         <BrowserRouter>
           <Routes>
@@ -64,6 +67,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </AuthProvider>
+      </ChakraProvider>
     </div>
   )
 };

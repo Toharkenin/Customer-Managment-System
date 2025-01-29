@@ -1,38 +1,39 @@
-.input-group {
-    margin-bottom: 2rem;
-    background-color: #ecebeb73;
-    // width: 80%; 
-}
-
+/* Default (Desktop) */
 .container {
   background-color: #ecebeb73;
   box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2rem 10rem;
+  padding: 2rem clamp(2rem, 10vw, 10rem); /* Dynamic padding */
+  max-width: 60rem;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.input-group {
+  margin-bottom: 2rem;
+  background-color: #ecebeb73;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-    font-weight: 500;
-    color: #ffc42f;
-    font-size: 1.5rem;
+  font-weight: 500;
+  color: #ffc42f;
+  font-size: clamp(1.2rem, 2vw, 1.5rem); /* Responsive font size */
+  text-align: center;
 }
 
 .label {
-  margin-right: 16px;
   display: block;
   text-align: right;
-  margin-top: 2rem;
-  margin-bottom: 0.2rem;
-//   transform: translateY(-50%);
+  margin-top: 1.5rem;
   font-size: 14px;
-  color: #8d8d8d;
-  pointer-events: none;
-  transition: all 0.2s ease-in-out;
   color: #ffc42f;
   font-weight: 600;
 }
 
 .input {
-  width: 20vw;
+  width: 100%;
+  max-width: 20vw;
   height: 40px;
   border-radius: 10px;
   padding: 0 16px;
@@ -47,18 +48,7 @@
 .input:focus {
   border-bottom: 1px solid #0f62fe;
   outline: none;
-
-
 }
-
-// .input-group .input:focus + .label {
-//   color: #feee0f;
-// }
-.label + .input:focus {
-  color: #161616;
-}
-
-
 
 input:focus::placeholder {
   color: transparent;
@@ -66,17 +56,63 @@ input:focus::placeholder {
 
 .button {
   width: 40%;
+  min-width: 120px;
   background-color: #ffc42f;
   color: #fff;
   border: none;
-  border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-  margin-top: 4rem;
+  margin-top: 2rem;
+  padding: 12px;
   border-radius: 10px;
-};
+  transition: background 0.3s ease-in-out;
+}
+
+.button:hover {
+  background-color: #e6a900;
+}
 
 .success {
-    color: #ff0000;
-    font-weight: 200;
+  color: #ff0000;
+  font-weight: 200;
+}
+
+/* Tablet (≤ 768px) */
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 4rem;
+  }
+
+  .input {
+    max-width: 80%;
+  }
+
+  .button {
+    width: 60%;
+  }
+}
+
+/* Mobile (≤ 480px) */
+@media (max-width: 480px) {
+  .container {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .label {
+    text-align: left;
+    font-size: 12px;
+  }
+
+  .input {
+    max-width: 100%;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .button {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
 }
