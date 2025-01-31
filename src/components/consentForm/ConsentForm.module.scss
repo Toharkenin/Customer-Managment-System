@@ -1,26 +1,26 @@
+/* Base styles */
 .container {
-    height: 100vh;
-    padding: 5rem 5rem 0 5rem;
-    // background-color: azure;
-}
-
-.header {
+    min-height: 100vh;
+    padding: 5rem;
+    padding-bottom: 0;
+    background-color: azure;
+    box-sizing: border-box;
+  }
+  
+  .header {
     font-weight: 500;
-}
-
-.text {
+  }
+  
+  .text {
     word-wrap: break-word;
     word-break: break-word;
-    // line-height: 2;
     font-size: 1.2rem;
     color: #000;
     font-weight: 200;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.button {
-    
+    margin: 1.5rem 0;
+  }
+  
+  .button {
     display: inline-block;
     outline: none;
     cursor: pointer;
@@ -32,37 +32,94 @@
     font-size: 15px;
     line-height: 30px;
     font-weight: 400;
-    // text-align: center;
-
-}
-
-.button:hover {
-    background-color: #ffc42f;  
+    transition: all 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #ffc42f;
     border-color: #ffc42f;
     color: #fff;
-} 
-// .button:active {
-//     // border: 1rem solid #ffc42f;
-//     // background-color: #ffc42f; 
-
-// }
-// .button.clicked {
-//     // border: 1rem solid #000;
-// }
-
-.agreedComtainer {
+  }
+  
+  .agreedComtainer {
     display: flex;
     justify-content: center;
-}
-
-.agreedText {
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .agreedText {
     color: green;
     font-size: 1rem;
     font-weight: 600;
-}
-
-.checkIcon {
+  }
+  
+  .checkIcon {
     color: green;
     width: 2rem;
     height: auto;
-}
+  }
+  
+  /* Mobile styles (up to 767px) */
+  @media screen and (max-width: 767px) {
+    .container {
+      padding: 2rem 1rem 0 1rem;
+    }
+  
+    .text {
+      font-size: 1rem;
+      margin: 1rem 0;
+    }
+  
+    .button {
+      width: 100%;
+      text-align: center;
+      padding: 8px 16px;
+      line-height: 24px;
+    }
+  
+    .agreedText {
+      font-size: 0.9rem;
+    }
+  
+    .checkIcon {
+      width: 1.5rem;
+    }
+  }
+  
+  /* Tablet styles (768px to 1023px) */
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+    .container {
+      padding: 3rem 3rem 0 3rem;
+    }
+  
+    .text {
+      font-size: 1.1rem;
+    }
+  
+    .button {
+      padding: 0 24px;
+      line-height: 36px;
+    }
+  }
+  
+  /* Desktop styles (1024px and above) */
+  @media screen and (min-width: 1024px) {
+    .container {
+      padding: 5rem 5rem 0 5rem;
+    }
+  
+    /* Desktop styles inherit from base styles */
+  }
+  
+  /* Large desktop styles (1440px and above) */
+  @media screen and (min-width: 1440px) {
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+  
+    .text {
+      font-size: 1.3rem;
+    }
+  }

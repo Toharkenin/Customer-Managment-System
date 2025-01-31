@@ -1,12 +1,41 @@
 .container {
     scroll-snap-type: y mandatory;
-    // scroll-padding: 50px;
+    overflow-y: scroll; /* Ensures smooth scrolling */
+    height: 100vh; /* Takes full viewport height */
 }
 
-.infoSection {
-    scroll-snap-align: start;
-}
-
+/* Ensures sections snap properly */
+.infoSection,
 .statementsSection {
     scroll-snap-align: start;
+    min-height: 100vh; /* Ensures sections fill the viewport */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tablet (≤ 768px) */
+@media (max-width: 768px) {
+    .container {
+        scroll-snap-type: y proximity; /* Makes scrolling smoother */
+    }
+
+    .infoSection,
+    .statementsSection {
+        min-height: 90vh; /* Adjusts for smaller screens */
+    }
+}
+
+/* Mobile (≤ 480px) */
+@media (max-width: 480px) {
+    .container {
+        scroll-snap-type: none; /* Disables snap scrolling for small screens */
+        overflow-y: auto;
+    }
+
+    .infoSection,
+    .statementsSection {
+        min-height: auto; /* Adapts to content height */
+        padding: 2rem; /* Adds space around content */
+    }
 }
