@@ -37,12 +37,13 @@
     margin: 0 auto;
     border: 0.2px solid #ccc;
     width: 40%;
+    border-radius: 10px;
 };
 
 .dropDown {
     position:absolute;
-    left: 40%;
-    right: 40%;
+    left: 30%;
+    right: 30%;
     background-color: #fff;
     z-index: 1000;
     border-radius: 20px;
@@ -107,33 +108,37 @@
 }
 
 .customerTreatments {
-    display: flex; 
-    flex-direction: row;
-    justify-content: center;
-    gap: 2%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(150px, 30%));
+    gap: 1rem; 
     margin-top: 2rem;
-}
-
-.treatmentsListContainer {
-    display: flex; 
-    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .treatmentsListContainer {
+    display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    padding: 0.5rem;
+    background-color: #f8f8f8; 
+    border-radius: 8px; 
     position: relative;
-}
+  }
+  
+  .CustomerTreatments {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; 
+    
+    justify-content:flex-start;
 
-.CustomerTreatments {
-    box-shadow:0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 0.3rem 2rem;
-}
+  }
 
 .removeIcon{
     width: 1rem;
-    bottom: 0.6rem;
-    position: absolute;
-    right: 0.4rem;
-    top: 0.4rem;
     cursor: pointer;
+    position: absolute;
+    left: 90%;
 }
 
 .table {
@@ -172,7 +177,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px dashed #007bff;
+    border: 1px solid #000;
     font-size: 0.9rem;
     font-style: italic;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -190,11 +195,11 @@
     min-width: 12rem;
     height: 32px;
     background-color: #fff;
-    color: rgb(0, 120, 212);
+    color: #000;
     font-size: 14px;
     font-weight: 400;
     box-sizing: border-box;
-    border: 1px solid rgb(0, 120, 212);
+    border: 1px solid #000;
   }
 
 
@@ -204,7 +209,7 @@
 }
 
 .addButton {
-    background-color: rgb(57, 57, 255);
+    background-color: #ffc42f;
     color: #fff;
     height: 2.8rem;
     text-align: center;
@@ -243,3 +248,242 @@
     font-weight: 200;
     margin-bottom: -4px;
 }
+
+@media (max-width: 1024px) {
+    .table {
+        width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+
+}
+
+
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.9rem;
+        width: 95vw;
+    }
+    
+    .chooseTreatment {
+        width: 40%;
+    }
+
+    .dropDown {
+        left: 30%;
+        right: 30%;
+    }
+
+    // .customerTreatments, .treatmentsListContainer {
+    //     flex-direction: column;
+    //     align-items: center;
+    // }
+}
+
+@media (max-width: 480px) {
+    .table {
+        font-size: 0.8rem;
+        width: 95vw;
+    }
+
+    .chooseTreatment {
+        width: 70%;
+    }
+
+    .table {
+        width: 95vw;
+    }
+
+    .dropDown {
+        left: 15%;
+        right: 15%;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.3rem;
+    }
+
+    .date {
+        font-size: 0.8rem;
+    }
+
+    .addButton {
+        font-size: 0.9rem;
+        height: 2.2rem;
+    }
+
+    .customerTreatments {
+        gap: 0.5rem;
+    }
+
+    .CustomerTreatments {
+        padding: 0.5rem;
+    }
+
+    .removeIcon {
+        width: 0.7rem;
+    }
+}
+
+
+
+// .tableContainer {
+//     margin: 0 auto;
+//     padding: 20px;
+//     max-width: 90vw;
+//     border-radius: 10px;
+//     position: relative;
+// }
+
+// .arrowBack {
+//     width: 3rem;
+//     position: absolute;
+//     top: 1rem;
+//     left: 1rem;
+// }
+
+// .tableHeader {
+//     font-size: 1.5rem;
+//     margin-bottom: 1rem;
+//     text-align: center;
+//     color: #333;
+// }
+
+// .chooseTreatment {
+//     font-size: 1rem;
+//     padding: 8px 6px;
+//     width: 100%;
+//     max-width: 400px;
+//     margin: 1rem auto;
+//     cursor: pointer;
+//     border: 1px solid #ccc;
+//     transition: background-color 0.2s ease-in-out;
+// }
+
+// .dropDown {
+//     position: absolute;
+//     left: 50%;
+//     transform: translateX(-50%);
+//     width: 90%;
+//     max-width: 300px;
+//     background-color: #fff;
+//     z-index: 1000;
+//     border-radius: 10px;
+//     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+//     padding: 0.5rem;
+// }
+
+// .itemList {
+//     padding: 0.5rem;
+//     cursor: pointer;
+//     &:hover {
+//         background-color: #f0f0f0;
+//     }
+// }
+
+// .selected {
+//     background-color: #fff7de;
+// }
+
+// .submitOptionsButton {
+//     background-color: #242424;
+//     color: #fff;
+//     border: none;
+//     cursor: pointer;
+//     width: 100%;
+//     padding: 0.5rem;
+// }
+
+// .customerTreatments {
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: center;
+//     gap: 1rem;
+//     margin-top: 2rem;
+// }
+
+// .treatmentsListContainer {
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: center;
+//     gap: 1rem;
+// }
+
+// .CustomerTreatments {
+//     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+//     padding: 1rem;
+// }
+
+// .table {
+//     width: 100%;
+//     max-width: 800px;
+//     margin: 1rem auto;
+//     border-collapse: collapse;
+//     background-color: #f9f9f9;
+// }
+
+// .table th,
+// .table td {
+//     padding: 0.5rem;
+//     text-align: center;
+//     border: 1px solid #ddd;
+// }
+
+// .table th {
+//     background-color: #f2f2f2;
+//     font-weight: bold;
+// }
+
+// .date {
+//     font-size: 1rem;
+//     font-weight: 500;
+//     min-width: 10rem;
+// }
+
+// .signatureBox {
+//     min-height: 40px;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     border: 1px dashed #007bff;
+//     font-size: 0.9rem;
+//     font-style: italic;
+//     transition: background-color 0.3s ease, color 0.3s ease;
+// }
+
+// .addButton {
+//     background-color: rgb(57, 57, 255);
+//     color: #fff;
+//     height: 2.5rem;
+//     text-align: center;
+//     font-size: 1rem;
+//     border-radius: 0.4rem;
+//     margin-top: 1rem;
+//     width: 100%;
+//     max-width: 200px;
+// }
+
+// .clearButton {
+//     cursor: pointer;
+//     font-size: 1rem;
+//     padding: 0.5rem;
+//     background: none;
+//     font-weight: 700;
+//     border: none;
+//     color: #D92736;
+//     transition: background 150ms ease-in-out;
+
+//     &:hover {
+//         background: #F7F9FD;
+//     }
+// }
+
+// .errorMessage {
+//     color: #ff0000;
+//     font-weight: 400;
+//     text-align: center;
+// }
+
+// // Responsive Design

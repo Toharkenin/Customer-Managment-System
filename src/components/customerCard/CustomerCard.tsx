@@ -230,11 +230,12 @@ function CustomerCard() {
                 {treatmentTypes.map((treatment) => (
                     <div key={treatment} className={styles.treatmentsListContainer}>
                         <div className={styles.CustomerTreatments}>
+                            <div>{treatment}</div>
                             <MultiplicationSignIcon
                                 className={styles.removeIcon}
                                 onClick={() => removeTreatment(treatment)}
                             />
-                            {treatment}
+
                         </div>
                     </div>
                 ))}
