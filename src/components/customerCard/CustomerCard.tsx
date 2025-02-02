@@ -240,13 +240,8 @@ function CustomerCard() {
                     </div>
                 ))}
             </div>
-            {/* <ConfirmMessage
-                message='אתה בטוח שאתה רוצה למחוק טיפול ?'
-                onConfirm={() => handleDeleteCustomer(currentCustomerId)}
-                onCancel={() => setDeleteAlert(false)}
-            /> */}
 
-            <table className={styles.table}>
+            <table className={`${styles.table} ${styles.topTable}`}>
                 <thead>
                     <tr>
                         <th>תאריך</th>
@@ -257,6 +252,7 @@ function CustomerCard() {
                 <tbody>
                     <tr>
                         <td>
+                            <h4 className={styles.dateHeader}>תאריך</h4>
                             <input
                                 type="date"
                                 name="date"
@@ -266,6 +262,7 @@ function CustomerCard() {
                             />
                         </td>
                         <td>
+                            <h4 className={styles.dateHeader}>חתימת לקוח</h4>
                             <div className={styles.signatureBox}>
                                 <SignatureCanvas penColor='black'
                                     canvasProps={{ width: 300, height: 150, className: 'sigCanvas' }}
@@ -277,6 +274,7 @@ function CustomerCard() {
                                 className={styles.clearButton}>מחיקה</button>
                         </td>
                         <td>
+                            <h4 className={styles.dateHeader}>חתימת מטפל</h4>
                             <div className={styles.signatureBox}>
                                 <SignatureCanvas penColor='black'
                                     canvasProps={{ width: 300, height: 150, className: 'sigCanvas' }}
@@ -298,7 +296,7 @@ function CustomerCard() {
             {docExists ?
                 <>
                     <h3 style={{ marginTop: '10rem' }}>היסטוריית תורים</h3>
-                    <table className={styles.table} >
+                    <table className={`${styles.table} ${styles.bottomTable}`} >
                         <thead>
                             <tr>
                                 <th>תאריך</th>
