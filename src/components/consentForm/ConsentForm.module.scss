@@ -1,78 +1,10 @@
-// .container {
-//     height: 100vh;
-//     padding: 5rem 5rem 0 5rem;
-//     // background-color: azure;
-// }
-
-// .header {
-//     font-weight: 500;
-// }
-
-// .text {
-//     word-wrap: break-word;
-//     word-break: break-word;
-//     // line-height: 2;
-//     font-size: 1.2rem;
-//     color: #000;
-//     font-weight: 200;
-//     margin-top: 1.5rem;
-//     margin-bottom: 1.5rem;
-// }
-
-// .button {
-    
-//     display: inline-block;
-//     outline: none;
-//     cursor: pointer;
-//     padding: 0 16px;
-//     background-color: #fff;
-//     border-radius: 0.25rem;
-//     border: 1px solid #000;
-//     color: #000;
-//     font-size: 15px;
-//     line-height: 30px;
-//     font-weight: 400;
-//     // text-align: center;
-
-// }
-
-// .button:hover {
-//     background-color: #ffc42f;  
-//     border-color: #ffc42f;
-//     color: #fff;
-// } 
-// // .button:active {
-// //     // border: 1rem solid #ffc42f;
-// //     // background-color: #ffc42f; 
-
-// // }
-// // .button.clicked {
-// //     // border: 1rem solid #000;
-// // }
-
-// .agreedComtainer {
-//     display: flex;
-//     justify-content: center;
-// }
-
-// .agreedText {
-//     color: green;
-//     font-size: 1rem;
-//     font-weight: 600;
-// }
-
-// .checkIcon {
-//     color: green;
-//     width: 2rem;
-//     height: auto;
-// }
 
 
 .container {
   min-height: 100vh;
   padding: 5rem;
   padding-bottom: 0;
-  background-color: azure;
+  background-color: rgba(255, 255, 255, 0.648);
   box-sizing: border-box;
 }
 
@@ -102,6 +34,7 @@
   line-height: 30px;
   font-weight: 400;
   transition: all 0.3s ease;
+  margin-top: 1rem;
 }
 
 .button:hover {
