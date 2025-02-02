@@ -206,7 +206,7 @@ function MainPage() {
                         <th>הצהרת הלקוח</th>
                         <th>טיפול אחרון</th>
                         <th>כרטיס לקוח</th>
-                        <th>פעולות</th>
+                        <th colSpan={2}>פעולות</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -239,7 +239,8 @@ function MainPage() {
                                             className={styles.editdelete}
                                         />
                                     </NavLink>
-
+                                </td>
+                                <td>
                                     <Delete01Icon
                                         style={{ cursor: 'pointer' }}
                                         onClick={() => {

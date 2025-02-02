@@ -6,6 +6,8 @@ import { db } from '../../../firebase';
 import SignatureCanvas from 'react-signature-canvas'
 import { format } from 'date-fns';
 import MultiplicationSignIcon from '../../assets/multiplication-sign-stroke-rounded';
+import Delete01Icon from '../../assets/delete-01-stroke-rounded';
+import Edit02Icon from '../../assets/edit-02-stroke-rounded';
 
 interface Card {
     date: string;
@@ -95,7 +97,7 @@ function CustomerCard() {
 
     const handleAddCardRow = async () => {
         if (newRow.date && !sigPadRefCustomer.current?.isEmpty() && !sigPadRefProvider.current?.isEmpty()
-            && (treatmentTypes.length > 0 || treatmentTypes.length > 0)) {
+            && treatmentTypes.length > 0) {
             const customerSignatureData = sigPadRefCustomer.current?.toDataURL("image/png");
             const providerSignatureData = sigPadRefProvider.current?.toDataURL("image/png");
 
@@ -302,6 +304,7 @@ function CustomerCard() {
                                 <th>תאריך</th>
                                 <th>חתימת לקוח/ה</th>
                                 <th>חתימת מטפל/ת</th>
+                                <th colSpan={2}>פעולות</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -313,6 +316,22 @@ function CustomerCard() {
                                     </td>
                                     <td>
                                         <img src={row.providerSignature} alt={'provider-signature'} />
+                                    </td>
+                                    <td>
+                                        <Delete01Icon
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() => {
+
+                                            }}
+                                            color={'#ff0000'}
+                                            className={styles.editdelete} />
+                                    </td>
+                                    <td>
+                                        <Edit02Icon
+                                            style={{ cursor: 'pointer' }}
+                                            color={'green'}
+                                            className={styles.editdelete}
+                                        />
                                     </td>
                                 </tr>
 
@@ -329,6 +348,3 @@ function CustomerCard() {
 
 export default CustomerCard;
 
-
-
-//1357 first bareakpoint 

@@ -266,10 +266,6 @@
 
 
 @media (max-width: 768px) {
-    .table {
-        font-size: 0.9rem;
-        width: 95vw;
-    }
     
     .chooseTreatment {
         width: 40%;
@@ -279,26 +275,17 @@
         left: 30%;
         right: 30%;
     }
-
-    // .customerTreatments, .treatmentsListContainer {
-    //     flex-direction: column;
-    //     align-items: center;
-    // }
 }
 
 @media (max-width: 480px) {
     .table {
         font-size: 0.8rem;
-        width: 95vw;
     }
 
     .chooseTreatment {
         width: 70%;
     }
 
-    .table {
-        width: 95vw;
-    }
 
     .dropDown {
         left: 15%;
@@ -343,7 +330,8 @@
     }
 
     .bottomTable {
-        width: 95vw;
+        display: block; 
+        overflow-x: auto;
     }
 
     .topTable thead {
