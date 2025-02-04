@@ -12,6 +12,7 @@ import Logout01Icon from '../../assets/logout-01-stroke-rounded';
 import { useAuth } from "../../routes/AuthContext";
 
 
+
 interface Customer {
     id: string;
     firstName: string;
@@ -53,7 +54,7 @@ function MainPage() {
                     email: data.email || '',
                     healthStatement: !!data.HealthStatement,
                     clientStatement: !!data.statements,
-                    lastTreatment: data.lastTreatment || '',
+                    lastTreatment: data.lastTreatment.toDate().toLocaleDateString("he-IL") || null,
                     clientCard: !!data.cards,
                 });
             });
@@ -108,7 +109,7 @@ function MainPage() {
         } else {
             return (
                 <NavLink to={`/Health-Statement/${id}`}>
-                    <button className={styles.addHealthButton}>הוספת הצהרה</button>
+                    <button className={styles.addHealthButton}>+ חדש</button>
                 </NavLink>
             )
         }
@@ -117,13 +118,13 @@ function MainPage() {
     const statements = (statementsExist: boolean, id: string) => {
         if (statementsExist) {
 
-            return <NavLink to={`/Statements/${id}`}>
+            return <NavLink to={`/Statements-Page/${id}`}>
                 <button className={styles.healthButton}>הצהרת הלקוח</button>
             </NavLink>
         } else {
             return (
                 <NavLink to={`/Statements-Page/${id}`}>
-                    <button className={styles.addHealthButton}>הוספת הצהרה</button>
+                    <button className={styles.addHealthButton}>+ חדש</button>
                 </NavLink>
             )
         }
@@ -134,7 +135,7 @@ function MainPage() {
             return <button className={styles.healthButton}>כרטיס לקוח</button>
         } else {
             return (
-                <button className={styles.addCardButton}>הוסף כרטיס</button>
+                <button className={styles.addCardButton}>+כרטיס חדש</button>
             )
         }
     };

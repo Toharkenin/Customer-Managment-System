@@ -27,7 +27,7 @@ function CustomerCard() {
         customerSignature: "",
         providerSignature: "",
     });
-    const [newDate, setNewDate] = useState<string>("");
+    const [newDate, setNewDate] = useState<Date>();
     const [name, setName] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
     const sigPadRefCustomer = useRef<SignatureCanvas>(null);
@@ -85,8 +85,7 @@ function CustomerCard() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedDate = new Date(e.target.value);
         const formatedDate = format(selectedDate, 'dd/MM/yyyy');
-        console.log(typeof formatedDate);
-        setNewDate(formatedDate);
+        setNewDate(selectedDate);
         const { name, value } = e.target;
         setNewRow((prevRow) => ({
             ...prevRow,
@@ -180,7 +179,7 @@ function CustomerCard() {
                         treatments: treatmentTypes,
                     });
                 }
-                if (newDate !== "") {
+                if (newDate !== null) {
                     await updateDoc(customerRef, {
                         lastTreatment: newDate,
                     });
