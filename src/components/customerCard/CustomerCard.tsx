@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { arrayUnion, doc, getDoc, onSnapshot, Timestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import SignatureCanvas from 'react-signature-canvas'
-// import { format } from 'date-fns';
+import { format } from 'date-fns';
 import MultiplicationSignIcon from '../../assets/multiplication-sign-stroke-rounded';
 import Delete01Icon from '../../assets/delete-01-stroke-rounded';
 import Edit02Icon from '../../assets/edit-02-stroke-rounded';
@@ -28,7 +28,6 @@ function CustomerCard() {
         customerSignature: "",
         providerSignature: "",
     });
-    const [newDate, setNewDate] = useState<Date | undefined>(undefined);
     const [name, setName] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
     const sigPadRefCustomer = useRef<SignatureCanvas>(null);
@@ -36,6 +35,7 @@ function CustomerCard() {
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isEditing, setIsEditing] = useState<{ [key: number]: boolean }>({});
     const [editedDates, setEditedDates] = useState<{ [key: number]: string }>({});
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
 
     // get customer's card
@@ -70,6 +70,28 @@ function CustomerCard() {
             return () => unsubscribe();
         }
     }, [id]);
+
+
+
+    useEffect(() => {
+
+        const handleClickOutside = (event: MouseEvent) => {
+
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+
+                setIsDropdownOpen(false);
+            }
+        };
+        if (isDropdownOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isDropdownOpen]);
+
+
 
     const treatments = [
         "גב",
@@ -107,7 +129,6 @@ function CustomerCard() {
                 customerSignature: customerSignatureData || "",
                 providerSignature: providerSignatureData || "",
             };
-            setNewDate(newRow.date);
 
             setCardData((prevData) => [...prevData, rowToAdd]);
 
@@ -261,7 +282,7 @@ function CustomerCard() {
 
 
     return (
-        <div className={styles.tableContainer}>
+        <div className={styles.tableContainer} ref={dropdownRef}>
             <h2 className={styles.tableHeader}>כרטיס לקוח</h2>
             <h4>שם: {name}</h4>
             <h4>מספר טלפון: {phoneNumber}</h4>
