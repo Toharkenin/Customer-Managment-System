@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './CustomerCard.module.scss';
 import { useParams } from 'react-router';
-import { arrayUnion, doc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getDoc, onSnapshot, Timestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import SignatureCanvas from 'react-signature-canvas'
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 import MultiplicationSignIcon from '../../assets/multiplication-sign-stroke-rounded';
 import Delete01Icon from '../../assets/delete-01-stroke-rounded';
 import Edit02Icon from '../../assets/edit-02-stroke-rounded';
+import BookmarkCheck01Icon from '../../assets/bookmark-check-01-stroke-rounded';
 
 interface Card {
-    date: string;
+    date: Date | undefined;
     customerSignature: string;
     providerSignature: string;
 }
@@ -23,18 +24,18 @@ function CustomerCard() {
     const [cardData, setCardData] = useState<Card[]>([]);
     const [docExists, setDocExists] = useState<boolean>(false);
     const [newRow, setNewRow] = useState({
-        date: "",
+        date: undefined as Date | undefined,
         customerSignature: "",
         providerSignature: "",
     });
-    const [newDate, setNewDate] = useState<Date>();
+    const [newDate, setNewDate] = useState<Date | undefined>(undefined);
     const [name, setName] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
     const sigPadRefCustomer = useRef<SignatureCanvas>(null);
     const sigPadRefProvider = useRef<SignatureCanvas>(null);
     const [errorMessage, setErrorMessage] = useState<string>("");
-
-
+    const [isEditing, setIsEditing] = useState<{ [key: number]: boolean }>({});
+    const [editedDates, setEditedDates] = useState<{ [key: number]: string }>({});
 
 
     // get customer's card
@@ -55,6 +56,9 @@ function CustomerCard() {
                         setCardData(customerCards);
                         setTreatmentTypes(treatments);
                         setDocExists(true);
+                    }
+                    else {
+                        setDocExists(false);
                     }
                 } else {
                     console.error('No such document!');
@@ -84,12 +88,9 @@ function CustomerCard() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedDate = new Date(e.target.value);
-        const formatedDate = format(selectedDate, 'dd/MM/yyyy');
-        setNewDate(selectedDate);
-        const { name, value } = e.target;
         setNewRow((prevRow) => ({
             ...prevRow,
-            [name]: value,
+            date: selectedDate,
         }));
     };
 
@@ -106,11 +107,12 @@ function CustomerCard() {
                 customerSignature: customerSignatureData || "",
                 providerSignature: providerSignatureData || "",
             };
+            setNewDate(newRow.date);
 
             setCardData((prevData) => [...prevData, rowToAdd]);
 
 
-            setNewRow({ date: "", customerSignature: "", providerSignature: "" });
+            setNewRow({ date: undefined, customerSignature: "", providerSignature: "" });
             sigPadRefCustomer.current?.clear();
             sigPadRefProvider.current?.clear();
 
@@ -174,14 +176,11 @@ function CustomerCard() {
                 await updateDoc(customerRef, {
                     cards: arrayUnion(data),
                 });
+                console.log(data.date)
                 if (!docExists) {
                     await updateDoc(customerRef, {
                         treatments: treatmentTypes,
-                    });
-                }
-                if (newDate !== null) {
-                    await updateDoc(customerRef, {
-                        lastTreatment: newDate,
+                        lastTreatment: data.date,
                     });
                 }
             }
@@ -197,6 +196,68 @@ function CustomerCard() {
             sigPadRefProvider.current.clear();
     };
 
+    const handleDeleteCard = async (index: number) => {
+
+        if (id) {
+            const customerRef = doc(db, "customers", id);
+
+            try {
+                const docSnap = await getDoc(customerRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const updatedCards = data.cards.filter((_: any, i: number) => i !== index);
+
+                    setCardData(updatedCards);
+
+                    await updateDoc(customerRef, { cards: updatedCards });
+                    console.log("Item removed successfully");
+                } else {
+                    console.log("Document does not exist!");
+                }
+            } catch (error) {
+                console.error("Error removing item: ", error);
+            }
+        }
+    };
+
+    const handleDateChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedDate = e.target.value;
+        setEditedDates(prev => ({
+            ...prev,
+            [index]: selectedDate,
+        }));
+    };
+
+    const handleEditCard = async (index: number) => {
+        const newDate = editedDates[index];
+        if (!newDate || !id) return;
+
+        const customerRef = doc(db, "customers", id);
+
+        try {
+            const docSnap = await getDoc(customerRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const updatedCards = data.cards.map((card: any, i: number) =>
+                    i === index ? { ...card, date: Timestamp.fromDate(new Date(newDate)) } : card
+                );
+
+                await updateDoc(customerRef, { cards: updatedCards });
+
+                setEditedDates(prev => {
+                    const newState = { ...prev };
+                    delete newState[index];
+                    return newState;
+                });
+
+                setIsEditing(prev => ({ ...prev, [index]: false }));
+            } else {
+                console.log("Document does not exist!");
+            }
+        } catch (error) {
+            console.error("Error updating item: ", error);
+        }
+    };
 
 
     return (
@@ -257,7 +318,7 @@ function CustomerCard() {
                             <input
                                 type="date"
                                 name="date"
-                                value={newRow.date}
+                                value={newRow.date ? newRow.date.toISOString().split('T')[0] : ''}
                                 onChange={handleInputChange}
                                 className={styles.dateInputContainer}
                             />
@@ -308,8 +369,27 @@ function CustomerCard() {
                         </thead>
                         <tbody>
                             {cardData.map((row, index) => (
+
                                 <tr key={index}>
-                                    <td className={styles.date}>{row.date}</td>
+                                    <td className={styles.date}>
+                                        {isEditing[index] ?
+                                            <input
+                                                type="date"
+                                                name="date"
+                                                value={editedDates[index]}
+                                                onChange={(e) => handleDateChange(index, e)}
+                                                className={styles.dateInputContainer}
+                                            /> :
+                                            <h3>
+                                                {row.date
+                                                    ? (row.date instanceof Timestamp
+                                                        ? row.date.toDate().toLocaleDateString('he-IL', { timeZone: 'Asia/Jerusalem' })
+                                                        : row.date instanceof Date
+                                                            ? row.date.toLocaleDateString('he-IL', { timeZone: 'Asia/Jerusalem' })
+                                                            : 'תאריך לא תקין')
+                                                    : 'לא נבחר תאריך'}
+                                            </h3>}
+                                    </td>
                                     <td>
                                         <img src={row.customerSignature} alt={'customer-signature'} />
                                     </td>
@@ -318,19 +398,26 @@ function CustomerCard() {
                                     </td>
                                     <td>
                                         <Delete01Icon
-                                            style={{ cursor: 'pointer' }}
-                                            onClick={() => {
-
-                                            }}
-                                            color={'#ff0000'}
+                                            style={isEditing[index] ? { cursor: 'auto' } : { cursor: 'pointer' }}
+                                            onClick={() => isEditing[index] ? null : handleDeleteCard(index)}
+                                            color={isEditing[index] ? 'grey' : '#ff0000'}
                                             className={styles.editdelete} />
                                     </td>
                                     <td>
-                                        <Edit02Icon
-                                            style={{ cursor: 'pointer' }}
-                                            color={'green'}
-                                            className={styles.editdelete}
-                                        />
+                                        {isEditing[index] ?
+                                            <BookmarkCheck01Icon
+                                                className={styles.okButton}
+                                                onClick={() => handleEditCard(index)} />
+                                            :
+                                            <Edit02Icon
+                                                style={{ cursor: 'pointer' }}
+                                                color={'green'}
+                                                className={styles.editdelete}
+                                                onClick={() => {
+                                                    setIsEditing((prev) => ({ ...prev, [index]: true }))
+                                                    setEditedDates((prev) => ({ ...prev, index: row.date }))
+                                                }}
+                                            />}
                                     </td>
                                 </tr>
 

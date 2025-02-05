@@ -254,6 +254,11 @@
     margin-bottom: -4px;
 }
 
+.okButton {
+    color: #ff0000;
+    cursor: pointer;
+}
+
 @media (max-width: 1024px) {
     .table {
         width: 95%;
