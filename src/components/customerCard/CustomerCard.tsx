@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './CustomerCard.module.scss';
 import { useParams } from 'react-router';
-import { arrayUnion, doc, getDoc, onSnapshot, Timestamp, updateDoc } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, doc, getDoc, onSnapshot, Timestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import SignatureCanvas from 'react-signature-canvas'
 import { format } from 'date-fns';
@@ -82,6 +82,7 @@ function CustomerCard() {
                 setIsDropdownOpen(false);
             }
         };
+        console.log("isok", isDropdownOpen)
         if (isDropdownOpen) {
             document.addEventListener("mousedown", handleClickOutside);
         }
@@ -163,9 +164,17 @@ function CustomerCard() {
             if (id) {
                 const customerRef = doc(db, 'customers', id);
 
-                await updateDoc(customerRef, {
-                    treatments: arrayUnion(option),
-                });
+                if (treatmentTypes.includes(option)) {
+                    await updateDoc(customerRef, {
+                        treatments: arrayRemove(option),
+                    });
+                } else {
+                    await updateDoc(customerRef, {
+                        treatments: arrayUnion(option),
+                    });
+                }
+
+                setIsDropdownOpen(false);
             }
         } catch (error) {
             console.error("Error adding treatment:", error);
@@ -181,7 +190,7 @@ function CustomerCard() {
                 const customerRef = doc(db, 'customers', id);
 
                 await updateDoc(customerRef, {
-                    treatments: arrayUnion(treatment),
+                    treatments: arrayRemove(treatment),
                 });
             }
         } catch (error) {
@@ -282,7 +291,7 @@ function CustomerCard() {
 
 
     return (
-        <div className={styles.tableContainer} ref={dropdownRef}>
+        <div className={styles.tableContainer} >
             <h2 className={styles.tableHeader}>כרטיס לקוח</h2>
             <h4>שם: {name}</h4>
             <h4>מספר טלפון: {phoneNumber}</h4>
@@ -293,7 +302,7 @@ function CustomerCard() {
                 בחירת טיפול
             </div>
             {isDropdownOpen && (
-                <div className={styles.dropDown}>
+                <div className={styles.dropDown} ref={dropdownRef}>
                     <ul
                         style={{ listStyle: "none", padding: 0, margin: 0 }}
                     >

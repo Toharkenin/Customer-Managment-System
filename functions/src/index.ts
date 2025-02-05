@@ -1,58 +1,41 @@
-import * as admin from 'firebase-admin';
-import { onSchedule } from 'firebase-functions/v2/scheduler';
-import * as sgMail from '@sendgrid/mail';
+import { setGlobalOptions } from "firebase-functions/v2";
+import { onSchedule } from "firebase-functions/v2/scheduler";
+import { initializeApp } from "firebase-admin/app";
+import { getFirestore, Timestamp, FieldValue } from "firebase-admin/firestore";
 
-// Initialize Firebase Admin SDK
-admin.initializeApp();
+initializeApp(); 
+setGlobalOptions({ region: "us-central1" });
 
-sgMail.setApiKey('YOUR_SENDGRID_API_KEY');
+const db = getFirestore();
 
-export const monthlyReminder = onSchedule('every 1 months', async (event) => {
-    console.log('Running monthly reminder function...');
+export const sendMonthlyNotifications = onSchedule("every 24 hours", async () => {
+  const today = new Date();
+  today.setMonth(today.getMonth() - 1); 
 
-    const customersRef = admin.firestore().collection('customers');
-    const snapshot = await customersRef.get();
+  const customersRef = db.collection("customers");
+  const snapshot = await customersRef
+    .where("lastTreatment", "<=", Timestamp.fromDate(today))
+    .get();
 
-    if (snapshot.empty) {
-        console.log('No customers found');
-        return;
-    }
+  if (snapshot.empty) {
+    console.log("No customers need reminders today.");
+    return;
+  }
 
-    const currentDate = new Date();
+  const batch = db.batch();
 
-    snapshot.forEach(async (doc) => {
-        const customer = doc.data();
+  snapshot.docs.forEach((doc) => {
+    const customer = doc.data();
+    const notificationRef = db.collection("notifications").doc();
 
-        if (!customer.lastTreatmentDate) return;
-
-        const lastTreatmentDate = customer.lastTreatmentDate.toDate(); // Ensure Firestore timestamp is converted to Date
-        const diffTime = Math.abs(currentDate.getTime() - lastTreatmentDate.getTime());
-        const diffDays = Math.ceil(diffTime / (1000 * 3600 * 24)); // Calculate difference in days
-
-        if (diffDays >= 30) {
-            console.log(`Reminder sent to ${customer.name}`);
-            await triggerAdminPopup();
-        }
+    batch.set(notificationRef, {
+      adminRead: false,
+      message: `Reminder: ${customer.name} had a treatment one month ago.`,
+      timestamp: FieldValue.serverTimestamp(),
     });
+
+    console.log(`Notification added for ${customer.name}`);
+  });
+
+  await batch.commit();
 });
-
-// Function to trigger admin popup in Firestore
-const triggerAdminPopup = async () => {
-    const adminRef = admin.firestore().collection('admins').doc('admin-id'); // Replace with the actual admin document
-    const doc = await adminRef.get();
-
-    if (!doc.exists) {
-        console.log('Admin not found');
-        return;
-    }
-
-    // Update the admin's document to signal that a popup is required
-    await adminRef.update({
-        popupNotification: {
-            message: "Reminder: Some customers are due for treatment!",
-            timestamp: admin.firestore.FieldValue.serverTimestamp()
-        }
-    });
-
-    console.log('Popup notification triggered for admin');
-};

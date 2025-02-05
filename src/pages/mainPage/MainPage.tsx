@@ -10,6 +10,7 @@ import DeleteAlert from '../../components/deleteAlert/DeleteAlert';
 import logoDark from '../../assets/logo-dark.png';
 import Logout01Icon from '../../assets/logout-01-stroke-rounded';
 import { useAuth } from "../../routes/AuthContext";
+import Notifications from '../../components/notifications/Notifications';
 
 
 
@@ -256,6 +257,7 @@ function MainPage() {
                     )}
                 </tbody>
             </table>
+            < Notifications />
         </div>
     );
 };
