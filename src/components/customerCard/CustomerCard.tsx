@@ -51,9 +51,9 @@ function CustomerCard() {
                     const customerPhoneNumber = data.phoneNumber;
                     setName(customerName);
                     setPhoneNumber(customerPhoneNumber);
+                    setTreatmentTypes(treatments);
                     if (customerCards.length > 0) {
                         setCardData(customerCards);
-                        setTreatmentTypes(treatments);
                         setDocExists(true);
                     }
                     else {
@@ -212,7 +212,10 @@ function CustomerCard() {
                     let latestDate: Date | null = null;
 
                     for (const card of updatedCards) {
-                        const date = card.date;
+                        let date = card.date;
+                        if (date instanceof Timestamp) {
+                            date = card.date.toDate() as Date
+                        };
 
                         if (date <= today) {
                             console.log("G", date);
@@ -260,7 +263,10 @@ function CustomerCard() {
                 const today = new Date();
                 if (updatedCards.length > 0) {
                     for (const card of updatedCards) {
-                        const date = card.date;
+                        let date = card.date;
+                        if (date instanceof Timestamp) {
+                            date = card.date.toDate() as Date
+                        };
                         if (date <= today) {
                             if (latestDate === null || date > latestDate) {
                                 latestDate = date;
@@ -303,15 +309,20 @@ function CustomerCard() {
                 let updatedCards = data.cards.map((card: any, i: number) =>
                     i === index ? { ...card, date: new Date(newDate) } : card
                 );
+                let latestDate: Date | null = null;
 
-                const latestDate = updatedCards
-                    .map((card: Card) => card.date)
-                    .filter((date: Date): date is Date => !!date)
-                    .reduce((max: any, date: any) => (max && date > max ? date : max), null as Date | null);
-                await updateDoc(customerRef, {
-                    cards: updatedCards,
-                    lastTreatment: latestDate || new Date(newDate),
-                });
+                for (const card of updatedCards) {
+                    let date = card.date;
+                    if (date instanceof Timestamp) {
+                        date = card.date.toDate() as Date
+                    };
+                    if (date <= new Date()) {
+                        if (latestDate === null || date > latestDate) {
+                            latestDate = date;
+                        }
+
+                    }
+                }
 
                 setEditedDates((prev) => {
                     const newState = { ...prev };
