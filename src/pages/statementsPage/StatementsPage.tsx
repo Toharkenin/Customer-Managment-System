@@ -33,7 +33,6 @@ function StatementsPage() {
         "כמו כן, יתועדו תגובות ותוצאות הטיפולים, מידע אישי כגון גיל, מין ואנמנזה רפואית ככל שישנן.",
     ];
 
-    const personalDetailsRef = useRef<HTMLDivElement>(null);
     const firstconsentFormRef = useRef<HTMLDivElement>(null);
     const seconsConsentFormRef = useRef<HTMLDivElement>(null);
     const thirdConsentFormRef = useRef<HTMLDivElement>(null);
@@ -41,7 +40,7 @@ function StatementsPage() {
 
     const { id } = useParams();
 
-    const [showStatements, setShowStatements] = useState<boolean>(true);
+    // const [showStatements, setShowStatements] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [successMessage, setSuccessMessage] = useState<string>("");
 
@@ -97,53 +96,53 @@ function StatementsPage() {
     }
     return (
         <div className={styles.container}>
-            {showStatements &&
-                <>
-                    <div ref={firstconsentFormRef} className={styles.statementsSection}>
-                        <ConsentForm
-                            header="טופס הסכמה לטיפול בהסרת שיער בטכנולוגיית לייזר"
-                            texts={firstConsentTexts}
-                            onNext={() => {
-                                scrollToSection(seconsConsentFormRef)
-                                setActiveButton(1)
-                            }}
-                        />
-                    </div>
+            {/* {showStatements && */}
+            <>
+                <div ref={firstconsentFormRef} className={styles.statementsSection}>
+                    <ConsentForm
+                        header="טופס הסכמה לטיפול בהסרת שיער בטכנולוגיית לייזר"
+                        texts={firstConsentTexts}
+                        onNext={() => {
+                            scrollToSection(seconsConsentFormRef)
+                            setActiveButton(1)
+                        }}
+                    />
+                </div>
 
-                    <div ref={seconsConsentFormRef} className={styles.statementsSection}>
-                        <ConsentForm
-                            header="הצהרת המטופל/ת:"
-                            texts={secondConsentTexts}
-                            onNext={() => {
-                                scrollToSection(thirdConsentFormRef)
-                                setActiveButton(2)
-                            }}
-                        />
-                    </div>
-                    <div ref={thirdConsentFormRef} className={styles.statementsSection}>
-                        <ConsentForm
-                            header="הצהרת המטופל/ת:"
-                            texts={thirdConsentTexts}
-                            onNext={() => {
-                                scrollToSection(fourthConsentFormRef)
-                                setActiveButton(3)
-                            }}
-                        />
-                    </div>
-                    <div ref={fourthConsentFormRef} className={styles.statementsSection}>
-                        <ConsentForm
-                            header="הצהרת המטופל/ת:"
-                            texts={fourthConsentTexts}
-                            onNext={() => {
-                                addToDB();
-                            }}
-                        />
-                        {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
-                        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+                <div ref={seconsConsentFormRef} className={styles.statementsSection}>
+                    <ConsentForm
+                        header="הצהרת המטופל/ת:"
+                        texts={secondConsentTexts}
+                        onNext={() => {
+                            scrollToSection(thirdConsentFormRef)
+                            setActiveButton(2)
+                        }}
+                    />
+                </div>
+                <div ref={thirdConsentFormRef} className={styles.statementsSection}>
+                    <ConsentForm
+                        header="הצהרת המטופל/ת:"
+                        texts={thirdConsentTexts}
+                        onNext={() => {
+                            scrollToSection(fourthConsentFormRef)
+                            setActiveButton(3)
+                        }}
+                    />
+                </div>
+                <div ref={fourthConsentFormRef} className={styles.statementsSection}>
+                    <ConsentForm
+                        header="הצהרת המטופל/ת:"
+                        texts={fourthConsentTexts}
+                        onNext={() => {
+                            addToDB();
+                        }}
+                    />
+                    {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
+                    {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
 
-                    </div>
-                </>
-            }
+                </div>
+            </>
+            {/* } */}
         </div>
     )
 };

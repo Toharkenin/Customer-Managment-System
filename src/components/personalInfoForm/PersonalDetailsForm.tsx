@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { useState } from 'react';
 import styles from './PersonalDetails.module.scss';
 import { setDoc, doc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase';

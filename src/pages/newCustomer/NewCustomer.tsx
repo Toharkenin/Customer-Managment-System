@@ -130,7 +130,7 @@ function NewCustomer() {
     return (
         <div className={styles.container}>
             <div className={styles.stepContainer}>
-                {steps.map((step, index) => (
+                {steps.map((_, index) => (
                     <div key={index} className={styles.step}>
                         <div
                             className={`${styles.circle} ${index <= currentStep ? styles.active : ""}`}

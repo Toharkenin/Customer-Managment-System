@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
 import './App.css'
 import { AuthProvider } from './AuthContext'
-import ClientForm from './pages/form/ClientForm'
 import Login from './pages/login/Login'
 import MainPage from './pages/mainPage/MainPage'
 import EditCustomer from './pages/editCustomer/EditCustomer'
@@ -49,7 +48,6 @@ function App() {
                   <Routes>
                     <Route path="/Edit-Customer/:id" element={<EditCustomer />} />
                     <Route path="/" element={<MainPage />} />
-                    <Route path="/Form2" element={<ClientForm />} />
                     <Route path="/Form" element={<NewCustomer />} />
 
                     <Route path="/Health-Statement/:id" element={<HealthStatement customerEmail='' onNext={() => { }} />} />
