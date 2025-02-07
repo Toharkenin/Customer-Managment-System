@@ -13,7 +13,6 @@ import { useAuth } from "../../routes/AuthContext";
 import Notifications from '../../components/notifications/Notifications';
 
 
-
 interface Customer {
     id: string;
     firstName: string;
@@ -27,7 +26,6 @@ interface Customer {
 }
 
 function MainPage() {
-
 
     const usersCollectionRef = collection(db, 'customers');
     const [allCustomers, setAllCustomers] = useState<Customer[]>([]);
@@ -46,6 +44,14 @@ function MainPage() {
 
             querySnapshot.docs.forEach((doc) => {
                 const data = doc.data();
+                let date;
+
+                if (!!data.lastTreatment) {
+                    date = data.lastTreatment.toDate().toLocaleDateString("he-IL") || null;
+                } else {
+                    date = "";
+                }
+
 
                 customers.push({
                     id: doc.id,
@@ -55,7 +61,7 @@ function MainPage() {
                     email: data.email || '',
                     healthStatement: !!data.HealthStatement,
                     clientStatement: !!data.statements,
-                    lastTreatment: data.lastTreatment.toDate().toLocaleDateString("he-IL") || null,
+                    lastTreatment: date,
                     clientCard: !!data.cards,
                 });
             });

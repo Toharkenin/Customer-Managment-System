@@ -4,7 +4,6 @@ import { useParams } from 'react-router';
 import { arrayRemove, arrayUnion, doc, getDoc, onSnapshot, Timestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import SignatureCanvas from 'react-signature-canvas'
-import { format } from 'date-fns';
 import MultiplicationSignIcon from '../../assets/multiplication-sign-stroke-rounded';
 import Delete01Icon from '../../assets/delete-01-stroke-rounded';
 import Edit02Icon from '../../assets/edit-02-stroke-rounded';
@@ -82,7 +81,6 @@ function CustomerCard() {
                 setIsDropdownOpen(false);
             }
         };
-        console.log("isok", isDropdownOpen)
         if (isDropdownOpen) {
             document.addEventListener("mousedown", handleClickOutside);
         }
@@ -203,21 +201,43 @@ function CustomerCard() {
         try {
             if (id) {
                 const customerRef = doc(db, 'customers', id);
-                await updateDoc(customerRef, {
-                    cards: arrayUnion(data),
-                });
-                console.log(data.date)
-                if (!docExists) {
+                const docSnap = await getDoc(customerRef);
+                const today = new Date();
+                if (docSnap.exists()) {
+                    const customerData = docSnap.data();
+                    const existingCards = customerData.cards || [];
+
+                    const updatedCards = [...existingCards, data];
+                    console.log("updatedCards", updatedCards);
+                    let latestDate: Date | null = null;
+
+                    for (const card of updatedCards) {
+                        const date = card.date;
+
+                        if (date <= today) {
+                            console.log("G", date);
+                            if (latestDate === null || date > latestDate) {
+
+                                latestDate = date;
+                                console.log("date", latestDate);
+                            }
+
+                        }
+                    }
+
                     await updateDoc(customerRef, {
-                        treatments: treatmentTypes,
-                        lastTreatment: data.date,
+                        cards: arrayUnion(data),
+                        lastTreatment: latestDate,
                     });
                 }
             }
         } catch (error) {
-            console.error("Error adding array:", error);
+            console.error("Error adding card to DB:", error);
         }
     };
+
+
+
     const handleClearSign = (id: string) => {
 
         if (id === "customer" && sigPadRefCustomer.current) {
@@ -226,29 +246,41 @@ function CustomerCard() {
             sigPadRefProvider.current.clear();
     };
 
+
     const handleDeleteCard = async (index: number) => {
+        if (!id) return;
 
-        if (id) {
-            const customerRef = doc(db, "customers", id);
+        const customerRef = doc(db, "customers", id);
+        let latestDate: Date | null = null;
 
-            try {
-                const docSnap = await getDoc(customerRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    const updatedCards = data.cards.filter((_: any, i: number) => i !== index);
+        try {
+            const docSnap = await getDoc(customerRef);
+            if (docSnap.exists()) {
+                let updatedCards = docSnap.data().cards.filter((_: any, i: number) => i !== index);
+                const today = new Date();
+                if (updatedCards.length > 0) {
+                    for (const card of updatedCards) {
+                        const date = card.date;
+                        if (date <= today) {
+                            if (latestDate === null || date > latestDate) {
+                                latestDate = date;
+                            }
 
-                    setCardData(updatedCards);
-
-                    await updateDoc(customerRef, { cards: updatedCards });
-                    console.log("Item removed successfully");
-                } else {
-                    console.log("Document does not exist!");
+                        }
+                    }
                 }
-            } catch (error) {
-                console.error("Error removing item: ", error);
+                await updateDoc(customerRef, {
+                    cards: updatedCards,
+                    lastTreatment: latestDate
+                });
+
+                setCardData(updatedCards);
             }
+        } catch (error) {
+            console.error("Error removing item: ", error);
         }
     };
+
 
     const handleDateChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedDate = e.target.value;
@@ -268,26 +300,32 @@ function CustomerCard() {
             const docSnap = await getDoc(customerRef);
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                const updatedCards = data.cards.map((card: any, i: number) =>
-                    i === index ? { ...card, date: Timestamp.fromDate(new Date(newDate)) } : card
+                let updatedCards = data.cards.map((card: any, i: number) =>
+                    i === index ? { ...card, date: new Date(newDate) } : card
                 );
 
-                await updateDoc(customerRef, { cards: updatedCards });
+                const latestDate = updatedCards
+                    .map((card: Card) => card.date)
+                    .filter((date: Date): date is Date => !!date)
+                    .reduce((max: any, date: any) => (max && date > max ? date : max), null as Date | null);
+                await updateDoc(customerRef, {
+                    cards: updatedCards,
+                    lastTreatment: latestDate || new Date(newDate),
+                });
 
-                setEditedDates(prev => {
+                setEditedDates((prev) => {
                     const newState = { ...prev };
                     delete newState[index];
                     return newState;
                 });
 
-                setIsEditing(prev => ({ ...prev, [index]: false }));
-            } else {
-                console.log("Document does not exist!");
+                setIsEditing((prev) => ({ ...prev, [index]: false }));
             }
         } catch (error) {
             console.error("Error updating item: ", error);
         }
     };
+
 
 
     return (
