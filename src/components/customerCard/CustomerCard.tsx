@@ -33,7 +33,7 @@ function CustomerCard() {
     const sigPadRefProvider = useRef<SignatureCanvas>(null);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isEditing, setIsEditing] = useState<{ [key: number]: boolean }>({});
-    const [editedDates, setEditedDates] = useState<{ [key: number]: string }>({});
+    const [editedDates, setEditedDates] = useState<{ [key: number]: Date | undefined }>({});
     const dropdownRef = useRef<HTMLDivElement>(null);
 
 
@@ -288,13 +288,16 @@ function CustomerCard() {
     };
 
 
+
+
     const handleDateChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedDate = e.target.value;
+        const selectedDate = new Date(e.target.value);
         setEditedDates(prev => ({
             ...prev,
             [index]: selectedDate,
         }));
     };
+
 
     const handleEditCard = async (index: number) => {
         const newDate = editedDates[index];
@@ -307,8 +310,9 @@ function CustomerCard() {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 let updatedCards = data.cards.map((card: any, i: number) =>
-                    i === index ? { ...card, date: new Date(newDate) } : card
+                    i === index ? { ...card, date: Timestamp.fromDate(new Date(newDate)) } : card
                 );
+                console.log("dsadc", updatedCards);
                 let latestDate: Date | null = null;
 
                 for (const card of updatedCards) {
@@ -328,6 +332,11 @@ function CustomerCard() {
                     const newState = { ...prev };
                     delete newState[index];
                     return newState;
+                });
+
+                await updateDoc(customerRef, {
+                    cards: updatedCards,
+                    lastTreatment: latestDate
                 });
 
                 setIsEditing((prev) => ({ ...prev, [index]: false }));
@@ -455,7 +464,7 @@ function CustomerCard() {
                                             <input
                                                 type="date"
                                                 name="date"
-                                                value={editedDates[index]}
+                                                value={editedDates[index] ? editedDates[index].toISOString().split("T")[0] : ""}
                                                 onChange={(e) => handleDateChange(index, e)}
                                                 className={styles.dateInputContainer}
                                             /> :
