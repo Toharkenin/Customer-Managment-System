@@ -19,7 +19,6 @@ function App() {
 
   const maxSessionDuration = 7 * 24 * 60 * 60 * 1000;
 
-
   useEffect(() => {
     const checkSessionExpiration = async () => {
       const loginTime = localStorage.getItem("loginTime");
@@ -33,7 +32,6 @@ function App() {
 
     checkSessionExpiration();
   }, []);
-
 
   return (
     <div dir="rtl">

@@ -8,6 +8,7 @@ import MultiplicationSignIcon from '../../assets/multiplication-sign-stroke-roun
 import Delete01Icon from '../../assets/delete-01-stroke-rounded';
 import Edit02Icon from '../../assets/edit-02-stroke-rounded';
 import BookmarkCheck01Icon from '../../assets/bookmark-check-01-stroke-rounded';
+import TagsIcon from '../../assets/tags-stroke-rounded';
 
 interface Card {
     date: Date | undefined;
@@ -15,10 +16,17 @@ interface Card {
     providerSignature: string;
 }
 
+interface Treatment {
+    name: string;
+    price: string;
+    tempPrice?: string;
+    // showPriceInput?: boolean;
+}
+
 function CustomerCard() {
 
     const { id } = useParams();
-    const [treatmentTypes, setTreatmentTypes] = useState<string[]>([]);
+    const [treatmentTypes, setTreatmentTypes] = useState<Treatment[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [cardData, setCardData] = useState<Card[]>([]);
     const [docExists, setDocExists] = useState<boolean>(false);
@@ -35,6 +43,9 @@ function CustomerCard() {
     const [isEditing, setIsEditing] = useState<{ [key: number]: boolean }>({});
     const [editedDates, setEditedDates] = useState<{ [key: number]: Date | undefined }>({});
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const [showPriceInput, setShowPriceInput] = useState<{ [key: number]: boolean }>({});
+    const [note, setNote] = useState<string>("");
+
 
 
     // get customer's card
@@ -49,9 +60,11 @@ function CustomerCard() {
                     const treatments = data.treatments || [];
                     const customerName = data.firstName + " " + data.lastName;
                     const customerPhoneNumber = data.phoneNumber;
+                    const note = data.note || "";
                     setName(customerName);
                     setPhoneNumber(customerPhoneNumber);
                     setTreatmentTypes(treatments);
+                    setNote(note);
                     if (customerCards.length > 0) {
                         setCardData(customerCards);
                         setDocExists(true);
@@ -92,19 +105,19 @@ function CustomerCard() {
 
 
 
-    const treatments = [
-        "גב",
-        "בטן",
-        "כתפיים",
-        "חזה",
-        "עורף",
-        "עצמות לחיים",
-        "צאוור",
-        "בין הגבות",
-        "גבות",
-        "אוזניים",
-        "ידיים",
-        "אף",
+    const treatments: Treatment[] = [
+        { name: "גב", price: "" },
+        { name: "בטן", price: "" },
+        { name: "כתפיים", price: "" },
+        { name: "חזה", price: "" },
+        { name: "עורף", price: "" },
+        { name: "עצמות לחיים", price: "" },
+        { name: "צאוור", price: "" },
+        { name: "בין הגבות", price: "" },
+        { name: "גבות", price: "" },
+        { name: "אוזניים", price: "" },
+        { name: "ידיים", price: "" },
+        { name: "אף", price: "" },
     ];
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,6 +127,14 @@ function CustomerCard() {
             date: selectedDate,
         }));
     };
+
+    const handlePriceTagsIconClick = (index: number) => {
+        setShowPriceInput((prev) => ({
+            ...prev,
+            [index]: !prev[index],
+        }));
+
+    }
 
 
     const handleAddCardRow = async () => {
@@ -153,16 +174,21 @@ function CustomerCard() {
         setIsDropdownOpen((prev) => !prev);
     };
 
-    const handleOptionClick = async (option: string) => {
-        setTreatmentTypes((prev) =>
-            prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
-        );
+    const handleOptionClick = async (option: Treatment) => {
+        setTreatmentTypes((prev) => {
+            const existingTreatment = prev.find(item => item.name === option.name);
+            if (existingTreatment) {
+                return prev.filter((item) => item.name !== option.name);
+            } else {
+                return [...prev, option];
+            }
+        });
         try {
-
             if (id) {
                 const customerRef = doc(db, 'customers', id);
+                const treatmentNames = treatmentTypes.map(t => t.name);
 
-                if (treatmentTypes.includes(option)) {
+                if (treatmentNames.includes(option.name)) {
                     await updateDoc(customerRef, {
                         treatments: arrayRemove(option),
                     });
@@ -180,15 +206,26 @@ function CustomerCard() {
     };
 
 
-    const removeTreatment = async (treatment: string) => {
+    const handlePriceInput = (e: React.FormEvent<HTMLSpanElement>, i: number) => {
+        const updatedTreatmentTypes = treatmentTypes.map((treatment, index) =>
+            index === i ? { ...treatment, tempPrice: e.currentTarget.innerText } : treatment
+        );
+
+        setTreatmentTypes(updatedTreatmentTypes);
+
+        console.log("Updated treatmentTypes:", updatedTreatmentTypes);
+    };
+
+
+    const removeTreatment = async (treatmentToRemove: Treatment) => {
         try {
-            setTreatmentTypes((prev) => prev.filter((item) => item !== treatment));
+            setTreatmentTypes((prev) => prev.filter((item) => item.name !== treatmentToRemove.name));
 
             if (id) {
                 const customerRef = doc(db, 'customers', id);
 
                 await updateDoc(customerRef, {
-                    treatments: arrayRemove(treatment),
+                    treatments: arrayRemove(treatmentToRemove),
                 });
             }
         } catch (error) {
@@ -208,7 +245,6 @@ function CustomerCard() {
                     const existingCards = customerData.cards || [];
 
                     const updatedCards = [...existingCards, data];
-                    console.log("updatedCards", updatedCards);
                     let latestDate: Date | null = null;
 
                     for (const card of updatedCards) {
@@ -339,7 +375,7 @@ function CustomerCard() {
                     lastTreatment: latestDate
                 });
 
-                setIsEditing((prev) => ({ ...prev, [index]: false }));
+
             }
         } catch (error) {
             console.error("Error updating item: ", error);
@@ -361,36 +397,64 @@ function CustomerCard() {
             </div>
             {isDropdownOpen && (
                 <div className={styles.dropDown} ref={dropdownRef}>
-                    <ul
-                        style={{ listStyle: "none", padding: 0, margin: 0 }}
-                    >
+                    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                         {treatments.map((option) => (
                             <li
-                                key={option}
-                                className={`${styles.itemList} ${treatmentTypes.includes(option) ? styles.selected : ""
-                                    }`}
+                                key={option.name}
+                                className={`${styles.itemList} ${treatmentTypes.find(t => t.name === option.name) ? styles.selected : ""}`} // Check by name
                                 onClick={() => handleOptionClick(option)}
                             >
-                                {option}
+                                {option.name}
                             </li>
                         ))}
                     </ul>
                 </div>)}
             <div className={styles.customerTreatments}>
-                {treatmentTypes.map((treatment) => (
-                    <div key={treatment} className={styles.treatmentsListContainer}>
+                {treatmentTypes.map((treatment, i) => (
+                    <div key={treatment.name} className={styles.treatmentsListContainer}>
                         <div className={styles.CustomerTreatments}>
-                            <div>{treatment}</div>
+                            <div>{treatment.name}</div>
                             <MultiplicationSignIcon
                                 className={styles.removeIcon}
                                 onClick={() => removeTreatment(treatment)}
                             />
-
+                            <TagsIcon
+                                className={styles.priceTagIcon}
+                                style={{ color: treatment.price && treatment.price.length > 0 ? "black" : "gray" }}
+                                onClick={() => handlePriceTagsIconClick(i)} />
+                            {showPriceInput[i] && <div className={styles.priceContainer}><span
+                                className={styles.priceSpan}
+                                contentEditable
+                                suppressContentEditableWarning
+                                onBlur={() => {
+                                    const updatedTreatmentTypes = treatmentTypes.map(t =>
+                                        t.name === treatment.name ? { ...t, price: t.tempPrice?.trim() || t.price, tempPrice: "" } : t
+                                    );
+                                    setTreatmentTypes(updatedTreatmentTypes);
+                                    console.log(updatedTreatmentTypes)
+                                    if (id) {
+                                        const customerRef = doc(db, 'customers', id);
+                                        updateDoc(customerRef, {
+                                            treatments: updatedTreatmentTypes
+                                        });
+                                    }
+                                }}
+                                style={{ cursor: "text", outline: "none", textAlign: "right" }}
+                                onInput={(e) => handlePriceInput(e, i)}
+                            >
+                                {treatment.price}
+                            </span>
+                                {treatment.price && treatment.price.length > 0 ? <h5>&nbsp;{` ש''ח `}</h5> : null}
+                            </div>
+                            }
                         </div>
                     </div>
                 ))}
             </div>
 
+            <div className={styles.noteContainer}>
+                {note}
+            </div>
             <table className={`${styles.table} ${styles.topTable}`}>
                 <thead>
                     <tr>
