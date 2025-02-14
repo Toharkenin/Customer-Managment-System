@@ -9,6 +9,7 @@ import Delete01Icon from '../../assets/delete-01-stroke-rounded';
 import Edit02Icon from '../../assets/edit-02-stroke-rounded';
 import BookmarkCheck01Icon from '../../assets/bookmark-check-01-stroke-rounded';
 import TagsIcon from '../../assets/tags-stroke-rounded';
+import Comment01Icon from '../../assets/comment-01-stroke-rounded';
 
 interface Card {
     date: Date | undefined;
@@ -20,7 +21,6 @@ interface Treatment {
     name: string;
     price: string;
     tempPrice?: string;
-    // showPriceInput?: boolean;
 }
 
 function CustomerCard() {
@@ -45,6 +45,8 @@ function CustomerCard() {
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [showPriceInput, setShowPriceInput] = useState<{ [key: number]: boolean }>({});
     const [note, setNote] = useState<string>("");
+    const [tempNote, setTempNote] = useState<string>("");
+    const [isEditNoteOpen, setIsEditNoteOpen] = useState<boolean>(false);
 
 
 
@@ -60,11 +62,11 @@ function CustomerCard() {
                     const treatments = data.treatments || [];
                     const customerName = data.firstName + " " + data.lastName;
                     const customerPhoneNumber = data.phoneNumber;
-                    const note = data.note || "";
+                    const noteFromData = data.note || "";
                     setName(customerName);
                     setPhoneNumber(customerPhoneNumber);
                     setTreatmentTypes(treatments);
-                    setNote(note);
+                    setNote(noteFromData);
                     if (customerCards.length > 0) {
                         setCardData(customerCards);
                         setDocExists(true);
@@ -212,8 +214,6 @@ function CustomerCard() {
         );
 
         setTreatmentTypes(updatedTreatmentTypes);
-
-        console.log("Updated treatmentTypes:", updatedTreatmentTypes);
     };
 
 
@@ -230,6 +230,22 @@ function CustomerCard() {
             }
         } catch (error) {
             console.error("Error removing treatment:", error);
+        }
+    };
+
+    const handleNoteInput = (e: React.FormEvent<HTMLSpanElement>) => {
+        setTempNote(e.currentTarget.innerText);
+    };
+
+    const handleNoteBlur = () => {
+        const trimmedNote = tempNote.trim();
+        setNote(trimmedNote);
+
+        if (id) {
+            const customerRef = doc(db, 'customers', id);
+            updateDoc(customerRef, { note: trimmedNote })
+                .then(() => console.log("Note updated successfully"))
+                .catch((error) => console.error("Error updating note:", error));
         }
     };
 
@@ -348,7 +364,6 @@ function CustomerCard() {
                 let updatedCards = data.cards.map((card: any, i: number) =>
                     i === index ? { ...card, date: Timestamp.fromDate(new Date(newDate)) } : card
                 );
-                console.log("dsadc", updatedCards);
                 let latestDate: Date | null = null;
 
                 for (const card of updatedCards) {
@@ -401,7 +416,7 @@ function CustomerCard() {
                         {treatments.map((option) => (
                             <li
                                 key={option.name}
-                                className={`${styles.itemList} ${treatmentTypes.find(t => t.name === option.name) ? styles.selected : ""}`} // Check by name
+                                className={`${styles.itemList} ${treatmentTypes.find(t => t.name === option.name) ? styles.selected : ""}`}
                                 onClick={() => handleOptionClick(option)}
                             >
                                 {option.name}
@@ -452,8 +467,32 @@ function CustomerCard() {
                 ))}
             </div>
 
-            <div className={styles.noteContainer}>
-                {note}
+            <div >
+                {
+                    note === "" ?
+                        <div className={styles.noteContainer} onClick={() => setIsEditNoteOpen((prev) => !prev)}>
+                            <Comment01Icon className={styles.noteIcon} />
+                            <h4 className={styles.addNoteText}>הוספת הערה</h4>
+                        </div>
+                        : null}
+                <>{isEditNoteOpen ?
+                    <div className={styles.noteSpanContainer}>
+                        {note !== "" ? <h4 className={styles.notesText}>הערות ללקוח:&nbsp;</h4> : null}
+                        <span
+                            className={styles.noteSpan}
+                            contentEditable
+                            suppressContentEditableWarning
+                            onBlur={handleNoteBlur}
+                            onInput={(e) => handleNoteInput(e)}
+                            style={{ cursor: "text", outline: "none", textAlign: "right" }}
+                        >
+                            {note}
+                        </span>
+                    </div>
+                    : null
+                }</>
+
+
             </div>
             <table className={`${styles.table} ${styles.topTable}`}>
                 <thead>
