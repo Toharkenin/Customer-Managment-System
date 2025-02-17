@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router';
+import { NavLink } from 'react-router';
 import styles from './MainPage.module.scss';
 import { useEffect, useState } from 'react';
 import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
@@ -9,8 +9,8 @@ import Search01Icon from '../../assets/search-01-stroke-rounded';
 import DeleteAlert from '../../components/deleteAlert/DeleteAlert';
 import logoDark from '../../assets/logo-dark.png';
 import Logout01Icon from '../../assets/logout-01-stroke-rounded';
-import { useAuth } from "../../routes/AuthContext";
 import Notifications from '../../components/notifications/Notifications';
+import { getAuth, signOut } from 'firebase/auth';
 
 
 interface Customer {
@@ -34,8 +34,6 @@ function MainPage() {
     const [filterBy, setFilterBy] = useState<string>('firstName');
     const [deleteAlert, setDeleteAlert] = useState<boolean>(false)
     const [currentCustomerId, setCurrentCustomerId] = useState<string>('');
-    const navigation = useNavigate();
-    const { logout } = useAuth();
 
 
     useEffect(() => {
@@ -161,8 +159,11 @@ function MainPage() {
     };
 
     const handleLogout = async () => {
-        logout();
-        navigation('/login');
+        const auth = getAuth();
+        await signOut(auth);
+        localStorage.removeItem("token");
+        localStorage.removeItem("loginTime");
+        localStorage.removeItem("token");
     };
 
     return (

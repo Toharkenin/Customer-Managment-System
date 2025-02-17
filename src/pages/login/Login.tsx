@@ -19,7 +19,6 @@ function Login() {
         try {
             const adminCredential = await signInWithEmailAndPassword(auth, email, password);
             const admin = adminCredential.user;
-            localStorage.setItem("loginTime", Date.now().toString());
 
             if (!admin) {
                 console.error("No user found");
@@ -32,7 +31,14 @@ function Login() {
             if (!adminSnapshot.empty) {
                 const adminData = adminSnapshot.docs[0].data();
                 if (adminData.role === "admin") {
-                    console.log("Admin login successful");
+                    admin.getIdToken().then(function (idToken) {
+                        localStorage.setItem('token', idToken);
+                        localStorage.setItem("loginTime", Date.now().toString());
+                    }).catch(function (error) {
+                        console.error("Error getting JWT:", error);
+                        setError("An error occurred during login.");
+                        return;
+                    });
                     navigate("/");
                 }
             }

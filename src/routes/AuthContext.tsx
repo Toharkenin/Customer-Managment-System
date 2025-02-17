@@ -1,5 +1,6 @@
 import { getAuth, signOut } from "firebase/auth";
 import { createContext, useContext, useState, ReactNode } from "react";
+import { useNavigate } from 'react-router-dom';
 
 interface AuthContextProps {
     admin: string | null;
@@ -24,6 +25,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     });
 
+    const navigate = useNavigate();
+
     const login = (email: string) => {
         try {
             setAdmin(email);
@@ -36,12 +39,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const logout = async () => {
         try {
             const auth = getAuth();
-            await signOut(auth).then(() => {
-            }).catch(error => {
-                console.error("Failed to log out:", error);
-            });
+            await signOut(auth);
+
             setAdmin(null);
             localStorage.removeItem("admin");
+            localStorage.removeItem("loginTime");
+            navigate('/login');
+
         } catch (error) {
             console.error("Failed to logout:", error);
         }

@@ -12,11 +12,11 @@ import Confirmation from './components/confirmation/Confirmation'
 import ViewHealthStatements from './pages/viewHealthStatements/ViewHealthStatements'
 import ProtectedRoute from './routes/ProtectedRoute'
 import { useEffect } from 'react'
-import { auth } from '../firebase'
 import ExistingStatements from './components/existingStatements/ExistingStatements'
+import { getAuth, signOut } from 'firebase/auth'
+
 
 function App() {
-
   const maxSessionDuration = 7 * 24 * 60 * 60 * 1000;
 
   useEffect(() => {
@@ -24,9 +24,10 @@ function App() {
       const loginTime = localStorage.getItem("loginTime");
 
       if (loginTime && Date.now() - parseInt(loginTime) > maxSessionDuration) {
-        await auth.signOut();
+        const auth = getAuth();
+        await signOut(auth);
         localStorage.removeItem("loginTime");
-        window.location.reload();
+        localStorage.removeItem("token");
       }
     };
 
