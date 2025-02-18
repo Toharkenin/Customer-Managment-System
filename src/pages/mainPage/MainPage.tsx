@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import styles from './MainPage.module.scss';
 import { useEffect, useState } from 'react';
 import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
@@ -11,7 +11,6 @@ import logoDark from '../../assets/logo-dark.png';
 import Logout01Icon from '../../assets/logout-01-stroke-rounded';
 import Notifications from '../../components/notifications/Notifications';
 import { getAuth, signOut } from 'firebase/auth';
-
 
 interface Customer {
     id: string;
@@ -34,6 +33,19 @@ function MainPage() {
     const [filterBy, setFilterBy] = useState<string>('firstName');
     const [deleteAlert, setDeleteAlert] = useState<boolean>(false)
     const [currentCustomerId, setCurrentCustomerId] = useState<string>('');
+    const navigate = useNavigate();
+
+    // prevent going back
+    useEffect(() => {
+        const handleBackButton = () => {
+            navigate(1);
+        };
+
+        window.addEventListener("popstate", handleBackButton);
+        return () => window.removeEventListener("popstate", handleBackButton);
+    }, [navigate]);
+
+
 
 
     useEffect(() => {
