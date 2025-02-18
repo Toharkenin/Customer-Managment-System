@@ -475,9 +475,9 @@ function CustomerCard() {
                             <h4 className={styles.addNoteText}>הוספת הערה</h4>
                         </div>
                         : null}
-                <>{isEditNoteOpen ?
+                <>{isEditNoteOpen || note !== "" ?
                     <div className={styles.noteSpanContainer}>
-                        {note === "" ? <h4 className={styles.notesText}>הערות ללקוח:&nbsp;</h4> : null}
+                        {<h4 className={styles.notesText}>הערות ללקוח:&nbsp;</h4>}
                         <span
                             className={styles.noteSpan}
                             contentEditable
