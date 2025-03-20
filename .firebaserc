@@ -1,1 +1,7 @@
-{}
+{
+  "projects": {
+    "Prod": "management-system-4979f"
+  },
+  "targets": {},
+  "etags": {}
+}

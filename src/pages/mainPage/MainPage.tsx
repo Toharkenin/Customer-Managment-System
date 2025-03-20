@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import styles from './MainPage.module.scss';
 import { useEffect, useState } from 'react';
 import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
@@ -6,10 +6,11 @@ import { db } from '../../../firebase';
 import Edit02Icon from '../../assets/edit-02-stroke-rounded';
 import Delete01Icon from '../../assets/delete-01-stroke-rounded';
 import Search01Icon from '../../assets/search-01-stroke-rounded';
+import Notification01Icon from '../../assets/notification-01-stroke-rounded';
 import DeleteAlert from '../../components/deleteAlert/DeleteAlert';
 import logoDark from '../../assets/logo-dark.png';
 import Logout01Icon from '../../assets/logout-01-stroke-rounded';
-import Notifications from '../../components/notifications/Notifications';
+// import Notifications from '../../components/notifications/Notifications';
 import { getAuth, signOut } from 'firebase/auth';
 
 interface Customer {
@@ -197,6 +198,13 @@ function MainPage() {
                         <button className={styles.newClientButton}>+ לקוח חדש</button>
                     </NavLink>
                     <Logout01Icon className={styles.logoutIcon} onClick={handleLogout} />
+
+                    <Link to="/Notifications">
+                        <div className={styles.notificationsNumber}>
+                            <h3 className={styles.number}>1</h3>
+                        </div>
+                        <Notification01Icon className={styles.logoutIcon} onClick={() => navigate} />
+                    </Link>
                 </div>
             </div>
             <div className={styles.searchBoxContainer}>
@@ -276,7 +284,7 @@ function MainPage() {
                     )}
                 </tbody>
             </table>
-            < Notifications />
+            {/* < Notifications /> */}
         </div>
     );
 };

@@ -2,13 +2,13 @@
     margin: 0 auto;
     width: 80vw;
     border-radius: 10px;
-    top: 0; 
-    left: 0; 
-    right: 0; 
-    z-index: 1000; 
-    padding-bottom: 20px; 
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding-bottom: 20px;
     flex-direction: column;
-    height: 100vh; 
+    height: 100vh;
     display: flex;
     position: relative;
 
@@ -33,20 +33,23 @@
         display: block;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        
-        th, td {
+
+        th,
+        td {
             min-width: 120px; // Ensures columns don't get too narrow
             white-space: nowrap; // Prevents text wrapping
         }
     }
 
     @media screen and (max-width: 480px) {
-        th, td {
+
+        th,
+        td {
             padding: 0.2rem;
             font-size: 14px;
         }
     }
-    }
+}
 
 .headerSection {
     background-color: #f2f2f2;
@@ -59,7 +62,7 @@
 
 }
 
-.buutons{
+.buutons {
     display: flex;
     gap: 1rem;
 }
@@ -80,6 +83,23 @@
     height: 4.5rem;
 }
 
+.notificationsNumber {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: orangered;
+    border-radius: 30px;
+    position: absolute;
+    left: 3.2rem,
+
+}
+
+.number {
+    position: absolute;
+    bottom: -1rem;
+    right: 0.4rem;
+    color: #fff;
+    font-size: 1rem;
+}
 
 .newCardButton {
     background-color: #f2f2f2;
@@ -103,7 +123,7 @@
 }
 
 .searchBox {
-    
+
     background-color: rgb(250, 251, 252);
     border-color: rgb(223, 225, 230);
     color: #000;
@@ -114,28 +134,29 @@
     box-sizing: border-box;
     font-size: 14px;
     transition: background-color 0.2s ease-in-out 0s, border-color 0.2s ease-in-out 0s;
-    line-height: 1.42857; 
+    line-height: 1.42857;
     padding: 8px 6px;
     height: 36px;
     width: 20rem;
     padding-right: 30px;
-        :hover{
-            background-color: rgb(235, 236, 240);
-        }
+
+    :hover {
+        background-color: rgb(235, 236, 240);
     }
+}
 
 .searchIcon {
     position: absolute;
     right: 10px;
     width: 1rem;
-    color:rgb(157, 162, 174);
+    color: rgb(157, 162, 174);
 }
 
 .filterSelector {
     box-sizing: border-box;
     font-size: 14px;
     transition: background-color 0.2s ease-in-out 0s, border-color 0.2s ease-in-out 0s;
-    line-height: 1.42857; 
+    line-height: 1.42857;
     padding: 8px 6px;
     height: 36px;
     border-radius: 10px;
@@ -164,7 +185,7 @@
 
 .clientTable tr:nth-child(even) {
     background-color: #f9f9f9;
-    
+
 }
 
 
@@ -190,6 +211,7 @@
     width: auto;
     font-size: 14px;
     color: #1B365D;
+
     :hover {
         background: #1B365D;
         text-decoration: inherit;
@@ -198,12 +220,12 @@
     }
 
 
-    
+
 }
 
 .addHealthButton {
 
-    
+
     display: inline-block;
     outline: none;
     cursor: pointer;
@@ -221,6 +243,7 @@
     transition-property: background;
     transition-duration: 150ms;
     box-shadow: none;
+
     :hover {
         background: #F7F9FD;
     }
@@ -244,6 +267,7 @@
     transition-property: background;
     transition-duration: 150ms;
     box-shadow: none;
+
     :hover {
         background: #F7F9FD;
     }
@@ -280,7 +304,8 @@
         align-items: stretch;
     }
 
-    .searchBox, .filterSelector {
+    .searchBox,
+    .filterSelector {
         width: 100%;
     }
 }

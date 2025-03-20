@@ -14,6 +14,7 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import { useEffect } from 'react'
 import ExistingStatements from './components/existingStatements/ExistingStatements'
 import { getAuth, signOut } from 'firebase/auth'
+import NotificationsPage from './pages/notificationsPage/NotificationsPage'
 
 
 function App() {
@@ -48,13 +49,13 @@ function App() {
                     <Route path="/Edit-Customer/:id" element={<EditCustomer />} />
                     <Route path="/" element={<MainPage />} />
                     <Route path="/Form" element={<NewCustomer />} />
-
                     <Route path="/Health-Statement/:id" element={<HealthStatement customerEmail='' onNext={() => { }} />} />
                     <Route path="/Statements-Page/:id" element={<StatementsPage />} />
                     <Route path="/Customer-Card/:id" element={<CustomerCard />} />
                     <Route path="/Confirmation/:id" element={<Confirmation customerEmail='' />} />
                     <Route path="/Health-statements-view/:id" element={<ViewHealthStatements />} />
                     <Route path="/Statements/:id" element={<ExistingStatements />} />
+                    <Route path="/Notifications" element={<NotificationsPage />} />
                   </Routes>
                 </ProtectedRoute>
               } />
